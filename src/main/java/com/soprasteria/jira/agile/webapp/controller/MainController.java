@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController{
 	@GetMapping(value="/")
 	public void retrieveData() {
-		System.out.println("coucou");	
+		System.out.println("coucou yannis");		
+
 	}
 	
 }
