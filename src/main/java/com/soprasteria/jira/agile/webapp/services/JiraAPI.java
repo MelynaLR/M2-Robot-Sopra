@@ -3,7 +3,7 @@ package com.soprasteria.jira.agile.webapp.services;
 import org.glassfish.jersey.client.ClientResponse;
 import java.util.Base64;
 import org.springframework.boot.autoconfigure.security.oauth2.server.servlet.OAuth2AuthorizationServerProperties.Client;
-import com.sun.jersey.api.client.WebResource;
+//import com.sun.jersey.api.client.WebResource;
 
 public class JiraAPI{
 	
