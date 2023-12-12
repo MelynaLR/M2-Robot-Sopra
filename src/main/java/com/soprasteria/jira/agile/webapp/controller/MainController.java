@@ -9,5 +9,7 @@ public class MainController{
 	@GetMapping(value="/")
 	public void retrieveData() {
 		System.out.println("coucou yannis");		
+
 	}
+	
 }
