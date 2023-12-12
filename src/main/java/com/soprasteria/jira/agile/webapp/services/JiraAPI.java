@@ -1,7 +1,6 @@
 package com.soprasteria.jira.agile.webapp.services;
 
 import java.util.Base64;
-<<<<<<< HEAD
 
 import org.springframework.stereotype.Component;
 
