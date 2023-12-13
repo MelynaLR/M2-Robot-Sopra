@@ -9,6 +9,7 @@ import java.util.Base64;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.soprasteria.jira.agile.webapp.models.Issue;;
 
 @Component
 public class JiraAPI {
@@ -57,9 +58,12 @@ public class JiraAPI {
             // Replace "customfield_XXXXX" with the actual field ID for "user points" in Jira
             int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);
 
-            // Print or process the issue name and "user points" as needed
-            System.out.println("Issue Name: " + issueName);
-            System.out.println("User Points: " + userPoints);
+            // Create an instance of the Issue class
+            Issue currentIssue = new Issue(issueName, userPoints);
+
+            // You can now use or store the currentIssue object as needed
+            System.out.println("Issue Details: " + currentIssue);
         }
     }
+
 }
