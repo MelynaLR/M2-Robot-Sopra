@@ -43,6 +43,8 @@ public class JiraAPI {
             System.err.println("Erreur lors de la requête : " + response.getStatus());
         }
     }
+    
+    
 
     private void parseJsonResponse(String responseBody) {
         JSONObject json = new JSONObject(responseBody);
@@ -62,4 +64,5 @@ public class JiraAPI {
             System.out.println("User Points: " + userPoints);
         }
     }
+    
 }
