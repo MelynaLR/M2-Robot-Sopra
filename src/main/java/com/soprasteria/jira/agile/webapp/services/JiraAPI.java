@@ -1,12 +1,16 @@
 package com.soprasteria.jira.agile.webapp.services;
 
-import java.util.Base64;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Base64;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
 public class JiraAPI {
@@ -16,6 +20,11 @@ public class JiraAPI {
     private String headerType = "application/json";
     private String headerAuthorization = "Authorization";
     private String headerValue;
+    private ArrayList<Issue> issueList;
+    
+    public ArrayList<Issue> getIssueList(){
+    	return this.issueList;
+    }
 
     public void createAuthorizationHeader() {
         String value = this.username + ":" + this.tokenApi;
@@ -35,9 +44,31 @@ public class JiraAPI {
 
         if (response.getStatus() == 200) {
             String responseBody = response.getEntity(String.class);
-            System.out.println("Réponse de l'API : " + responseBody);
+            System.out.println("Issues and their complexity points incoming : ");
+            parseJsonResponse(responseBody);
         } else {
             System.err.println("Erreur lors de la requête : " + response.getStatus());
         }
     }
+
+    private void parseJsonResponse(String responseBody) {
+        issueList = new ArrayList<>();
+    	JSONObject json = new JSONObject(responseBody);
+
+        
+        JSONArray issuesArray = json.getJSONArray("issues");
+
+        for (int i = 0; i < issuesArray.length(); i++) {
+            JSONObject issue = issuesArray.getJSONObject(i);
+            String issueName = issue.getJSONObject("fields").getString("summary");
+
+            int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);
+
+            Issue currentIssue = new Issue(issueName, userPoints);
+            issueList.add(currentIssue);
+
+            System.out.println("Issue Details: " + currentIssue);
+        }
+    }
+
 }
