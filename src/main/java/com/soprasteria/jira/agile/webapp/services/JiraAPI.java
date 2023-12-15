@@ -9,7 +9,23 @@ import java.util.Base64;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.soprasteria.jira.agile.webapp.models.Issue;;
+import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.services.DatabaseController;
+
+
+//added
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Base64;
+
+import org.springframework.stereotype.Component;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
+;
 
 @Component
 public class JiraAPI {
@@ -62,8 +78,16 @@ public class JiraAPI {
             Issue currentIssue = new Issue(issueName, userPoints);
 
             // You can now use or store the currentIssue object as needed
-            System.out.println("Issue Details: " + currentIssue);
+            
+            
+            // Utilisez DatabaseInsertion pour insérer l'issue dans la base de données
+            DatabaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
+            System.out.println("Issue inserted into databases, details : " + currentIssue);
+            
         }
     }
+    
+    
+    
 
 }
