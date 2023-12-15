@@ -80,10 +80,8 @@ public class JiraAPI {
             issueList.add(currentIssue);
 
 
-            // You can now use or store the currentIssue object as needed
             
-            
-            // Utilisez DatabaseInsertion pour insérer l'issue dans la base de données
+            // On utilise DatabaseInsertion pour insérer l'issue dans la base de données
             DatabaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
             System.out.println("Issue inserted into databases, details : " + currentIssue);
             
