@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
-public class JiraAnalysis{
+public class DataAnalysis{
 	
 	private int userPointsScore = 100;
 	
