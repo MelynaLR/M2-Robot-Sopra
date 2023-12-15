@@ -4,12 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Base64;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.soprasteria.jira.agile.webapp.models.Issue;
+
 import com.soprasteria.jira.agile.webapp.services.DatabaseController;
 
 
@@ -17,15 +19,10 @@ import com.soprasteria.jira.agile.webapp.services.DatabaseController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Base64;
 
-import org.springframework.stereotype.Component;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 ;
+
 
 @Component
 public class JiraAPI {
@@ -35,6 +32,11 @@ public class JiraAPI {
     private String headerType = "application/json";
     private String headerAuthorization = "Authorization";
     private String headerValue;
+    private ArrayList<Issue> issueList;
+    
+    public ArrayList<Issue> getIssueList(){
+    	return this.issueList;
+    }
 
     public void createAuthorizationHeader() {
         String value = this.username + ":" + this.tokenApi;
@@ -62,20 +64,21 @@ public class JiraAPI {
     }
 
     private void parseJsonResponse(String responseBody) {
-        JSONObject json = new JSONObject(responseBody);
+        issueList = new ArrayList<>();
+    	JSONObject json = new JSONObject(responseBody);
 
-        // Assuming the issues are stored in an array called "issues"
+        
         JSONArray issuesArray = json.getJSONArray("issues");
 
         for (int i = 0; i < issuesArray.length(); i++) {
             JSONObject issue = issuesArray.getJSONObject(i);
             String issueName = issue.getJSONObject("fields").getString("summary");
 
-            // Replace "customfield_XXXXX" with the actual field ID for "user points" in Jira
             int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);
 
-            // Create an instance of the Issue class
             Issue currentIssue = new Issue(issueName, userPoints);
+            issueList.add(currentIssue);
+
 
             // You can now use or store the currentIssue object as needed
             
@@ -84,6 +87,7 @@ public class JiraAPI {
             DatabaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
             System.out.println("Issue inserted into databases, details : " + currentIssue);
             
+
         }
     }
     

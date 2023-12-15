@@ -11,7 +11,6 @@ public class Issue {
         this.userPoints = userPoints;
     }
 
-    // Other methods or additional fields as needed...
 
     @Override
     public String toString() {
@@ -19,5 +18,9 @@ public class Issue {
                 "name='" + name + '\'' +
                 ", userPoints=" + userPoints +
                 '}';
+    }
+    
+    public int getUserPoints() {
+    	return this.userPoints;
     }
 }
