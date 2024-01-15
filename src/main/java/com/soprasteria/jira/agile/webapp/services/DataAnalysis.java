@@ -19,15 +19,5 @@ public class DataAnalysis{
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
