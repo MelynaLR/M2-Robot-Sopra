@@ -45,6 +45,7 @@ public class MainController{
 		
         
 	}
+	
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
 		//jiraAPI.createAuthorizationHeader();
@@ -59,7 +60,6 @@ public class MainController{
 	
 	@GetMapping(value="/score/userPoints")
 	public void scoreUserPoints() {
-		System.out.println("test");
 		ArrayList<Issue> issues = (ArrayList<Issue>) DatabaseReader.readIssuesFromDatabase();
 		ArrayList<Issue> badIssues = dataAnalysis.filterBadIssues(issues);
 		int score = dataAnalysis.calculateUserPoints(badIssues);
