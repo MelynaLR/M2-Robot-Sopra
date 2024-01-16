@@ -18,7 +18,7 @@ public class dbExcel {
 // JDBC URL, username, and password of MySQL server
 private static final String URL = "jdbc:mysql://localhost:3306/mydb";
 private static final String USER = "root";
-private static final String PASSWORD = "Escargot3636!";
+private static final String PASSWORD = "";
 
 // JDBC variables for opening, closing, and managing connection
 private static Connection connection;
