@@ -23,4 +23,7 @@ public class Issue {
     public int getUserPoints() {
     	return this.userPoints;
     }
+    public String getName() {
+    	return this.name;
+    }
 }

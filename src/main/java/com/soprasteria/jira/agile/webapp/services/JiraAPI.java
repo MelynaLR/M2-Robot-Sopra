@@ -2,6 +2,7 @@ package com.soprasteria.jira.agile.webapp.services;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,11 +13,27 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
+import com.soprasteria.jira.agile.webapp.services.DatabaseController;
+
+
+//added
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
+;
+
+
 @Component
 public class JiraAPI {
 
-    private String username = "berryyannis@gmail.com";
-    private String tokenApi = "ATATT3xFfGF0W-C5fiUZ-EkE-St9eESZxHSyOuTi60rK5YJfufZPDiDaiWWNx05uUc8a8vv-0zs09IWUTrGjeiUs29uxMgDnftWX9jj0dXiAvdCru20h7Gel1SPwgKa-4YSx0qbYUcDEJyc67O1VSbTV-SEgahxnFAR_cNFWHgR7Pe4kLiopCAA=C572F4A4";
+	@Value("${jira.user}")
+    private String username;
+	
+	@Value("${jira.token}")
+    private String tokenApi;
+	
     private String headerType = "application/json";
     private String headerAuthorization = "Authorization";
     private String headerValue;
@@ -67,8 +84,17 @@ public class JiraAPI {
             Issue currentIssue = new Issue(issueName, userPoints);
             issueList.add(currentIssue);
 
-            System.out.println("Issue Details: " + currentIssue);
+
+            
+            // On utilise DatabaseInsertion pour insérer l'issue dans la base de données
+            DatabaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
+            System.out.println("Issue inserted into databases, details : " + currentIssue);
+            
+
         }
     }
+    
+    
+    
 
 }
