@@ -37,4 +37,5 @@ mvnw
 mvnw.cmd
 
 
+*.properties
 /bin/
