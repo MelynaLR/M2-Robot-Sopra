@@ -27,17 +27,15 @@ public class DataAnalysis{
 		return badIssues;
 	}
 	
-	public int calculateUserPoints (ArrayList<Issue> badIssueList) {
+	public int calculateUserPoints (ArrayList<Issue> badIssueList) 
+	{
 		int scoreUserPoints = 100;
 		for (int i=0; i < badIssueList.size(); i++) {
 			if (badIssueList.get(i).getUserPoints() >= 23) {
 				if (scoreUserPoints > 0) {
 				scoreUserPoints -= 5;
-			
 				}
-		
 			}
-		
 		}
 		return scoreUserPoints;
 	}
