@@ -2,6 +2,7 @@ package com.soprasteria.jira.agile.webapp.services;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,8 +28,12 @@ import java.sql.SQLException;
 @Component
 public class JiraAPI {
 
-    private String username = "berryyannis@gmail.com";
-    private String tokenApi = "ATATT3xFfGF0W-C5fiUZ-EkE-St9eESZxHSyOuTi60rK5YJfufZPDiDaiWWNx05uUc8a8vv-0zs09IWUTrGjeiUs29uxMgDnftWX9jj0dXiAvdCru20h7Gel1SPwgKa-4YSx0qbYUcDEJyc67O1VSbTV-SEgahxnFAR_cNFWHgR7Pe4kLiopCAA=C572F4A4";
+	@Value("${jira.user}")
+    private String username;
+	
+	@Value("${jira.token}")
+    private String tokenApi;
+	
     private String headerType = "application/json";
     private String headerAuthorization = "Authorization";
     private String headerValue;

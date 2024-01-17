@@ -9,11 +9,14 @@ import java.util.concurrent.TimeUnit;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 
 public class ChatGPTClient {
-
-    private static final String API_KEY = "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";
+	
+	@Value("${chatgpt.token}")
+	private static String API_KEY;
+	
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private static final String MODEL_IDENTIFIER = "gpt-4"; // OR gpt-3.5-turbo
     
