@@ -2,6 +2,7 @@ package com.soprasteria.jira.agile.webapp.services;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
