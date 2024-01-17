@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
@@ -12,7 +14,9 @@ public class DatabaseController {
     // JDBC URL, username, and password of MySQL server
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root";
-    private static final String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";////Salah password
+    
+    @Value("${bdd.password}")
+    private static String PASSWORD;
     //private static final String PASSWORD = "root";//Yannis password
 
     // JDBC variables for opening, closing, and managing connection
