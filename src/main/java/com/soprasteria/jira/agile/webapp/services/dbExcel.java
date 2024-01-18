@@ -10,15 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.soprasteria.jira.agile.webapp.models.Issue_excel;
 
 public class dbExcel {
 
-
-// JDBC URL, username, and password of MySQL server
 private static final String URL = "jdbc:mysql://localhost:3306/mydb";
 private static final String USER = "root";
-private static final String PASSWORD = "";
+
+@Value("${bdd.password)")
+private static String PASSWORD;
 
 // JDBC variables for opening, closing, and managing connection
 private static Connection connection;
@@ -83,8 +85,9 @@ public static void printTables() throws SQLException {
     }
 }
 
-public static void selectQueryData() throws SQLException {
+public static List<Issue_excel> selectQueryData() throws SQLException {
     // SQL query
+	 Connection conn = getConnection();
     String selectQuery = "SELECT idIssue, description, creationDate, sprintEndDate, sprintId, sprintStartDate, Status, project_id, priority FROM issue";
     List<Issue_excel> issues = new ArrayList<>();
 
@@ -102,16 +105,10 @@ public static void selectQueryData() throws SQLException {
         // Print each row of data
         int i = 1; // Initialize i outside the loop
         while (resultSet.next()) {
-            for (int j = 1; j <= resultSet.getMetaData().getColumnCount(); j++) {
-                //System.out.print(resultSet.getString(j) + "\t");
-            }
-            //System.out.println();
-
-            // Create a new Issue_excel object for each row
             Issue_excel issue = new Issue_excel();
             issue.setId(resultSet.getInt("idIssue"));
-            issue.setUser("user" + i); // Append i to the user field
-            issue.setUserPoints(0); // Append i to the user field
+            issue.setUser("user" + i);
+            issue.setUserPoints(100);
             issue.setDescription(resultSet.getString("description"));
             issue.setCreationDate(resultSet.getString("creationDate"));
             issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
@@ -121,16 +118,16 @@ public static void selectQueryData() throws SQLException {
             issue.setProjectId(resultSet.getString("project_id"));
             issue.setPriority(resultSet.getString("priority"));
 
-            // Add the Issue_excel object to the list
             issues.add(issue);
 
-            i++; // Increment i for the next iteration
+            i++;
             System.out.println(issue.getUser() + ", " + issue.getUserPoints() + ", " + issue.getDescription() + ", " + issue.getCreationDate() + ", " + issue.getStatus() + ", " + issue.getPriority());
-
-       }
+        }
     } catch (SQLException e) {
+        System.err.println("Error executing SQL query: " + e.getMessage());
         e.printStackTrace();
     }
+    return issues;
 }
 
 
