@@ -36,8 +36,3 @@ build/
 mvnw
 mvnw.cmd
 
-
-/bin/
-
-
-*.properties
