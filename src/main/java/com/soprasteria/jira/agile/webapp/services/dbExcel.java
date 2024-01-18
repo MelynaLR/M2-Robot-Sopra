@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.soprasteria.jira.agile.webapp.models.Issue_excel;
 
 public class dbExcel {
@@ -18,7 +20,9 @@ public class dbExcel {
 // JDBC URL, username, and password of MySQL server
 private static final String URL = "jdbc:mysql://localhost:3306/mydb";
 private static final String USER = "root";
-private static final String PASSWORD = "";
+
+@Value("${bdd.password)")
+private static String PASSWORD;
 
 // JDBC variables for opening, closing, and managing connection
 private static Connection connection;
