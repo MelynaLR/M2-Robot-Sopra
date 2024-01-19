@@ -10,17 +10,20 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.json.JSONArray;
 
+@Component
 public class ChatGPTClient {
 	
 	@Value("${chatgpt.token}")
-	private static String API_KEY;
+	private String API_KEY;
 	
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private static final String MODEL_IDENTIFIER = "gpt-4"; // OR gpt-3.5-turbo
     
-    public static String generateRecommendation(List<Issue> issues) {
+    public String generateRecommendation(List<Issue> issues) {
+    	System.out.println("token: "+API_KEY);
         //OkHttpClient client = new OkHttpClient();
     	/*
         OkHttpClient client = new OkHttpClient.Builder()
