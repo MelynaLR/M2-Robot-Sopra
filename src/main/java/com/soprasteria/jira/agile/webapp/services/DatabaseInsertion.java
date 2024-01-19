@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class DatabaseInsertion {
 
     public static void insertIssueIntoDatabase(String issueName, int userPoints) {
@@ -11,7 +13,7 @@ public class DatabaseInsertion {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DatabaseController.getConnection();
+        	connection = DatabaseController.getConnection();
             
             //Cette query insère la ligne mais si un issue du même nom existe déjà, elle met à jour ses points de complexité
             String sql = "INSERT INTO issues (issueName, issueComplexity) VALUES (?, ?) ON DUPLICATE KEY UPDATE issueComplexity = ?";

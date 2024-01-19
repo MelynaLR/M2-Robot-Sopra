@@ -4,24 +4,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
-
+@Component
+@PropertySource("classpath:application.properties")
 public class DatabaseController {
 
     // JDBC URL, username, and password of MySQL server
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root";
     
+    private static String PASSWORD = "root";
+    //private static final String PASSWORD = "root";
+    
     @Value("${bdd.password}")
-    private static String PASSWORD;
-    //private static final String PASSWORD = "root";//Yannis password
-
+    private String recupPassword = "test";
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;
 
+    
     public static Connection getConnection() throws SQLException {
         try {
             // Load the JDBC driver
@@ -48,19 +53,6 @@ public class DatabaseController {
     }
 
     public static void main(String[] args) {
-        try {
-            // Example usage: establish a connection and do something
-            Connection conn = getConnection();
-            // ... perform database operations ...
-            
-            // Example usage: print tables
-            printTables();
-            
-            // Close the connection when done
-            closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
     
  // Method to print tables in the database
