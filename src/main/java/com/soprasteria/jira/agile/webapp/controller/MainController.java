@@ -25,6 +25,9 @@ public class MainController{
 	@Autowired
 	private DataAnalysis dataAnalysis;
 	
+	@Autowired
+	private ChatGPTClient chatGPTClient;
+	
 	
 	@GetMapping(value="/")
 	public void retrieveData() {
@@ -38,12 +41,10 @@ public class MainController{
         List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
 
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = ChatGPTClient.generateRecommendation(issues);
+        String recommendation = chatGPTClient.generateRecommendation(issues);
 
         // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);
-		
-        
+        System.out.println("Recommendation from ChatGPT: " + recommendation);        
 	}
 	
 	@GetMapping(value="/gpt/recommandations")
@@ -52,7 +53,7 @@ public class MainController{
 		 List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
         
 		 // Call ChatGPTClient to generate recommendations based on the retrieved issues	       
-		 String recommendation = ChatGPTClient.generateRecommendation(issues);
+		 String recommendation = chatGPTClient.generateRecommendation(issues);
 	        
 		 // Print or use the recommendation as needed	        
 		 System.out.println("Recommendation from ChatGPT: " + recommendation);
