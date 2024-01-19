@@ -21,8 +21,8 @@ public class dbExcel {
 private static final String URL = "jdbc:mysql://localhost:3306/mydb";
 private static final String USER = "root";
 
-@Value("${bdd.password)")
-private static String PASSWORD;
+
+private static final String PASSWORD = "root";
 
 // JDBC variables for opening, closing, and managing connection
 private static Connection connection;

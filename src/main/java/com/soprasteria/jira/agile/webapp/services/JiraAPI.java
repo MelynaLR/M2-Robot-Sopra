@@ -86,8 +86,9 @@ public class JiraAPI {
 
 
             
-            // On utilise DatabaseInsertion pour insérer l'issue dans la base de données
-            DatabaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
+            DatabaseInsertion databaseInsertion = new DatabaseInsertion();
+			// On utilise DatabaseInsertion pour insérer l'issue dans la base de données
+            databaseInsertion.insertIssueIntoDatabase(issueName, userPoints);
             System.out.println("Issue inserted into databases, details : " + currentIssue);
             
 
