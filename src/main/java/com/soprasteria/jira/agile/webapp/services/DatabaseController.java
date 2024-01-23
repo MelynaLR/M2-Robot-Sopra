@@ -18,7 +18,7 @@ public class DatabaseController {
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root";
     
-    private static String PASSWORD = "root";
+    private static String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";
     //private static final String PASSWORD = "root";
     
     @Value("${bdd.password}")
@@ -32,6 +32,7 @@ public class DatabaseController {
             // Load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("JDBC Driver loaded successfully");
+            
 
             // Establish a connection
             connection = DriverManager.getConnection(URL, USER, PASSWORD);

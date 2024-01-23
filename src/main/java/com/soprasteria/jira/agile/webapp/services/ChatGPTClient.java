@@ -22,7 +22,7 @@ public class ChatGPTClient {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private static final String MODEL_IDENTIFIER = "gpt-4"; // OR gpt-3.5-turbo
     
-    public String generateRecommendation(List<Issue> issues) {
+    public String generateRecommendation(List<Issue> issues, List<String> additionalInstructions) {
     	System.out.println("token: "+API_KEY);
         //OkHttpClient client = new OkHttpClient();
     	/*
@@ -43,7 +43,13 @@ public class ChatGPTClient {
         for (Issue issue : issues) {
             promptBuilder.append("- ").append(issue.getName()).append(" with ").append(issue.getUserPoints()).append(" user points\n");
         }
-
+        
+        // Append additional instructions
+        for (String instruction : additionalInstructions) {
+            promptBuilder.append(instruction).append("\n");
+        }
+        
+        
         String prompt = promptBuilder.toString();
 
         // Escape special characters in the user's content
@@ -101,4 +107,20 @@ public class ChatGPTClient {
             return "Error extracting recommendation";
         }
     }
+    
+    //Method allowing appending additional instructions to the prompt sent to chatGPT 
+    public static List<String> promptEngineering(List<String> additionalInstructions) {
+    	
+		 additionalInstructions.add("Emphasize recommendations that align with Agile principles.");
+		 additionalInstructions.add("Consider team collaboration and communication in your recommendations.");
+		 additionalInstructions.add("Prioritize recommendations for continuous improvement in the Agile process.");
+		 additionalInstructions.add("Highlight best practices in Agile methodology and Jira usage.");
+		 additionalInstructions.add("Provide suggestions to address any technical debt identified in the issues.");
+		 additionalInstructions.add("Consider the team's skills and expertise in your recommendations.");
+		 additionalInstructions.add("Pay attention to user story points and their impact on project progress.");
+		 additionalInstructions.add("Suggest additional Agile tools or integrations that may benefit the team.");
+		 additionalInstructions.add("Evaluate the effectiveness of sprint planning in addressing the Jira issues.");
+		 return additionalInstructions;
+    }
+    
 }

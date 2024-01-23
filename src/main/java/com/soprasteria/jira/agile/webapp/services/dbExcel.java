@@ -32,6 +32,7 @@ public static Connection getConnection() throws SQLException {
         // Load the JDBC driver
         Class.forName("com.mysql.cj.jdbc.Driver");
         System.out.println("JDBC Driver loaded successfully");
+        System.out.println(PASSWORD);
 
         // Establish a connection
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
