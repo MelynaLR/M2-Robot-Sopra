@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.soprasteria.jira.agile.webapp.models.Issue_excel;
 
 public class dbExcel {
@@ -30,6 +32,7 @@ public static Connection getConnection() throws SQLException {
         // Load the JDBC driver
         Class.forName("com.mysql.cj.jdbc.Driver");
         System.out.println("JDBC Driver loaded successfully");
+        System.out.println(PASSWORD);
 
         // Establish a connection
         connection = DriverManager.getConnection(URL, USER, PASSWORD);

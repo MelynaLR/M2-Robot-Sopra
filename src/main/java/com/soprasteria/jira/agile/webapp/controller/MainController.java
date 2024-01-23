@@ -17,6 +17,8 @@ import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
 
+
+
 @RestController
 public class MainController{
 	@Autowired
@@ -28,6 +30,9 @@ public class MainController{
 	@Autowired
 	private ChatGPTClient chatGPTClient;
 	
+	//@Autowired
+	private List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+	
 	
 	@GetMapping(value="/")
 	public void retrieveData() {
@@ -38,10 +43,12 @@ public class MainController{
 		//testing chatGPT query
 		
 		// Call DatabaseReader to retrieve issues from the database
-        List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+        //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+        List<String> additionalInstructions = new ArrayList<>();;
+		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
 
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues);
+        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
 
         // Print or use the recommendation as needed
         System.out.println("Recommendation from ChatGPT: " + recommendation);        
@@ -50,10 +57,12 @@ public class MainController{
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
 		//jiraAPI.createAuthorizationHeader();
-		 List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+		 //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+		 List<String> additionalInstructions = new ArrayList<>();
+		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
         
 		 // Call ChatGPTClient to generate recommendations based on the retrieved issues	       
-		 String recommendation = chatGPTClient.generateRecommendation(issues);
+		 String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
 	        
 		 // Print or use the recommendation as needed	        
 		 System.out.println("Recommendation from ChatGPT: " + recommendation);
