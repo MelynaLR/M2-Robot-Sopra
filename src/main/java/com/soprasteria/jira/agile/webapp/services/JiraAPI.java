@@ -16,7 +16,7 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 public class JiraAPI {
 
     private String username = "berryyannis@gmail.com";
-    private String tokenApi = "ATATT3xFfGF0W-C5fiUZ-EkE-St9eESZxHSyOuTi60rK5YJfufZPDiDaiWWNx05uUc8a8vv-0zs09IWUTrGjeiUs29uxMgDnftWX9jj0dXiAvdCru20h7Gel1SPwgKa-4YSx0qbYUcDEJyc67O1VSbTV-SEgahxnFAR_cNFWHgR7Pe4kLiopCAA=C572F4A4";
+    private String tokenApi = "ATATT3xFfGF0FuNLamJWb1MB78rqAIJ4L8iZR4JsAvS45eEgLI8vgzX2QPmAAxhnXFjrGmrcJEzw3ozKDdswpQDdYpTFgbOHjpd5omCBLOtrjccPZP7-WXKNjdltziYLMTZVCStjKWJfgL_UAqmPZokBycECcTcr-89cU30QObUS6PE_MzzsVAw=EEEF6F41";
     private String headerType = "application/json";
     private String headerAuthorization = "Authorization";
     private String headerValue;
@@ -59,7 +59,16 @@ public class JiraAPI {
         JSONArray issuesArray = json.getJSONArray("issues");
 
         for (int i = 0; i < issuesArray.length(); i++) {
-            JSONObject issue = issuesArray.getJSONObject(i);
+            // JSONObject issue = issuesArray.getJSONObject(i);
+            // String issueName = issue.getJSONObject("fields").getString("summary");
+
+            // int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);
+
+            // Issue currentIssue = new Issue(issueName, userPoints);
+            // issueList.add(currentIssue);
+
+            // System.out.println("Issue Details: " + currentIssue);
+             JSONObject issue = issuesArray.getJSONObject(i);
             String issueName = issue.getJSONObject("fields").getString("summary");
 
             int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);

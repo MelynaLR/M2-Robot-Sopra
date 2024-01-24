@@ -15,6 +15,7 @@ public class Issue_excel {
     private String priority;
     private String user;
     private Integer userPoints;
+    private String taux;
     // Getters
     public int getId() {
         return id;
@@ -22,6 +23,9 @@ public class Issue_excel {
 
     public String getDescription() {
         return description;
+    }
+    public String getTaux() {
+        return taux;
     }
     public Integer getUserPoints() {
         return userPoints;
@@ -65,6 +69,9 @@ public class Issue_excel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public void setTaux(String taux) {
+        this.taux = taux;
     }
     public void setUserPoints(Integer userPoints) {
         this.userPoints = userPoints;

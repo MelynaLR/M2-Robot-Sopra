@@ -23,7 +23,7 @@ public static Connection getConnection() throws SQLException {
     try {
         // Load the JDBC driver
         Class.forName("com.mysql.cj.jdbc.Driver");
-        System.out.println("JDBC Driver loaded successfully");
+       // System.out.println("JDBC Driver loaded successfully");
 
         // Establish a connection
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -34,10 +34,6 @@ public static Connection getConnection() throws SQLException {
     return connection;
 }
 
-
-// Other methods for interacting with the database go here...
-
-// Example method to close the connection
 public static void closeConnection() throws SQLException {
     if (connection != null && !connection.isClosed()) {
         connection.close();
@@ -45,14 +41,11 @@ public static void closeConnection() throws SQLException {
 }
 
 
-
 public static void main(String[] args) {
     try {
-        // Example usage: establish a connection and do something
-        Connection conn = getConnection();
-        // ... perform database operations ...
         
-        // Example usage: print tables
+        Connection conn = getConnection();
+
         //printTables();
         selectQueryData();
         // Close the connection when done
@@ -70,12 +63,12 @@ public static void printTables() throws SQLException {
     // Get the list of tables for the specific database
     ResultSet tables = metaData.getTables("mydb", null, "%", null);
 
-    System.out.println("Tables in the database:");
+   // System.out.println("Tables in the database:");
 
     // Print each table name
     while (tables.next()) {
         String tableName = tables.getString("TABLE_NAME");
-        System.out.println(tableName);
+     //   System.out.println(tableName);
     }
 }
 
@@ -88,7 +81,7 @@ public static List<Issue_excel> selectQueryData() throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
          ResultSet resultSet = preparedStatement.executeQuery()) {
 
-        System.out.println("Data in the table:");
+       // System.out.println("Data in the table:");
 
         // Print column names
         for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
@@ -115,7 +108,7 @@ public static List<Issue_excel> selectQueryData() throws SQLException {
             issues.add(issue);
 
             i++;
-            System.out.println(issue.getUser() + ", " + issue.getUserPoints() + ", " + issue.getDescription() + ", " + issue.getCreationDate() + ", " + issue.getStatus() + ", " + issue.getPriority());
+            //System.out.println(issue.getUser() + ", " + issue.getUserPoints() + ", " + issue.getDescription() + ", " + issue.getCreationDate() + ", " + issue.getStatus() + ", " + issue.getPriority());
         }
     } catch (SQLException e) {
         System.err.println("Error executing SQL query: " + e.getMessage());
