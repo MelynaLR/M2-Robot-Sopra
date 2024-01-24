@@ -15,10 +15,9 @@ public class ScoreCalculation {
 	@Autowired
     private List<DataAnalysisRule> rules;
 	
-	public String compScan() {
+	public void compScan() {
 		for (DataAnalysisRule rule : rules) {
             rule.test();
         }	
-		return "TEST IS OK";
 	}
 }
