@@ -12,15 +12,15 @@ public class TeamMemberAgilityManager {
 
     public static void evaluateTeamMemberAgility(List<Issue> issues) {
         for (Issue issue : issues) {
-            int assignedTasks = countAssignedTasks(issue.getAssignee(), issues);
-            evaluateAgilityScore(issue.getAssignee(), assignedTasks);
+            int assignedTasks = countAssignedTasks(issue.getUser(), issues);
+            evaluateAgilityScore(issue.getUser(), assignedTasks);
         }
     }
 
     private static int countAssignedTasks(String assignee, List<Issue> issues) {
         int count = 0;
         for (Issue issue : issues) {
-            if (assignee != null && assignee.equals(issue.getAssignee())) {
+            if (assignee != null && assignee.equals(issue.getUser())) {
                 count++;
             }
         }
