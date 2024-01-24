@@ -21,7 +21,7 @@ private static final String USER = "root";
 
 
 
-private static final String PASSWORD = "root";
+private static final String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";
 
 
 // JDBC variables for opening, closing, and managing connection
