@@ -50,18 +50,7 @@ public class MainController{
 	private ScoreCalculation scoreCalculation;
 	
 	
-	@GetMapping(value="/")
-	public void globalAPI() {
-		System.out.println("Contenu des tables");
-		try {
-			databaseReader.printTables();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-		
 
-	
 	
 	
 	@GetMapping()

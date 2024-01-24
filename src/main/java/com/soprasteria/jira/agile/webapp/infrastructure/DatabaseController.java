@@ -18,8 +18,8 @@ public class DatabaseController {
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root";
     
-    private static String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";
-    //private static final String PASSWORD = "root";
+    //private static String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";
+    private static final String PASSWORD = "root";
     
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;
