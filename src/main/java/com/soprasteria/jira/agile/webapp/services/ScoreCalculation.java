@@ -17,7 +17,7 @@ public class ScoreCalculation {
 	
 	public String compScan() {
 		for (DataAnalysisRule rule : rules) {
-            rule.score();
+            rule.test();
         }	
 		return "TEST IS OK";
 	}

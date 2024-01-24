@@ -6,7 +6,9 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 
 public interface DataAnalysisRule {
 
-	void score();
+	void test();	
 	
-	void rule(List<Issue> issues);
+	float getWeight();
+	
+	void getScore(List<Issue> issues);
 }

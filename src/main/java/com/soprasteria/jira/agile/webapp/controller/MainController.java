@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soprasteria.jira.agile.webapp.services.JiraAPI;
 import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
-import com.soprasteria.jira.agile.webapp.services.rules.ARuleTest;
+import com.soprasteria.jira.agile.webapp.services.rules.HighComplexityTicketRule;
 import com.soprasteria.jira.agile.webapp.services.rules.DataAnalysisRule;
 
 import org.springframework.beans.factory.annotation.Autowired;
