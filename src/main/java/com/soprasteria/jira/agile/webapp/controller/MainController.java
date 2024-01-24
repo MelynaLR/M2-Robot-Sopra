@@ -44,7 +44,7 @@ public class MainController{
 		
 		// Call DatabaseReader to retrieve issues from the database
         //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
-        List<String> additionalInstructions = new ArrayList<>();;
+        List<String> additionalInstructions = new ArrayList<>();
 		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
 
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
