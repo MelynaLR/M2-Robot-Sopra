@@ -35,9 +35,6 @@ public class MainController{
 	@Autowired
 	private DatabaseReader databaseReader;
 
-	//@Autowired
-	private List<Issue> issues = databaseReader.readIssuesFromDatabase();
-
 	
 	
 	@GetMapping(value="/")
@@ -75,6 +72,7 @@ public class MainController{
 	public void gptRecommandations() {
 		//jiraAPI.createAuthorizationHeader();
 
+		List<Issue> issues = databaseReader.readIssuesFromDatabase();
 		 //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
 		 List<String> additionalInstructions = new ArrayList<>();
 		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
