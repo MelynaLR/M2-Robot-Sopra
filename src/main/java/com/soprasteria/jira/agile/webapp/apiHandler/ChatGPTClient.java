@@ -1,4 +1,4 @@
-package com.soprasteria.jira.agile.webapp.services;
+package com.soprasteria.jira.agile.webapp.apiHandler;
 
 import okhttp3.*;
 

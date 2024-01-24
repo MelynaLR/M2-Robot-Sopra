@@ -1,4 +1,4 @@
-package com.soprasteria.jira.agile.webapp.services;
+package com.soprasteria.jira.agile.webapp.infrastructure;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

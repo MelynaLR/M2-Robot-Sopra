@@ -2,7 +2,6 @@ package com.soprasteria.jira.agile.webapp.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soprasteria.jira.agile.webapp.services.JiraAPI;
 import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
 import com.soprasteria.jira.agile.webapp.services.rules.HighComplexityTicketRule;
 import com.soprasteria.jira.agile.webapp.services.rules.DataAnalysisRule;
@@ -14,10 +13,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
+import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
+import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
-import com.soprasteria.jira.agile.webapp.services.DatabaseReader;
-import com.soprasteria.jira.agile.webapp.services.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 
 
@@ -58,6 +58,7 @@ public class MainController{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 		
 
 	
