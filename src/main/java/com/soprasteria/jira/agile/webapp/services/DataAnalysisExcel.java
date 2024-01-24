@@ -13,26 +13,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.soprasteria.jira.agile.webapp.models.Issue_excel;
+import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
 public class DataAnalysisExcel {
-    static List<Issue_excel> issuesList = new ArrayList<>();
 
-    static {
-        try {
-            issuesList = dbExcel.selectQueryData();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void calculateUserPoints(List<Issue_excel> issuesList2) {
+    public static void calculateUserPoints(List<Issue> issueList) {
         try {
             LocalDate today = LocalDate.now();
 
-            for (int i = 0; i < issuesList2.size(); i++) {
-                String sprintEndDateStr = issuesList2.get(i).getSprintEndDate();
+            for (int i = 0; i < issueList.size(); i++) {
+                String sprintEndDateStr = issueList.get(i).getSprintEndDate();
 
                 // Check if the date string is not empty or null before parsing
                 if (sprintEndDateStr != null && !sprintEndDateStr.isEmpty()) {
@@ -47,10 +38,10 @@ public class DataAnalysisExcel {
                     LocalDate sprintEndDate = zonedDateTime.toLocalDate();
 
                     // Compare with today's date
-                    if (!"done".equalsIgnoreCase(issuesList2.get(i).getStatus()) && sprintEndDate.isBefore(today)) {
-                        issuesList2.get(i).setUserPoints(issuesList2.get(i).getUserPoints() - 25);
-                        if (issuesList2.get(i).getUserPoints() != 100) {
-                        	 System.out.println(issuesList2.get(i).getUser() + ", " + issuesList2.get(i).getUserPoints() + ", " + issuesList2.get(i).getDescription());
+                    if (!"done".equalsIgnoreCase(issueList.get(i).getStatus()) && sprintEndDate.isBefore(today)) {
+                    	issueList.get(i).setUserPoints(issueList.get(i).getUserPoints() - 25);
+                        if (issueList.get(i).getUserPoints() != 100) {
+                        	 System.out.println(issueList.get(i).getUser() + ", " + issueList.get(i).getUserPoints() + ", " + issueList.get(i).getDescription());
                         }
                     }
                    // System.out.println(issuesList2.get(i).getUser() + ", " + issuesList2.get(i).getUserPoints() + ", " + issuesList2.get(i).getDescription());
@@ -66,13 +57,4 @@ public class DataAnalysisExcel {
         }
     }
 
-
-
-    public static void main(String[] args) {
-        try {
-            calculateUserPoints(issuesList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

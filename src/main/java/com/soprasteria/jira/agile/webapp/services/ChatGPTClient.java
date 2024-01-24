@@ -41,7 +41,7 @@ public class ChatGPTClient {
         promptBuilder.append("Act as a professional in agile methodology counseling, and a professional in Jira. Given the following Jira issues, analyze the team's application of Agile methodology and provide recommendations for improvement: \n");
 
         for (Issue issue : issues) {
-            promptBuilder.append("- ").append(issue.getName()).append(" with ").append(issue.getUserPoints()).append(" user points\n");
+            promptBuilder.append("- ").append(issue.getDescription()).append(" with ").append(issue.getUserPoints()).append(" user points\n");
         }
 
         String prompt = promptBuilder.toString();

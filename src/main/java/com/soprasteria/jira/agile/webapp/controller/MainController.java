@@ -14,6 +14,7 @@ import com.soprasteria.jira.agile.webapp.services.DatabaseReader;
 import com.soprasteria.jira.agile.webapp.services.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
 
@@ -28,9 +29,19 @@ public class MainController{
 	@Autowired
 	private ChatGPTClient chatGPTClient;
 	
+	@Autowired
+	private DatabaseReader databaseReader;
+	
 	
 	@GetMapping(value="/")
-	public void retrieveData() {
+	public void globalAPI() {
+		System.out.println("Contenu des tables");
+		try {
+			databaseReader.printTables();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		jiraAPI.createAuthorizationHeader();
 		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
 		jiraAPI.sendRequestAPI(urlTest);
@@ -38,7 +49,7 @@ public class MainController{
 		//testing chatGPT query
 		
 		// Call DatabaseReader to retrieve issues from the database
-        List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase();
 
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
         String recommendation = chatGPTClient.generateRecommendation(issues);
@@ -50,7 +61,7 @@ public class MainController{
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
 		//jiraAPI.createAuthorizationHeader();
-		 List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+		 List<Issue> issues = databaseReader.readIssuesFromDatabase();
         
 		 // Call ChatGPTClient to generate recommendations based on the retrieved issues	       
 		 String recommendation = chatGPTClient.generateRecommendation(issues);
@@ -61,11 +72,30 @@ public class MainController{
 	
 	@GetMapping(value="/score/userPoints")
 	public void scoreUserPoints() {
-		ArrayList<Issue> issues = (ArrayList<Issue>) DatabaseReader.readIssuesFromDatabase();
+		ArrayList<Issue> issues = (ArrayList<Issue>) databaseReader.readIssuesFromDatabase();
 		ArrayList<Issue> badIssues = dataAnalysis.filterBadIssues(issues);
 		int score = dataAnalysis.calculateUserPoints(badIssues);
 		System.out.println("Score de user points: "+ score +" /100");
 		
 	}
+	
+	/*
+	 * @GetMapping(value="/") public void retrieveData() {
+	 * jiraAPI.createAuthorizationHeader(); String urlTest=
+	 * "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+	 * jiraAPI.sendRequestAPI(urlTest);
+	 * 
+	 * //testing chatGPT query
+	 * 
+	 * // Call DatabaseReader to retrieve issues from the database List<Issue>
+	 * issues = DatabaseReader.readIssuesFromDatabase();
+	 * 
+	 * // Call ChatGPTClient to generate recommendations based on the retrieved
+	 * issues String recommendation = chatGPTClient.generateRecommendation(issues);
+	 * 
+	 * // Print or use the recommendation as needed
+	 * System.out.println("Recommendation from ChatGPT: " + recommendation); }
+	 */
+	
 	
 }

@@ -21,8 +21,6 @@ public class DatabaseController {
     private static String PASSWORD = "root";
     //private static final String PASSWORD = "root";
     
-    @Value("${bdd.password}")
-    private String recupPassword = "test";
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;
 

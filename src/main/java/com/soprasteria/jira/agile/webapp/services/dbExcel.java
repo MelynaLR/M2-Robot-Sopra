@@ -1,4 +1,4 @@
-package com.soprasteria.jira.agile.webapp.services;
+/*package com.soprasteria.jira.agile.webapp.services;
 
 
 import java.sql.Connection;
@@ -90,7 +90,7 @@ public static void printTables() throws SQLException {
 public static List<Issue_excel> selectQueryData() throws SQLException {
     // SQL query
 	 Connection conn = getConnection();
-    String selectQuery = "SELECT idIssue, description, creationDate, sprintEndDate, sprintId, sprintStartDate, Status, project_id, priority FROM issue";
+    String selectQuery = "SELECT * FROM issue";
     List<Issue_excel> issues = new ArrayList<>();
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
@@ -109,8 +109,8 @@ public static List<Issue_excel> selectQueryData() throws SQLException {
         while (resultSet.next()) {
             Issue_excel issue = new Issue_excel();
             issue.setId(resultSet.getInt("idIssue"));
-            issue.setUser("user" + i);
-            issue.setUserPoints(100);
+            issue.setUser(resultSet.getString("userName"));
+            issue.setUserPoints(resultSet.getInt("userPoints"));
             issue.setDescription(resultSet.getString("description"));
             issue.setCreationDate(resultSet.getString("creationDate"));
             issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
@@ -134,3 +134,4 @@ public static List<Issue_excel> selectQueryData() throws SQLException {
 
 
 }
+*/
