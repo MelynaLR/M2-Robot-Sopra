@@ -18,7 +18,55 @@ public class IssueBuilder{
     private String user;
     private int userPoints;
 	
-    
+   
+    private String taux;
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public String getTaux() {
+        return taux;
+    }
+    public Integer getUserPoints() {
+        return userPoints;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public String getSprintEndDate() {
+        return sprintEndDate;
+    }
+
+    public String getSprintId() {
+        return sprintId;
+    }
+
+    public String getSprintStartDate() {
+        return sprintStartDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getUser() {
+    	return user;
+    }
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    // Setters
     public void setId(int id) {
         this.id = id;
     }
@@ -31,17 +79,19 @@ public class IssueBuilder{
         this.description = description;
     }
     
-    public String getDescription () {
-    	return this.description;
+   
+    public void setTaux(String taux) {
+        this.taux = taux;
+    }
+    public void setUserPoints(Integer userPoints) {
+        this.userPoints = userPoints;
     }
     
     public void setCreationDate(String creationDate) {
     	this.creationDate = creationDate;
     }
     
-    public String getCreationDate() {
-    	return this.creationDate;
-    }
+
     
     public void setSprintId(String sprintId) {
     	this.sprintId = sprintId;
