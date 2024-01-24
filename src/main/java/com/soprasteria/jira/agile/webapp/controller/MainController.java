@@ -3,10 +3,16 @@ package com.soprasteria.jira.agile.webapp.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soprasteria.jira.agile.webapp.services.JiraAPI;
+import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
+import com.soprasteria.jira.agile.webapp.services.rules.HighComplexityTicketRule;
+import com.soprasteria.jira.agile.webapp.services.rules.DataAnalysisRule;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
@@ -14,9 +20,14 @@ import com.soprasteria.jira.agile.webapp.services.DatabaseReader;
 import com.soprasteria.jira.agile.webapp.services.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 
+
 import java.sql.SQLException;
+
+import java.security.PublicKey;
+
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
+
 
 
 
@@ -35,6 +46,8 @@ public class MainController{
 	@Autowired
 	private DatabaseReader databaseReader;
 
+	@Autowired 
+	private ScoreCalculation scoreCalculation;
 	
 	
 	@GetMapping(value="/")
@@ -46,6 +59,12 @@ public class MainController{
 			e.printStackTrace();
 		}
 		
+
+	
+	
+	
+	@GetMapping()
+	public void retrieveData() {
 		jiraAPI.createAuthorizationHeader();
 		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
 		jiraAPI.sendRequestAPI(urlTest);
@@ -90,10 +109,14 @@ public class MainController{
 		ArrayList<Issue> issues = (ArrayList<Issue>) databaseReader.readIssuesFromDatabase();
 		ArrayList<Issue> badIssues = dataAnalysis.filterBadIssues(issues);
 		int score = dataAnalysis.calculateUserPoints(badIssues);
-		System.out.println("Score de user points: "+ score +" /100");
-		
+		System.out.println("Score de user points: "+ score +" /100");		
 	}
-	
+				
+	@GetMapping(value="/comp")
+	public void scoreResult() {
+		scoreCalculation.compScan();
+	}
+
 	/*
 	 * @GetMapping(value="/") public void retrieveData() {
 	 * jiraAPI.createAuthorizationHeader(); String urlTest=
@@ -111,6 +134,4 @@ public class MainController{
 	 * // Print or use the recommendation as needed
 	 * System.out.println("Recommendation from ChatGPT: " + recommendation); }
 	 */
-	
-	
 }
