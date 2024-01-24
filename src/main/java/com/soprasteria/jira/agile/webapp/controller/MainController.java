@@ -57,7 +57,7 @@ public class MainController{
         List<Issue> issues = databaseReader.readIssuesFromDatabase();
 
         //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
-        List<String> additionalInstructions = new ArrayList<>();;
+        List<String> additionalInstructions = new ArrayList<>();
 		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
 
 
