@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.soprasteria.jira.agile.webapp.models.Issue_excel;
+import com.soprasteria.jira.agile.webapp.models.Issue;
 
 public class dbExcel {
 
@@ -72,11 +72,11 @@ public static void printTables() throws SQLException {
     }
 }
 
-public static List<Issue_excel> selectQueryData() throws SQLException {
+public static List<Issue> selectQueryData() throws SQLException {
     // SQL query
 	 Connection conn = getConnection();
     String selectQuery = "SELECT idIssue, description, creationDate, sprintEndDate, sprintId, sprintStartDate, Status, project_id, priority FROM issue";
-    List<Issue_excel> issues = new ArrayList<>();
+    List<Issue> issues = new ArrayList<>();
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
          ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -92,7 +92,7 @@ public static List<Issue_excel> selectQueryData() throws SQLException {
         // Print each row of data
         int i = 1; // Initialize i outside the loop
         while (resultSet.next()) {
-            Issue_excel issue = new Issue_excel();
+            Issue issue = new Issue();
             issue.setId(resultSet.getInt("idIssue"));
             issue.setUser("user" + i);
             issue.setUserPoints(100);

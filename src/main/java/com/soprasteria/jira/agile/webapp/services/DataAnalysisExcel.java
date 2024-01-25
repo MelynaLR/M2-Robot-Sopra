@@ -14,6 +14,8 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
 public class DataAnalysisExcel {
+    // Assuming you have a static List<Issue> issuesList somewhere
+    static List<Issue> issuesList = new ArrayList<>();
 
     public static void calculateUserPoints(List<Issue> issueList) {
         try {
@@ -36,17 +38,14 @@ public class DataAnalysisExcel {
 
                     // Compare with today's date
                     if (!"done".equalsIgnoreCase(issueList.get(i).getStatus()) && sprintEndDate.isBefore(today)) {
-                    	issueList.get(i).setUserPoints(issueList.get(i).getUserPoints() - 25);
+                        issueList.get(i).setUserPoints(issueList.get(i).getUserPoints() - 25);
                         if (issueList.get(i).getUserPoints() != 100) {
-                        	 System.out.println(issueList.get(i).getUser() + ", " + issueList.get(i).getUserPoints() + ", " + issueList.get(i).getDescription());
+                            System.out.println(issueList.get(i).getUser() + ", " + issueList.get(i).getUserPoints() + ", " + issueList.get(i).getDescription());
                         }
                     }
-                    // System.out.println(issuesList2.get(i).getUser() + ", " + issuesList2.get(i).getUserPoints() + ", " + issuesList2.get(i).getDescription());
                 } else {
                     // Handle the case when the sprintEndDateStr is empty or null
-
-                    // System.out.println("SprintEndDate is empty or null for issue with ID: " + issuesList2.get(i).getId());
-
+                    System.out.println("SprintEndDate is empty or null for issue with ID: " + issueList.get(i).getId());
                 }
             }
         } catch (Exception e) {
@@ -61,7 +60,7 @@ public class DataAnalysisExcel {
         return 0;
     }
 
-    public static Integer getOneLineFromQuery(Issue_excel issue) {
+    public static Integer getOneLineFromQuery(Issue issue) {
         return issue.getUserPoints();
     }
 
@@ -72,7 +71,7 @@ public class DataAnalysisExcel {
         return "";
     }
 
-    public static String getUserNameFromQuery(Issue_excel issue) {
+    public static String getUserNameFromQuery(Issue issue) {
         return issue.getUser();
     }
 
