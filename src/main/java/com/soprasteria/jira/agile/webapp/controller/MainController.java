@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
@@ -26,6 +27,8 @@ import java.security.PublicKey;
 
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
+import java.util.Map;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -123,7 +126,8 @@ public class MainController{
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		scoreCalculation.calculateGlobalScore();
 	}
-
+	
+	
 	@GetMapping(value = "/")
     public void retrieveData() {
         //System.out.println("coucou yannis");
