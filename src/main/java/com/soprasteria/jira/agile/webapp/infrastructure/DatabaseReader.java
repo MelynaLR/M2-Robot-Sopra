@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +19,14 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 @Component
 public class DatabaseReader {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseReader.class);
+	
 	@Autowired
 	private IssueBuilder issueBuilder;
 	
 	
     public List<Issue> readIssuesFromDatabase() {
-        
+    	LOGGER.info("Beginning to retrieve issues from the database..");
     	List<Issue> issues = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -33,7 +37,7 @@ public class DatabaseReader {
             String sql = "SELECT * FROM issue";
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-
+            LOGGER.info("Going through results of the query ...");
             while (resultSet.next()) {
                 
                 
@@ -57,6 +61,7 @@ public class DatabaseReader {
                 Issue issue = issueBuilder.buildIssue();
                 issues.add(issue);
             }
+            LOGGER.info("End of the results");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -87,12 +92,12 @@ public class DatabaseReader {
         // Get the list of tables for the specific database
         ResultSet tables = metaData.getTables("mydb", null, "%", null);
 
-        System.out.println("Tables in the database:");
+        LOGGER.info("Tables in the database:");
 
         // Print each table name
         while (tables.next()) {
             String tableName = tables.getString("TABLE_NAME");
-            System.out.println(tableName);
+            LOGGER.info(tableName);
         }
     }
 }
