@@ -34,8 +34,7 @@ public class ScoreCalculation {
 			for (Map.Entry<Integer, Integer> entry : ruleMap.entrySet()) {
 	            this.listRules.add(ruleMap);
 	        }
-        }
-		
+        }		
 	}
 	
 	
@@ -54,7 +53,7 @@ public class ScoreCalculation {
 		for (int i=0; i<weightedScores.size(); i++) {
 			globalScore += weightedScores.get(i) / totalWeight;
 		}
-		System.out.println("global score : " + globalScore);
+		LOGGER.info("global score : " + globalScore);
 		return globalScore;		
 	}
 }
