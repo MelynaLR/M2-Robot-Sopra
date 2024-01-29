@@ -5,9 +5,9 @@ import axios from 'axios';
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // const apiUrl = 'http://192.168.56.1:3000/static/api/data';
     const apiUrl = 'http://localhost:8080/static/api/data';
 
     axios.get(apiUrl)
@@ -19,6 +19,7 @@ function App() {
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again later.');
       });
   }, []);
 
@@ -34,14 +35,20 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
-      <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
-        <p style={styles.agilityScore}>Score d'agilité : {agilityScore}</p>
-      </div>
-      <h2 style={styles.sprintProgress}>Taux d'avancement du sprint : </h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {user && agilityScore && (
+        <>
+          <h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
+          <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
+            <p style={styles.agilityScore}>Score d'agilité : {agilityScore}</p>
+          </div>
+          <h2 style={styles.sprintProgress}>Taux d'avancement du sprint : </h2>
+        </>
+      )}
     </div>
   );
 }
+
 
 const styles = {
   container: {
