@@ -18,7 +18,6 @@ import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
-import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 
 
 import java.sql.SQLException;
@@ -35,9 +34,6 @@ import java.util.List; // Import List from java.util
 public class MainController{
 	@Autowired
 	private JiraAPI jiraAPI;
-	
-	@Autowired
-	private DataAnalysis dataAnalysis;
 	
 	@Autowired
 	private ChatGPTClient chatGPTClient;
@@ -94,17 +90,11 @@ public class MainController{
 		 System.out.println("Recommendation from ChatGPT: " + recommendation);
 	}
 	
-	@GetMapping(value="/score/userPoints")
-	public void scoreUserPoints() {
-		ArrayList<Issue> issues = (ArrayList<Issue>) databaseReader.readIssuesFromDatabase();
-		ArrayList<Issue> badIssues = dataAnalysis.filterBadIssues(issues);
-		int score = dataAnalysis.calculateUserPoints(badIssues);
-		System.out.println("Score de user points: "+ score +" /100");		
-	}
 				
-	@GetMapping(value="/comp")
+	@GetMapping(value="/score/userPoints")
 	public void scoreResult() {
-		scoreCalculation.compScan();
+		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+		scoreCalculation.calculateGlobalScore();
 	}
 
 	/*

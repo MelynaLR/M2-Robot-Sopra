@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
-public class HighComplexityTicketRule implements DataAnalysisRule{
+public class HighComplexityTicketRule2 implements DataAnalysisRule{
 
 	private int score;
-	private int weight = 2;
+	private int weight = 9;
 
 	@Override
 	public int getScore() {
@@ -33,8 +33,8 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 				problematicIssues += 1;
 			}					
 		}
-		// returns the percentage of ok issues
-		this.score = (issues.size() - problematicIssues) * 100 / issues.size();
+		// returns the percentage of problematic issues
+		this.score = (issues.size() - problematicIssues) * 100 / issues.size() -28;
 	}
 
 	@Override
