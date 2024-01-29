@@ -20,6 +20,7 @@ public class DatabaseReader {
 	@Autowired
 	private IssueBuilder issueBuilder;
 	
+	
     public List<Issue> readIssuesFromDatabase() {
         
     	List<Issue> issues = new ArrayList<>();
