@@ -30,6 +30,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -39,6 +41,8 @@ import java.io.IOException;
 
 @RestController
 public class MainController{
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+	
 	@Autowired
 	private JiraAPI jiraAPI;
 	
@@ -102,6 +106,8 @@ public class MainController{
 	
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
+		LOGGER.info("starting endpoint gpt recommandations");
+		
 		//jiraAPI.createAuthorizationHeader();
 
 		List<Issue> issues = databaseReader.readIssuesFromDatabase();
@@ -114,19 +120,21 @@ public class MainController{
 		 String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
 	        
 		 // Print or use the recommendation as needed	        
-		 System.out.println("Recommendation from ChatGPT: " + recommendation);
+		LOGGER.info("Recommendation from ChatGPT: " + recommendation);
+		LOGGER.info("end of the GPT recommandation");
 	}
 	
 				
 	@GetMapping(value="/score/userPoints")
 	public void scoreResult() {
+		
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		scoreCalculation.calculateGlobalScore();
 	}
 
 	@GetMapping(value = "/")
     public void retrieveData() {
-        //System.out.println("coucou yannis");
+        
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         
