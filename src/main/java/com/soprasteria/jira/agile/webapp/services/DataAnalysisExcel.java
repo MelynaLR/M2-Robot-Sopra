@@ -1,8 +1,5 @@
 package com.soprasteria.jira.agile.webapp.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +14,8 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
 public class DataAnalysisExcel {
+    // Assuming you have a static List<Issue> issuesList somewhere
+    static List<Issue> issuesList = new ArrayList<>();
 
     public static void calculateUserPoints(List<Issue> issueList) {
         try {
@@ -39,17 +38,14 @@ public class DataAnalysisExcel {
 
                     // Compare with today's date
                     if (!"done".equalsIgnoreCase(issueList.get(i).getStatus()) && sprintEndDate.isBefore(today)) {
-                    	issueList.get(i).setUserPoints(issueList.get(i).getUserPoints() - 25);
+                        issueList.get(i).setUserPoints(issueList.get(i).getUserPoints() - 25);
                         if (issueList.get(i).getUserPoints() != 100) {
-                        	 System.out.println(issueList.get(i).getUser() + ", " + issueList.get(i).getUserPoints() + ", " + issueList.get(i).getDescription());
+                            System.out.println(issueList.get(i).getUser() + ", " + issueList.get(i).getUserPoints() + ", " + issueList.get(i).getDescription());
                         }
                     }
-                   // System.out.println(issuesList2.get(i).getUser() + ", " + issuesList2.get(i).getUserPoints() + ", " + issuesList2.get(i).getDescription());
                 } else {
                     // Handle the case when the sprintEndDateStr is empty or null
-                	
-                   // System.out.println("SprintEndDate is empty or null for issue with ID: " + issuesList2.get(i).getId());
-                	
+                    System.out.println("SprintEndDate is empty or null for issue with ID: " + issueList.get(i).getId());
                 }
             }
         } catch (Exception e) {
@@ -57,4 +53,37 @@ public class DataAnalysisExcel {
         }
     }
 
+    public static Integer getOneLineFromQuery() {
+        if (!issuesList.isEmpty()) {
+            return getOneLineFromQuery(issuesList.get(0)); // Pass the desired index
+        }
+        return 0;
+    }
+
+    public static Integer getOneLineFromQuery(Issue issue) {
+        return issue.getUserPoints();
+    }
+
+    public static String getUserNameFromQuery() {
+        if (!issuesList.isEmpty()) {
+            return getUserNameFromQuery(issuesList.get(0)); // Pass the desired index
+        }
+        return "";
+    }
+
+    public static String getUserNameFromQuery(Issue issue) {
+        return issue.getUser();
+    }
+
+    public static void main(String[] args) {
+        try {
+            // Example: Print one line of data from the list
+            if (!issuesList.isEmpty()) {
+                System.out.println(getOneLineFromQuery(issuesList.get(0))); // Pass the desired index
+                System.out.println(getUserNameFromQuery(issuesList.get(0))); // Pass the desired index
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

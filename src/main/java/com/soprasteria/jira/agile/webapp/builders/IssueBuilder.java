@@ -18,94 +18,116 @@ public class IssueBuilder{
     private String user;
     private int userPoints;
 	
-    
+   
+    private String taux;
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public String getTaux() {
+        return taux;
+    }
+    public Integer getUserPoints() {
+        return userPoints;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public String getSprintEndDate() {
+        return sprintEndDate;
+    }
+
+    public String getSprintId() {
+        return sprintId;
+    }
+
+    public String getSprintStartDate() {
+        return sprintStartDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getUser() {
+    	return user;
+    }
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    // Setters
     public void setId(int id) {
         this.id = id;
     }
     
-    public int getId() {
-    	return this.id;
-    }
 
     public void setDescription(String description) {
         this.description = description;
     }
     
-    public String getDescription () {
-    	return this.description;
+   
+    public void setTaux(String taux) {
+        this.taux = taux;
+    }
+    public void setUserPoints(Integer userPoints) {
+        this.userPoints = userPoints;
     }
     
     public void setCreationDate(String creationDate) {
     	this.creationDate = creationDate;
     }
     
-    public String getCreationDate() {
-    	return this.creationDate;
-    }
+
     
     public void setSprintId(String sprintId) {
     	this.sprintId = sprintId;
     }
     
-    public String getSprintId() {
-    	return this.sprintId;
-    }
 
     public void setSprintEndDate(String sprintEndDate) {
         this.sprintEndDate = sprintEndDate;
     }
     
-    public String getSprintEndDate() {
-    	return this.sprintEndDate;
-    }
 
     public void setSprintStartDate(String sprintStartDate) {
         this.sprintStartDate = sprintStartDate;
     }
     
-    public String getSprintStartDate() {
-    	return this.sprintStartDate;
-    }
 
     public void setStatus(String status) {
         this.status = status;
     }
     
-    public String getStatus() {
-    	return this.status;
-    }
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
     
-    public String getProjectId() {
-    	return this.projectId;
-    }
 
     public void setPriority(String priority) {
         this.priority = priority;
     }
     
-    public String getPriority () {
-    	return this.priority;
-    }
 
     public void setUser(String user) {
         this.user = user;
     }
     
-    public String getUser() {
-    	return this.user;
-    }
-
     public void setUserPoints(int userPoints) {
         this.userPoints = userPoints;
     }
-    
-    public int getUserPoints() {
-    	return this.userPoints;
-    }
+
     
     
 	public Issue buildIssue() {
@@ -122,10 +144,5 @@ public class IssueBuilder{
 		builtIssue.setUserPoints(this.userPoints);
 		return builtIssue;	
 	}
-	
-	
-	
-	
-	
 	
 }

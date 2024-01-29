@@ -26,6 +26,13 @@ import java.security.PublicKey;
 
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+
 
 
 
@@ -46,11 +53,31 @@ public class MainController{
 	private ScoreCalculation scoreCalculation;
 	
 	
+	public static void main(String[] args) {
+        MainController mainController = new MainController();
+
+        mainController.retrieveDataSB();
+
+		try {
+            
+			String url = "https://m2-projet-annuel-robot.atlassian.net/jira/software/projects/KAN/boards/1?isInsightsOpen=true";
+            Document document = Jsoup.connect(url).get();
+
+            // Extract data based on HTML structure
+            Elements dataElements = document.select(".your-data-class");
+            for (Element element : dataElements) {
+                System.out.println(element.text());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	
 	
 	@GetMapping()
-	public void retrieveData() {
+	public void retrieveDataSB() {
 		jiraAPI.createAuthorizationHeader();
 		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
 		jiraAPI.sendRequestAPI(urlTest);
@@ -96,6 +123,16 @@ public class MainController{
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		scoreCalculation.calculateGlobalScore();
 	}
+
+	@GetMapping(value = "/")
+    public void retrieveData() {
+        //System.out.println("coucou yannis");
+        jiraAPI.createAuthorizationHeader();
+        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+        
+        jiraAPI.sendRequestAPI(urlTest);
+    }
+
 
 	/*
 	 * @GetMapping(value="/") public void retrieveData() {
