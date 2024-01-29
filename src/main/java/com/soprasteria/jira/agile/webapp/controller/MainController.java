@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
-import com.soprasteria.jira.agile.webapp.services.DataAnalysis;
 
 
 import java.sql.SQLException;
@@ -27,6 +27,8 @@ import java.security.PublicKey;
 
 import java.util.ArrayList;
 import java.util.List; // Import List from java.util
+import java.util.Map;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,9 +44,6 @@ import java.io.IOException;
 public class MainController{
 	@Autowired
 	private JiraAPI jiraAPI;
-	
-	@Autowired
-	private DataAnalysis dataAnalysis;
 	
 	@Autowired
 	private ChatGPTClient chatGPTClient;
@@ -121,19 +120,14 @@ public class MainController{
 		 System.out.println("Recommendation from ChatGPT: " + recommendation);
 	}
 	
-	@GetMapping(value="/score/userPoints")
-	public void scoreUserPoints() {
-		ArrayList<Issue> issues = (ArrayList<Issue>) databaseReader.readIssuesFromDatabase();
-		ArrayList<Issue> badIssues = dataAnalysis.filterBadIssues(issues);
-		int score = dataAnalysis.calculateUserPoints(badIssues);
-		System.out.println("Score de user points: "+ score +" /100");		
-	}
 				
-	@GetMapping(value="/comp")
+	@GetMapping(value="/score/userPoints")
 	public void scoreResult() {
-		scoreCalculation.compScan();
+		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+		scoreCalculation.calculateGlobalScore();
 	}
-
+	
+	
 	@GetMapping(value = "/")
     public void retrieveData() {
         //System.out.println("coucou yannis");
