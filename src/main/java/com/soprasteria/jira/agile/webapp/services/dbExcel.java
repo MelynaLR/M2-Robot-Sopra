@@ -13,23 +13,16 @@ import com.soprasteria.jira.agile.webapp.models.Issue;
 
 public class dbExcel {
 
-<<<<<<< HEAD
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root";
     private static final String PASSWORD = "Escargot3636!";
     private static Connection connection;
-=======
-private static final String URL = "jdbc:mysql://localhost:3306/mydb";
-private static final String USER = "root";
-private static final String PASSWORD = "";
-private static Connection connection;
->>>>>>> b7d679ea4ca6d42eaeff14e4e15e123e2b365b62
 
     public static Connection getConnection() throws SQLException {
         try {
-            // Load the JDBC driver
+        
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // Establish a connection
+          
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             System.err.println("Error loading JDBC Driver: " + e.getMessage());

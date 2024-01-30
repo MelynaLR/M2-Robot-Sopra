@@ -88,19 +88,7 @@ public class MainController{
 		//testing chatGPT query
 		
 		// Call DatabaseReader to retrieve issues from the database
-
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
-
-        //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
-        List<String> additionalInstructions = new ArrayList<>();
-		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
-
-
-        // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
-
-        // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);        
+       
 	}
 	
 	@GetMapping(value="/gpt/recommandations")
@@ -121,21 +109,32 @@ public class MainController{
 	}
 	
 				
-	@GetMapping(value="/score/userPoints")
-	public void scoreResult() {
+	@GetMapping(value="/globalScore")
+	public int scoreResult() {
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-		scoreCalculation.calculateGlobalScore();
+		return scoreCalculation.calculateGlobalScore();
 	}
+
+	// @GetMapping(value="/score/userPoints")
+	// public int scorePointResult() {
+	// 	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+	// 	return scoreCalculation.calculateGlobalScore();
+	// }
+// 	@GetMapping(value="/score/userPoints")
+// public int scoreResult() {
+//     scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+//     return scoreCalculation.calculateGlobalScore();
+// }
+
 	
-	
-	@GetMapping(value = "/")
-    public void retrieveData() {
-        //System.out.println("coucou yannis");
-        jiraAPI.createAuthorizationHeader();
-        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+	// @GetMapping(value = "/")
+    // public void retrieveData() {
+    //     //System.out.println("coucou yannis");
+    //     jiraAPI.createAuthorizationHeader();
+    //     String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         
-        jiraAPI.sendRequestAPI(urlTest);
-    }
+    //     jiraAPI.sendRequestAPI(urlTest);
+    // }
 
 
 	/*

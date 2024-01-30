@@ -88,8 +88,6 @@ public class IssueBuilder{
     	this.creationDate = creationDate;
     }
     
-
-    
     public void setSprintId(String sprintId) {
     	this.sprintId = sprintId;
     }

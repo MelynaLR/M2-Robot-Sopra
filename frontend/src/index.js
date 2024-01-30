@@ -5,11 +5,13 @@ import axios from 'axios';
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
   const [user, setUser] = useState(null);
+  const [globalScore, setGlobalScore] = useState(null);
   const [error, setError] = useState(null);
+  const project_id = 13;
 
   useEffect(() => {
     const apiUrl = 'http://localhost:8080/static/api/data';
-
+  
     axios.get(apiUrl)
       .then(response => {
         console.log('Data from API:', response.data);
@@ -22,6 +24,23 @@ function App() {
         setError('Error fetching data. Please try again later.');
       });
   }, []);
+  
+  useEffect(() => {
+    const apiUrl = 'http://localhost:8080/globalScore';
+  
+    axios.get(apiUrl)
+      .then(response => {
+        console.log('Data from API:', response.data);
+        const { globalScore } = response.data;
+        setGlobalScore(globalScore);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again later.');
+      });
+  }, []);
+  
+  
 
   const getGaugeColor = (score) => {
     if (score >= 75) {
@@ -36,13 +55,24 @@ function App() {
   return (
     <div style={styles.container}>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {user && agilityScore && (
+      {globalScore !== null && (
         <>
           <h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
+          <select name="thelist" onChange="combo(this, 'theinput')">
+              <option>Projet {project_id}</option>
+            </select>
           <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
-            <p style={styles.agilityScore}>Score d'agilité : {agilityScore}</p>
+             
+            <p style={styles.agilityScore}>Global Score: {globalScore}</p>
           </div>
-          <h2 style={styles.sprintProgress}>Taux d'avancement du sprint : </h2>
+          <h2 style={styles.sprintProgress}>Règle 1: Cas des tickets non résoluts à la fin d'un Sprint  </h2>
+          <p style={styles.sprintProgress}>Score de la règle 1 : {agilityScore}</p>
+          <p>Conseil : </p>
+          <p>Tickets concernés : </p>
+          <h2 style={styles.sprintProgress}>Règle 2: Cas des tickets avec des story points trop élevés</h2>
+          <p style={styles.sprintProgress}>Score de la règle 2 : {agilityScore}</p>
+          <p>Conseil : </p>
+          <p>Tickets concernés : </p>
         </>
       )}
     </div>
@@ -70,7 +100,7 @@ const styles = {
     borderRadius: '5px',
   },
   agilityScore: {
-    color: '#ffffff', // White text on colored background
+    color: '#ffffff', //blanc
     fontSize: '18px',
     margin: '0',
   },
