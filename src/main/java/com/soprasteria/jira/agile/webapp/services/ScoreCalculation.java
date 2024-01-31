@@ -33,9 +33,7 @@ public class ScoreCalculation {
 			rule.calculateScore(issues);
 			rule.initializeRuleValues();
 			listRules.add(rule.getRule());
-			LOGGER.info("getRules");
-			LOGGER.info("Score: " + rule.getRule().getScore() + " / Weight: " + rule.getRule().getWeight() + " / Description: " + rule.getRule().getDescription());
-        }		
+		}		
 	}
 
 	public int calculateGlobalScore() {
@@ -43,8 +41,7 @@ public class ScoreCalculation {
 		List<Integer> weightedScores = new ArrayList<>();
 		int globalScore = 0;
 		
-		for (Rule rule : listRules) {
-			LOGGER.info("calculateGlobalScore");
+		for (Rule rule: listRules) {
 			LOGGER.info("Score: " + rule.getScore() + " / Weight: " + rule.getWeight() + " / Description: " + rule.getDescription());
 			totalWeight += rule.getWeight();
         	weightedScores.add(rule.getScore() * rule.getWeight());
@@ -52,16 +49,7 @@ public class ScoreCalculation {
 		for (int i=0; i<weightedScores.size(); i++) {
 			globalScore += weightedScores.get(i) / totalWeight;
 		}
-//		
-//		
-//		for (Map<Integer, Integer> map : listRules) {
-//            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-//            	LOGGER.info("Score: " + entry.getKey() + ", Weight: " + entry.getValue());
-//            	totalWeight += entry.getValue();
-//            	weightedScores.add(entry.getKey() * entry.getValue());
-//            }
-//        }
-
+		
 		LOGGER.info("global score : " + globalScore);
 		return globalScore;		
 	}

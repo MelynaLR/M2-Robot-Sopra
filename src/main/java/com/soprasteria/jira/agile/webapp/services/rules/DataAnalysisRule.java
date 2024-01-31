@@ -12,11 +12,4 @@ public interface DataAnalysisRule {
 	void initializeRuleValues();
     void setGptAdvice(String gptAdvice);
     Rule getRule();
-	
-	//int getScore();
-	
-	// the weight must be included between 0 and 10
-	//int getWeight();
-
-	//Map<Integer, Integer> getRuleMap();
 }

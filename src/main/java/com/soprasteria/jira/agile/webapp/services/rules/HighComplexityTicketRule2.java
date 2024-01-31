@@ -28,7 +28,7 @@ public class HighComplexityTicketRule2 implements DataAnalysisRule{
 			}					
 		}
 		// returns the percentage of ok issues
-		rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
+		rule.setScore((issues.size() - rule.getIssues().size() - 38) * 100 / issues.size());
 	}
 
 	@Override

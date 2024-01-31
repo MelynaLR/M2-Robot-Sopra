@@ -124,7 +124,7 @@ public class MainController{
 	@GetMapping(value="/globalScore")
 	public void scoreResult() {
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-		//scoreCalculation.calculateGlobalScore();
+		scoreCalculation.calculateGlobalScore();
 	}
 	
 	

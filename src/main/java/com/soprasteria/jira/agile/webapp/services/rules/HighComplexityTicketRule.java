@@ -16,18 +16,13 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 	
 	@Autowired
 	private Rule rule;
-	
-	List<String> myList = new ArrayList<>();
 
 	@Override
 	public void calculateScore(List<Issue> issues) {
-		//this.score = 0;
-		rule.setScore(0);
-		//int problematicIssues = 0;
-		for (int i=0; i < issues.size(); i++) {
-			if (issues.get(i).getUserPoints() >= 21) {
-				rule.addIssue(issues.get(i));
-				//problematicIssues += 1;
+		this.rule = new Rule();
+		for (Issue issue : issues) {
+			if (issue.getUserPoints() >= 21) {
+				rule.addIssue(issue);
 			}					
 		}
 		// returns the percentage of ok issues
