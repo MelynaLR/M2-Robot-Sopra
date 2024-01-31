@@ -25,7 +25,7 @@ public class DatabaseController {
     private static final String USER = "root";
     
     //private static String PASSWORD = "KOxNGMYzDuBKmYsNpdxP";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "Escargot3636!";
     
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;

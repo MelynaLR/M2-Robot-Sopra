@@ -13,7 +13,7 @@ public class DataAnalysisExcel {
             Issue issue = issuesList.get(0);
             return issue.getUserPoints();
         } else {
-            return null; // Or handle the case when no data is retrieved
+            return null; 
         }
     }
 
@@ -22,7 +22,7 @@ public class DataAnalysisExcel {
             Issue issue = issuesList.get(0);
             return issue.getUser();
         } else {
-            return null; // Or handle the case when no data is retrieved
+            return null; 
         }
     }
 }

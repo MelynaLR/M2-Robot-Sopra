@@ -23,9 +23,9 @@ private static Connection connection;
 
     public static Connection getConnection() throws SQLException {
         try {
-            // Load the JDBC driver
+        
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // Establish a connection
+          
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             System.err.println("Error loading JDBC Driver: " + e.getMessage());
