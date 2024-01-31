@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+
 import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
 import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
+
+import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManagerRule;
+
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
@@ -91,11 +95,28 @@ public class MainController{
 		jiraAPI.createAuthorizationHeader();
 		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
 		jiraAPI.sendRequestAPI(urlTest);
+		System.out.println("Issues inserted into database");
 		
-		//testing chatGPT query
 		
+		/*
 		// Call DatabaseReader to retrieve issues from the database
+
        
+
+
+        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+
+        //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
+        List<String> additionalInstructions = new ArrayList<>();
+		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
+
+        // Call ChatGPTClient to generate recommendations based on the retrieved issues
+        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
+
+        // Print or use the recommendation as needed
+        System.out.println("Recommendation from ChatGPT: " + recommendation);   
+        */     
+
 	}
 	
 	@GetMapping(value="/gpt/recommandations")
@@ -128,8 +149,11 @@ public class MainController{
     public int scorePointResult() {
         return highComplexityTicketRule.getScore();
 	
+	}
 	/*
-	@GetMapping(value = "/")
+	
+	@GetMapping(value = "/test")
+
     public void retrieveData() {
         
         jiraAPI.createAuthorizationHeader();
@@ -171,4 +195,4 @@ public class MainController{
 	 * // Print or use the recommendation as needed
 	 * System.out.println("Recommendation from ChatGPT: " + recommendation); }
 	 */
-	 }}
+	 }
