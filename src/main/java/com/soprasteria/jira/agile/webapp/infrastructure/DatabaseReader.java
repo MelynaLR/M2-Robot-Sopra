@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.soprasteria.jira.agile.webapp.builders.IssueBuilder;
+
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
@@ -21,8 +21,7 @@ public class DatabaseReader {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseReader.class);
 	
-	@Autowired
-	private IssueBuilder issueBuilder;
+
 	
 	
     public List<Issue> readIssuesFromDatabase() {
@@ -39,26 +38,26 @@ public class DatabaseReader {
             resultSet = preparedStatement.executeQuery();
             LOGGER.info("Going through results of the query ...");
             while (resultSet.next()) {
-                
+                Issue issue = new Issue();
                 
             	
-                issueBuilder.setUserPoints(resultSet.getInt("userPoints"));
-                issueBuilder.setId(resultSet.getInt("idIssue"));
+                issue.setUserPoints(resultSet.getInt("userPoints"));
+                issue.setId(resultSet.getInt("idIssue"));
                 
                 // A MODIFIER POUR AVOIR LES UTILISATEURS
-                issueBuilder.setUser(resultSet.getString("userName"));
+                issue.setUser(resultSet.getString("userName"));
 
-                issueBuilder.setDescription(resultSet.getString("description"));
-                issueBuilder.setCreationDate(resultSet.getString("creationDate"));
-                issueBuilder.setSprintEndDate(resultSet.getString("sprintEndDate"));
-                issueBuilder.setSprintId(resultSet.getString("sprintId"));
-                issueBuilder.setSprintStartDate(resultSet.getString("sprintStartDate"));
-                issueBuilder.setStatus(resultSet.getString("Status"));
-                issueBuilder.setProjectId(resultSet.getString("project_id"));
-                issueBuilder.setPriority(resultSet.getString("priority"));
+                issue.setDescription(resultSet.getString("description"));
+                issue.setCreationDate(resultSet.getString("creationDate"));
+                issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
+                issue.setSprintId(resultSet.getString("sprintId"));
+                issue.setSprintStartDate(resultSet.getString("sprintStartDate"));
+                issue.setStatus(resultSet.getString("Status"));
+                issue.setProjectId(resultSet.getString("project_id"));
+                issue.setPriority(resultSet.getString("priority"));
                 
 
-                Issue issue = issueBuilder.buildIssue();
+                
                 issues.add(issue);
             }
             LOGGER.info("End of the results");
