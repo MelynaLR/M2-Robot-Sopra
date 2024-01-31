@@ -1,4 +1,4 @@
-package com.soprasteria.jira.agile.webapp.apiHandler;
+package com.soprasteria.jira.agile.webapp.infrastructure;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,8 +13,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.soprasteria.jira.agile.webapp.builders.IssueBuilder;
-import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseController;
-import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseInsertion;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 //added

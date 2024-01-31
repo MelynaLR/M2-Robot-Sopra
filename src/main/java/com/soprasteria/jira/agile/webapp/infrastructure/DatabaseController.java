@@ -3,9 +3,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
+import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -13,6 +17,8 @@ import java.sql.ResultSet;
 @Component
 @PropertySource("classpath:application.properties")
 public class DatabaseController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseController.class);
 
     // JDBC URL, username, and password of MySQL server
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
@@ -29,13 +35,13 @@ public class DatabaseController {
         try {
             // Load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("JDBC Driver loaded successfully");
+            LOGGER.info("JDBC Driver loaded successfully");
             
 
-            // Establish a connection
+            
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
-            System.err.println("Error loading JDBC Driver: " + e.getMessage());
+            LOGGER.error("Error loading JDBC Driver: " + e.getMessage());
             e.printStackTrace();
         }
         return connection;
@@ -48,6 +54,7 @@ public class DatabaseController {
     public static void closeConnection() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
+            LOGGER.info("connection to the database closed");
         }
     }
 

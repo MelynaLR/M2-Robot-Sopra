@@ -4,14 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
 
 public class DatabaseInsertion {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInsertion.class);
 
     public static void insertIssueIntoDatabase(Issue issue) {
-        Connection connection = null;
+        LOGGER.info("Beginning insertion to the database ...");
+    	Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
@@ -37,7 +42,7 @@ public class DatabaseInsertion {
 
             preparedStatement.executeUpdate();
 
-            System.out.println("Issue insérée dans la base de données avec succès!");
+            LOGGER.info("Issues inserted in the database!");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

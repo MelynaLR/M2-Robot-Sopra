@@ -13,9 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
-import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
+import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
 import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
@@ -33,6 +33,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -42,6 +44,8 @@ import java.io.IOException;
 
 @RestController
 public class MainController{
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+	
 	@Autowired
 	private JiraAPI jiraAPI;
 	
@@ -96,6 +100,8 @@ public class MainController{
 	
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
+		LOGGER.info("starting endpoint gpt recommandations");
+		
 		//jiraAPI.createAuthorizationHeader();
 
 		List<Issue> issues = databaseReader.readIssuesFromDatabase();
@@ -108,7 +114,8 @@ public class MainController{
 		 String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
 	        
 		 // Print or use the recommendation as needed	        
-		 System.out.println("Recommendation from ChatGPT: " + recommendation);
+		LOGGER.info("Recommendation from ChatGPT: " + recommendation);
+		LOGGER.info("end of the GPT recommandation");
 	}
 	
 				
@@ -120,6 +127,15 @@ public class MainController{
 	@GetMapping(value="/score/userPoints")
     public int scorePointResult() {
         return highComplexityTicketRule.getScore();
+	
+	/*
+	@GetMapping(value = "/")
+    public void retrieveData() {
+        
+        jiraAPI.createAuthorizationHeader();
+        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+        
+        jiraAPI.sendRequestAPI(urlTest);
     }
 // 	@GetMapping(value="/score/userPoints")
 // public int scoreResult() {
@@ -137,7 +153,7 @@ public class MainController{
     //     jiraAPI.sendRequestAPI(urlTest);
     // }
 
-
+*/
 	/*
 	 * @GetMapping(value="/") public void retrieveData() {
 	 * jiraAPI.createAuthorizationHeader(); String urlTest=
@@ -155,4 +171,4 @@ public class MainController{
 	 * // Print or use the recommendation as needed
 	 * System.out.println("Recommendation from ChatGPT: " + recommendation); }
 	 */
-}
+	 }}
