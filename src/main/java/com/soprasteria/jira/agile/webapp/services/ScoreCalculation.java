@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 import com.soprasteria.jira.agile.webapp.services.rules.DataAnalysisRule;
 
 import org.slf4j.Logger;
@@ -24,35 +25,43 @@ public class ScoreCalculation {
 	@Autowired
     private List<DataAnalysisRule> rules;
 	
-	private List<Map<Integer, Integer>> listRules;
+	private List<Rule> listRules;
 	
 	public void getRules(List<Issue> issues) {
 		this.listRules = new ArrayList<>();
 		for (DataAnalysisRule rule : rules) {
 			rule.calculateScore(issues);
-			Map<Integer, Integer> ruleMap = rule.getRuleMap();
-			for (Map.Entry<Integer, Integer> entry : ruleMap.entrySet()) {
-	            this.listRules.add(ruleMap);
-	        }
+			rule.initializeRuleValues();
+			listRules.add(rule.getRule());
+			LOGGER.info("getRules");
+			LOGGER.info("Score: " + rule.getRule().getScore() + " / Weight: " + rule.getRule().getWeight() + " / Description: " + rule.getRule().getDescription());
         }		
 	}
-	
-	
-	
+
 	public int calculateGlobalScore() {
  		int totalWeight = 0;
 		List<Integer> weightedScores = new ArrayList<>();
 		int globalScore = 0;
-		for (Map<Integer, Integer> map : listRules) {
-            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            	LOGGER.info("Score: " + entry.getKey() + ", Weight: " + entry.getValue());
-            	totalWeight += entry.getValue();
-            	weightedScores.add(entry.getKey() * entry.getValue());
-            }
-        }
+		
+		for (Rule rule : listRules) {
+			LOGGER.info("calculateGlobalScore");
+			LOGGER.info("Score: " + rule.getScore() + " / Weight: " + rule.getWeight() + " / Description: " + rule.getDescription());
+			totalWeight += rule.getWeight();
+        	weightedScores.add(rule.getScore() * rule.getWeight());
+		}
 		for (int i=0; i<weightedScores.size(); i++) {
 			globalScore += weightedScores.get(i) / totalWeight;
 		}
+//		
+//		
+//		for (Map<Integer, Integer> map : listRules) {
+//            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+//            	LOGGER.info("Score: " + entry.getKey() + ", Weight: " + entry.getValue());
+//            	totalWeight += entry.getValue();
+//            	weightedScores.add(entry.getKey() * entry.getValue());
+//            }
+//        }
+
 		LOGGER.info("global score : " + globalScore);
 		return globalScore;		
 	}

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
-import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
+//import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
@@ -121,10 +121,10 @@ public class MainController{
 	}
 	
 				
-	@GetMapping(value="/score/userPoints")
+	@GetMapping(value="/globalScore")
 	public void scoreResult() {
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-		scoreCalculation.calculateGlobalScore();
+		//scoreCalculation.calculateGlobalScore();
 	}
 	
 	
