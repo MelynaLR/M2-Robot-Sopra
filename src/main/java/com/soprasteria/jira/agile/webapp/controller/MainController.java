@@ -13,9 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soprasteria.jira.agile.webapp.apiHandler.ChatGPTClient;
-import com.soprasteria.jira.agile.webapp.apiHandler.JiraAPI;
+import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
 import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 //chatGPT query imports
 import com.soprasteria.jira.agile.webapp.models.Issue;
