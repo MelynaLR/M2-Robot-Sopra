@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TeamMemberAgilityManager implements DataAnalysisRule {
+public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
 
     // Thresholds for task assignment
     private static final int MAX_TASKS_THRESHOLD = 5;
