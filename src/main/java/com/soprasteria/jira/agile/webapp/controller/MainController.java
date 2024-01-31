@@ -135,7 +135,7 @@ public class MainController{
 		scoreCalculation.calculateGlobalScore();
 	}
 	
-	
+	/*
 	@GetMapping(value = "/")
     public void retrieveData() {
         
@@ -145,7 +145,7 @@ public class MainController{
         jiraAPI.sendRequestAPI(urlTest);
     }
 
-
+*/
 	/*
 	 * @GetMapping(value="/") public void retrieveData() {
 	 * jiraAPI.createAuthorizationHeader(); String urlTest=
