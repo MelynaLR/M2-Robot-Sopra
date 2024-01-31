@@ -1,6 +1,7 @@
 package com.soprasteria.jira.agile.webapp.services.rules;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,21 +46,22 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
         }
     }
 
-    @Override
-    public int getScore() {
-        return score;
-    }
 
-    @Override
-    public int getWeight() {
-        return 5; // Example weight, adjust as needed
-    }
+	@Override
+	public void initializeRuleValues() {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public Map<Integer, Integer> getRuleMap() {
-        Map<Integer, Integer> ruleMap = new HashMap<>();
-        ruleMap.put(MAX_TASKS_THRESHOLD, 2); // Example, you can customize as needed
-        ruleMap.put(MIN_TASKS_THRESHOLD, 1);
-        return ruleMap;
-    }
+	@Override
+	public void setGptAdvice(String gptAdvice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Rule getRule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

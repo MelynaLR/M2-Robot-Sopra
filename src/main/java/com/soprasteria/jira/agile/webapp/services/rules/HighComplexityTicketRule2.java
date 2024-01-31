@@ -4,43 +4,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 
 @Component
 public class HighComplexityTicketRule2 implements DataAnalysisRule{
-
-	private int score;
-	private int weight = 9;
-
-	@Override
-	public int getScore() {
-		return score;
-	}
-
-	@Override
-	public int getWeight() {
-		return weight;
-	}
+	
+	@Autowired
+	private Rule rule;
 
 	@Override
 	public void calculateScore(List<Issue> issues) {
-		this.score = 0;
-		int problematicIssues = 0;
+		//this.score = 0;
+		rule.setScore(0);
+		//int problematicIssues = 0;
 		for (int i=0; i < issues.size(); i++) {
-			if (issues.get(i).getUserPoints() >= 23) {
-				problematicIssues += 1;
+			if (issues.get(i).getUserPoints() >= 21) {
+				rule.addIssue(issues.get(i));
+				//problematicIssues += 1;
 			}					
 		}
-		// returns the percentage of problematic issues
-		this.score = (issues.size() - problematicIssues) * 100 / issues.size() -28;
+		// returns the percentage of ok issues
+		rule.setScore((issues.size() - rule.getIssues().size() - 38) * 100 / issues.size());
 	}
 
 	@Override
-	public Map<Integer, Integer> getRuleMap() {
-		Map<Integer, Integer> ruleMap = new HashMap<>();
-		ruleMap.put(getScore(), getWeight());
-		return ruleMap;
+	public void initializeRuleValues() {
+		rule.setWeight(7);
+		rule.setDescription("blabkla");
+		rule.setManualAdvice("Le conseil");
+	}
+	
+
+	@Override
+	public void setGptAdvice(String gptAdvice) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Rule getRule() {
+		return rule;
 	}
 }

@@ -13,24 +13,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
-import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
-
-import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
-import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
-
-import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManagerRule;
-
-//chatGPT query imports
+import com.soprasteria.jira.agile.webapp.infrastructure.*;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
-
 import java.sql.SQLException;
-
 import java.security.PublicKey;
 
 import java.util.ArrayList;
-import java.util.List; // Import List from java.util
+import java.util.List;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
@@ -41,9 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-
-
-
 
 
 @RestController
@@ -62,9 +49,6 @@ public class MainController{
 
 	@Autowired 
 	private ScoreCalculation scoreCalculation;
-
-	@Autowired 
-	private HighComplexityTicketRule highComplexityTicketRule;
 	
 	
 	public static void main(String[] args) {
@@ -98,11 +82,7 @@ public class MainController{
 		System.out.println("Issues inserted into database");
 		
 		
-		/*
 		// Call DatabaseReader to retrieve issues from the database
-
-       
-
 
         List<Issue> issues = databaseReader.readIssuesFromDatabase();
 
@@ -110,13 +90,12 @@ public class MainController{
         List<String> additionalInstructions = new ArrayList<>();
 		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
 
+
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
         String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
 
         // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);   
-        */     
-
+        System.out.println("Recommendation from ChatGPT: " + recommendation);        
 	}
 	
 	@GetMapping(value="/gpt/recommandations")
@@ -142,14 +121,17 @@ public class MainController{
 				
 	@GetMapping(value="/globalScore")
 	public int scoreResult() {
+
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		return scoreCalculation.calculateGlobalScore();
 	}
+	/*
 	@GetMapping(value="/score/userPoints")
     public int scorePointResult() {
         return highComplexityTicketRule.getScore();
 	
 	}
+	*/
 	/*
 	
 	@GetMapping(value = "/test")
