@@ -33,7 +33,7 @@ public class DatabaseInsertion {
             preparedStatement.setString(8, issue.getProjectId());
             preparedStatement.setString(9, issue.getPriority());
             preparedStatement.setInt(10, issue.getUserPoints());
-            preparedStatement.setInt(11, issue.getUserPoints());
+            //preparedStatement.setInt(11, issue.getUserPoints());
 
             preparedStatement.executeUpdate();
 

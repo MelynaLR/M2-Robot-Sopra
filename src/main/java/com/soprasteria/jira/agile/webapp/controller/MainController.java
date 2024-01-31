@@ -54,6 +54,9 @@ public class MainController{
 
 	@Autowired 
 	private ScoreCalculation scoreCalculation;
+
+	@Autowired 
+	private HighComplexityTicketRule highComplexityTicketRule;
 	
 	
 	public static void main(String[] args) {
@@ -114,12 +117,10 @@ public class MainController{
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		return scoreCalculation.calculateGlobalScore();
 	}
-
-	// @GetMapping(value="/score/userPoints")
-	// public int scorePointResult() {
-	// 	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-	// 	return scoreCalculation.calculateGlobalScore();
-	// }
+	@GetMapping(value="/score/userPoints")
+    public int scorePointResult() {
+        return highComplexityTicketRule.getScore();
+    }
 // 	@GetMapping(value="/score/userPoints")
 // public int scoreResult() {
 //     scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());

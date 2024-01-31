@@ -99,15 +99,36 @@ public class JiraAPI {
         	if (issue.getJSONObject("fields").has("created") && issue.getJSONObject("fields").get("created")!= null && issue.getJSONObject("fields").get("created") instanceof String) {
         		issueBuilder.setCreationDate(issue.getJSONObject("fields").getString("created"));
             } 
-        	if (issue.getJSONObject("fields").has("duedate") && issue.getJSONObject("fields").get("duedate")!= null && issue.getJSONObject("fields").get("duedate") instanceof String) {
-        		issueBuilder.setSprintEndDate(issue.getJSONObject("fields").getString("duedate"));
-            } 
-        	if (issue.getJSONObject("fields").has("customfield_10020")&& issue.getJSONObject("fields").get("customfield_10020")!= null && issue.getJSONObject("fields").get("customfield_10020") instanceof String) {
-        		issueBuilder.setSprintId(issue.getJSONObject("fields").getString("customfield_10020"));
+        	
+            if (issue.getJSONObject("fields").has("customfield_10020") &&
+        		    issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
+        		    JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
+      		    
+        		    if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
+        		        issueBuilder.setSprintId(String.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
+                        System.out.println("SprintID: "+issueBuilder.getSprintId());   		            
+        		    }		
+        	}
+        	
+            if (issue.getJSONObject("fields").has("customfield_10020") &&
+            issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
+            JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
+                  
+            if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("startDate")) {
+                issueBuilder.setSprintStartDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("startDate")));   		            
+            }		
             }
-        	if (issue.getJSONObject("fields").has("created") && issue.getJSONObject("fields").get("created")!= null && issue.getJSONObject("fields").get("created") instanceof String) {
-        		issueBuilder.setSprintStartDate(issue.getJSONObject("fields").getString("created"));
-            } 
+            
+            if (issue.getJSONObject("fields").has("customfield_10020") &&
+                issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
+                JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
+                    
+                if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("endDate")) {
+                    issueBuilder.setSprintEndDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("endDate")));   		            
+                }		
+            }
+            
+            
         	if (issue.getJSONObject("fields").has("status") && issue.getJSONObject("fields").get("status")!= null && issue.getJSONObject("fields").get("status") instanceof String) {
         		issueBuilder.setStatus(issue.getJSONObject("fields").getString("status"));
             } 
@@ -119,11 +140,7 @@ public class JiraAPI {
             }
             Issue currentIssue =issueBuilder.buildIssue();
 
-            
-            
-            
-        	
-        	
+           
         	
             //String issueName = issue.getJSONObject("fields").getString("summary");
 
@@ -132,7 +149,6 @@ public class JiraAPI {
             //Issue currentIssue = new Issue();
             
             issueList.add(currentIssue);
-
 
             
             DatabaseInsertion databaseInsertion = new DatabaseInsertion();
