@@ -61,7 +61,7 @@ private static Connection connection;
                 issue.setDescription(resultSet.getString("description"));
                 issue.setCreationDate(resultSet.getString("creationDate"));
                 issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
-                issue.setSprintId(resultSet.getString("sprintId"));
+                issue.setSprintId(resultSet.getInt("sprintId"));
                 issue.setSprintStartDate(resultSet.getString("sprintStartDate"));
                 issue.setStatus(resultSet.getString("Status"));
                 issue.setProjectId(resultSet.getString("project_id"));

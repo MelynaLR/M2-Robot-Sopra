@@ -8,11 +8,10 @@ import com.soprasteria.jira.agile.webapp.models.*;
 @Component
 public class Issue{
 	private int id;
-    private int jiraId;
     private String description;
     private String creationDate;
     private String sprintEndDate;
-    private String sprintId;
+    private int sprintId;
     private String sprintStartDate;
     private String status;
     private String projectId;
@@ -26,9 +25,7 @@ public class Issue{
     public int getId() {
         return id;
     }
-    public int getJiraId() {
-        return jiraId;
-    }
+
     public String getDescription() {
         return description;
     }
@@ -47,7 +44,7 @@ public class Issue{
         return sprintEndDate;
     }
 
-    public String getSprintId() {
+    public Integer getSprintId() {
         return sprintId;
     }
 
@@ -74,9 +71,7 @@ public class Issue{
     public void setId(int id) {
         this.id = id;
     }
-    public void setJiraId(int jiraId) {
-        this.jiraId = jiraId;
-    }
+
 
     public void setDescription(String description) {
         this.description = description;
@@ -94,7 +89,7 @@ public class Issue{
     	this.creationDate = creationDate;
     }
     
-    public void setSprintId(String sprintId) {
+    public void setSprintId(int sprintId) {
     	this.sprintId = sprintId;
     }
     

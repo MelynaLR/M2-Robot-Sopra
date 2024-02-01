@@ -52,6 +52,7 @@ public class DatabaseReader {
                 // A MODIFIER POUR AVOIR LES UTILISATEURS
                 issue.setUser(resultSet.getString("userName"));
 
+<<<<<<< HEAD
                 issue.setDescription(resultSet.getString("description"));
                 issue.setCreationDate(resultSet.getString("creationDate"));
                 issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
@@ -60,6 +61,16 @@ public class DatabaseReader {
                 issue.setStatus(resultSet.getString("Status"));
                 issue.setProjectId(resultSet.getString("project_id"));
                 issue.setPriority(resultSet.getString("priority"));
+=======
+                issueBuilder.setDescription(resultSet.getString("description"));
+                issueBuilder.setCreationDate(resultSet.getString("creationDate"));
+                issueBuilder.setSprintEndDate(resultSet.getString("sprintEndDate"));
+                issueBuilder.setSprintId(resultSet.getInt("sprintId"));
+                issueBuilder.setSprintStartDate(resultSet.getString("sprintStartDate"));
+                issueBuilder.setStatus(resultSet.getString("Status"));
+                issueBuilder.setProjectId(resultSet.getString("project_id"));
+                issueBuilder.setPriority(resultSet.getString("priority"));
+>>>>>>> dbfixing
                 
 
                 
