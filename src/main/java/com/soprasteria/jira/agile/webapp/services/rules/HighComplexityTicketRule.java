@@ -36,12 +36,6 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 		rule.setManualAdvice("attention voici conseil");
 	}
 	
-
-	@Override
-	public void setGptAdvice(String gptAdvice) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public Rule getRule() {
 		return rule;

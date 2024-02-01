@@ -54,12 +54,6 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
 	}
 
 	@Override
-	public void setGptAdvice(String gptAdvice) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Rule getRule() {
 		// TODO Auto-generated method stub
 		return null;

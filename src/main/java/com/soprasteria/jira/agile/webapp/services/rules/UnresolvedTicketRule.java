@@ -59,11 +59,6 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
 		rule.setDescription("Unresolved ticket rule");
 		rule.setManualAdvice("conseil");
 	}
-	
-	@Override
-	public void setGptAdvice(String gptAdvice) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public Rule getRule() {

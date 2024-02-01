@@ -10,6 +10,5 @@ public interface DataAnalysisRule {
 	
 	void calculateScore(List<Issue> issues);	
 	void initializeRuleValues();
-    void setGptAdvice(String gptAdvice);
     Rule getRule();
 }
