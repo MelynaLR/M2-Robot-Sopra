@@ -78,11 +78,14 @@ public class JiraAPI {
         	Issue newIssue = new Issue();
         	JSONObject issue = issuesArray.getJSONObject(i);
         	
-        	
+        	if (issue.has("id")) {
+        		newIssue.setId(issue.getInt("id"));
+        		System.out.println("Issue id: "+newIssue.getId());
+        	}
         	
         	if (issue.getJSONObject("fields").has("summary")) {
                 newIssue.setDescription(issue.getJSONObject("fields").getString("summary"));
-                System.out.println("Issue name: "+newIssue.getDescription());
+               
             }
         	if (issue.getJSONObject("fields").has("customfield_10032")) {
         		
@@ -90,7 +93,7 @@ public class JiraAPI {
             } 
         	if (issue.getJSONObject("fields").has("assignee")&& issue.getJSONObject("fields").get("assignee") instanceof JSONObject) {
         		
-        		System.out.println(issue.getJSONObject("fields").getJSONObject("assignee").getString("displayName"));
+        		
         		newIssue.setUser(issue.getJSONObject("fields").getJSONObject("assignee").getString("displayName"));
             } 
         	if (issue.getJSONObject("fields").has("created") && issue.getJSONObject("fields").get("created")!= null && issue.getJSONObject("fields").get("created") instanceof String) {
