@@ -51,7 +51,7 @@ public class DatabaseReader {
                 issueBuilder.setDescription(resultSet.getString("description"));
                 issueBuilder.setCreationDate(resultSet.getString("creationDate"));
                 issueBuilder.setSprintEndDate(resultSet.getString("sprintEndDate"));
-                issueBuilder.setSprintId(resultSet.getString("sprintId"));
+                issueBuilder.setSprintId(resultSet.getInt("sprintId"));
                 issueBuilder.setSprintStartDate(resultSet.getString("sprintStartDate"));
                 issueBuilder.setStatus(resultSet.getString("Status"));
                 issueBuilder.setProjectId(resultSet.getString("project_id"));

@@ -1,66 +1,97 @@
+
 package com.soprasteria.jira.agile.webapp.infrastructure;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
-import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
 
 public class DatabaseInsertion {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInsertion.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInsertion.class);
 
-    public static void insertIssueIntoDatabase(Issue issue) {
-        LOGGER.info("Beginning insertion to the database ...");
-    	Connection connection = null;
-        PreparedStatement preparedStatement = null;
+public static void insertIssueIntoDatabase(Issue issue) {
+    LOGGER.info("Beginning insertion to the database ...");
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
 
-        try {
-        	connection = DatabaseController.getConnection();
-            
-            //Cette query insère la ligne mais si un issue du même nom existe déjà, elle met à jour ses points de complexité
-            //String sql = "INSERT INTO issues (issueName, issueComplexity) VALUES (?, ?) ON DUPLICATE KEY UPDATE issueComplexity = ?";
-            String sql = "INSERT INTO issue (userName, description, creationDate, sprintEndDate, SprintID, sprintStartDate, Status, project_id, priority, userPoints, jiraId) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-            "ON DUPLICATE KEY UPDATE userPoints = ?";
-            preparedStatement = connection.prepareStatement(sql);
+    try {
+        connection = DatabaseController.getConnection();
+        boolean isIssueExists = checkIssueExists(connection, issue.getId());
 
+        if (isIssueExists) {
+
+            String updateSql = "UPDATE issue SET userName = ?, description = ?, creationDate = ?, " +
+                    "sprintEndDate = ?, SprintID = ?, sprintStartDate = ?, Status = ?, project_id = ?, " +
+                    "priority = ?, userPoints = ? WHERE idIssue = ?";
+
+            preparedStatement = connection.prepareStatement(updateSql);
             preparedStatement.setString(1, issue.getUser());
             preparedStatement.setString(2, issue.getDescription());
             preparedStatement.setString(3, issue.getCreationDate());
             preparedStatement.setString(4, issue.getSprintEndDate());
-            preparedStatement.setString(5, issue.getSprintId());
-            System.out.println("Issue inserted into databases, details : " + issue.getSprintId());
+            preparedStatement.setInt(5, issue.getSprintId());
             preparedStatement.setString(6, issue.getSprintStartDate());
             preparedStatement.setString(7, issue.getStatus());
             preparedStatement.setString(8, issue.getProjectId());
             preparedStatement.setString(9, issue.getPriority());
             preparedStatement.setInt(10, issue.getUserPoints());
-            preparedStatement.setInt(11, issue.getJiraId());
-            System.out.println("Issue inserted into databases, details : " + issue.getJiraId());
-            preparedStatement.setInt(12, issue.getUserPoints()); // This sets the same value for userPoints in the update part
-           // preparedStatement.setInt(13, issue.getUserPoints());
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(11, issue.getId());
+        } else {
+            String insertSql = "INSERT INTO issue (idIssue, userName, description, creationDate, sprintEndDate, SprintID, sprintStartDate, Status, project_id, priority, userPoints) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+            preparedStatement = connection.prepareStatement(insertSql);
+            preparedStatement.setInt(1, issue.getId());
+            preparedStatement.setString(2, issue.getUser());
+            preparedStatement.setString(3, issue.getDescription());
+            preparedStatement.setString(4, issue.getCreationDate());
+            preparedStatement.setString(5, issue.getSprintEndDate());
+            preparedStatement.setInt(6, issue.getSprintId());
+            preparedStatement.setString(7, issue.getSprintStartDate());
+            preparedStatement.setString(8, issue.getStatus());
+            preparedStatement.setString(9, issue.getProjectId());
+            preparedStatement.setString(10, issue.getPriority());
+            preparedStatement.setInt(11, issue.getUserPoints());
+        }
 
-            LOGGER.info("Issues inserted in the database!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        preparedStatement.executeUpdate();
+
+        LOGGER.info("Issue inserted/updated into the database successfully!");
+    } catch (SQLException e) {
+        LOGGER.error("Error inserting/updating issue into database: {}", e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
             }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error closing resources: {}", e.getMessage());
+            e.printStackTrace();
         }
     }
 }
+
+private static boolean checkIssueExists(Connection connection, int idIssue) throws SQLException {
+    String query = "SELECT COUNT(*) FROM issue WHERE idIssue = ?";
+    try (PreparedStatement statement = connection.prepareStatement(query)) {
+        statement.setInt(1, idIssue);
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+    }
+    return false;
+}
+
+ }

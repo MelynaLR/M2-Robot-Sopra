@@ -79,14 +79,14 @@ public class JiraAPI {
 
         for (int i = 0; i < issuesArray.length(); i++) {
         	JSONObject issue = issuesArray.getJSONObject(i);
-        	
+        	//Issue issueBuilder = new Issue();
         	// if (issue.getJSONObject("fields").has("id")) {
             //     issueBuilder.setId(issue.getJSONObject("fields").getInt("id"));
             //     System.out.println("Issue id: "+issueBuilder.getId());
             // }
             if (issue.has("id")) {
-        		issueBuilder.setJiraId(issue.getInt("id"));
-        		System.out.println("Issue id: "+issueBuilder.getJiraId());
+        		issueBuilder.setId(issue.getInt("id"));
+        		System.out.println("Issue id: "+issueBuilder.getId());
         	}
         	//issueBuilder.setJiraId(1);
         	if (issue.getJSONObject("fields").has("summary")) {
@@ -95,7 +95,7 @@ public class JiraAPI {
             }
         	if (issue.getJSONObject("fields").has("customfield_10032")) {
         		
-        		issueBuilder.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032", -1));
+        		issueBuilder.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032",0));
             } 
         	if (issue.getJSONObject("fields").has("assignee")&& issue.getJSONObject("fields").get("assignee") instanceof JSONObject) {
         		
@@ -107,14 +107,16 @@ public class JiraAPI {
             } 
         	
             if (issue.getJSONObject("fields").has("customfield_10020") &&
-        		    issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
-        		    JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
-      		    
-        		    if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
-        		        issueBuilder.setSprintId(String.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
-                        System.out.println("SprintID: "+issueBuilder.getSprintId());   		            
-        		    }		
-        	}
+            issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
+            JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
+            
+            if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
+                issueBuilder.setSprintId(Integer.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
+                System.out.println("SprintID: " + issueBuilder.getSprintId());  
+            } else {
+                issueBuilder.setSprintId(-1); // Set Sprint ID to 0 if not present or invalid
+            }
+            }
         	
             if (issue.getJSONObject("fields").has("customfield_10020") &&
             issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
@@ -157,12 +159,18 @@ public class JiraAPI {
             issueList.add(currentIssue);
 
             
-            DatabaseInsertion databaseInsertion = new DatabaseInsertion();
-			// On utilise DatabaseInsertion pour insérer l'issue dans la base de données
-            databaseInsertion.insertIssueIntoDatabase(currentIssue);
-            System.out.println("Issue inserted into databases, details : " + currentIssue);
+            // DatabaseInsertion databaseInsertion = new DatabaseInsertion();
+			// // On utilise DatabaseInsertion pour insérer l'issue dans la base de données
+            // databaseInsertion.insertIssueIntoDatabase(currentIssue);
+            // System.out.println("Issue inserted into databases, details : " + currentIssue);
             
-
+            try {
+                DatabaseInsertion.insertIssueIntoDatabase(currentIssue);
+                System.out.println("Issue inserted into databases, details : " + currentIssue);
+            } catch (Exception e) {
+                //System.out.println("Error inserting issue into database: {}");
+                e.printStackTrace(); // Print stack trace for detailed error analysis
+            }
         }
     }
     
