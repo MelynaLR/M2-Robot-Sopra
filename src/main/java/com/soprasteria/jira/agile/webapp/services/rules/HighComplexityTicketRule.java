@@ -1,46 +1,43 @@
 package com.soprasteria.jira.agile.webapp.services.rules;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 
 @Component
 public class HighComplexityTicketRule implements DataAnalysisRule{
-
-	private int score;
-	private int weight = 2;
-
-	@Override
-	public int getScore() {
-		return score;
-	}
-
-	@Override
-	public int getWeight() {
-		return weight;
-	}
+	
+	@Autowired
+	private Rule rule;
 
 	@Override
 	public void calculateScore(List<Issue> issues) {
-		this.score = 0;
-		int problematicIssues = 0;
-		for (int i=0; i < issues.size(); i++) {
-			if (issues.get(i).getUserPoints() >= 23) {
-				problematicIssues += 1;
+		this.rule = new Rule();
+		for (Issue issue : issues) {
+			if (issue.getUserPoints() >= 21) {
+				rule.addIssue(issue);
 			}					
 		}
 		// returns the percentage of ok issues
-		this.score = (issues.size() - problematicIssues) * 100 / issues.size();
+		rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
 	}
 
 	@Override
-	public Map<Integer, Integer> getRuleMap() {
-		Map<Integer, Integer> ruleMap = new HashMap<>();
-		ruleMap.put(getScore(), getWeight());
-		return ruleMap;
+	public void initializeRuleValues() {
+		rule.setWeight(2);
+		rule.setDescription("ceci est une description");
+		rule.setManualAdvice("attention voici conseil");
+	}
+	
+	@Override
+	public Rule getRule() {
+		return rule;
 	}
 }

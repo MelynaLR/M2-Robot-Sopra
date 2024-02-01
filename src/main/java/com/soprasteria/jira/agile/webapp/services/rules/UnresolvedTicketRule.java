@@ -8,30 +8,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 
 @Component
-public class UnresolvedTicketAtEndOfSprintRule implements DataAnalysisRule{
+public class UnresolvedTicketRule implements DataAnalysisRule{
 
-	private int score;
-	private int weight = 6;
-
-	@Override
-	public int getScore() {
-		return score;
-	}
-
-	@Override
-	public int getWeight() {
-		return weight;
-	}
+	@Autowired
+	private Rule rule;
 
 	@Override
 	public void calculateScore(List<Issue> issues) {
-		this.score = 0;
-		int problematicIssues = 0;
+		this.rule = new Rule();
 		LocalDate today = LocalDate.now();
 		
 		for (int i = 0; i < issues.size(); i++) {
@@ -48,7 +39,7 @@ public class UnresolvedTicketAtEndOfSprintRule implements DataAnalysisRule{
 
                
                 if (!"done".equalsIgnoreCase(issues.get(i).getStatus()) && sprintEndDate.isBefore(today)) {
-                	problematicIssues += 1;
+                	rule.addIssue(issues.get(i));
 //                	issues.get(i).setUserPoints(issues.get(i).getUserPoints() - 25);
 //                    if (issues.get(i).getUserPoints() != 100) {
 //                        System.out.println(issues.get(i).getUser() + ", " + issues.get(i).getUserPoints() + ", " + issues.get(i).getDescription());
@@ -59,14 +50,18 @@ public class UnresolvedTicketAtEndOfSprintRule implements DataAnalysisRule{
             }
 		}
 		// returns the percentage of ok issues
-		System.out.println("prob issues : " + problematicIssues);
-		this.score = (issues.size() - problematicIssues) * 100 / issues.size();
+		rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
 	}
 
 	@Override
-	public Map<Integer, Integer> getRuleMap() {
-		Map<Integer, Integer> ruleMap = new HashMap<>();
-		ruleMap.put(getScore(), getWeight());
-		return ruleMap;
+	public void initializeRuleValues() {
+		rule.setWeight(2);
+		rule.setDescription("Unresolved ticket rule");
+		rule.setManualAdvice("conseil");
+	}
+
+	@Override
+	public Rule getRule() {
+		return rule;
 	}
 }

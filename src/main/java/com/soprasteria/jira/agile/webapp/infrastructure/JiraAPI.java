@@ -78,41 +78,38 @@ public class JiraAPI {
         JSONArray issuesArray = json.getJSONArray("issues");
 
         for (int i = 0; i < issuesArray.length(); i++) {
+        	Issue newIssue = new Issue();
         	JSONObject issue = issuesArray.getJSONObject(i);
         	
-        	// if (issue.getJSONObject("fields").has("id")) {
-            //     issueBuilder.setId(issue.getJSONObject("fields").getInt("id"));
-            //     System.out.println("Issue id: "+issueBuilder.getId());
-            // }
-            if (issue.has("id")) {
-        		issueBuilder.setJiraId(issue.getInt("id"));
-        		System.out.println("Issue id: "+issueBuilder.getJiraId());
+        	if (issue.has("id")) {
+        		newIssue.setId(issue.getInt("id"));
+        		System.out.println("Issue id: "+newIssue.getId());
         	}
-        	//issueBuilder.setJiraId(1);
+        	
         	if (issue.getJSONObject("fields").has("summary")) {
-                issueBuilder.setDescription(issue.getJSONObject("fields").getString("summary"));
-                System.out.println("Issue name: "+issueBuilder.getDescription());
+                newIssue.setDescription(issue.getJSONObject("fields").getString("summary"));
+               
             }
         	if (issue.getJSONObject("fields").has("customfield_10032")) {
         		
-        		issueBuilder.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032", -1));
+        		newIssue.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032", -1));
             } 
         	if (issue.getJSONObject("fields").has("assignee")&& issue.getJSONObject("fields").get("assignee") instanceof JSONObject) {
         		
-        		System.out.println(issue.getJSONObject("fields").getJSONObject("assignee").getString("displayName"));
-        		issueBuilder.setUser(issue.getJSONObject("fields").getJSONObject("assignee").getString("displayName"));
+        		
+        		newIssue.setUser(issue.getJSONObject("fields").getJSONObject("assignee").getString("displayName"));
             } 
         	if (issue.getJSONObject("fields").has("created") && issue.getJSONObject("fields").get("created")!= null && issue.getJSONObject("fields").get("created") instanceof String) {
-        		issueBuilder.setCreationDate(issue.getJSONObject("fields").getString("created"));
+        		newIssue.setCreationDate(issue.getJSONObject("fields").getString("created"));
             } 
-        	
+       	
             if (issue.getJSONObject("fields").has("customfield_10020") &&
         		    issue.getJSONObject("fields").get("customfield_10020") instanceof JSONArray) {
         		    JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
       		    
         		    if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
-        		        issueBuilder.setSprintId(String.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
-                        System.out.println("SprintID: "+issueBuilder.getSprintId());   		            
+        		    	newIssue.setSprintId(String.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
+                        System.out.println("SprintID: "+newIssue.getSprintId());   		            
         		    }		
         	}
         	
@@ -121,7 +118,7 @@ public class JiraAPI {
             JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
                   
             if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("startDate")) {
-                issueBuilder.setSprintStartDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("startDate")));   		            
+            	newIssue.setSprintStartDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("startDate")));   		            
             }		
             }
             
@@ -130,21 +127,21 @@ public class JiraAPI {
                 JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
                     
                 if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("endDate")) {
-                    issueBuilder.setSprintEndDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("endDate")));   		            
+                    newIssue.setSprintEndDate(String.valueOf(customfield_10020Array.getJSONObject(0).getString("endDate")));   		            
                 }		
             }
             
-            
+
         	if (issue.getJSONObject("fields").has("status") && issue.getJSONObject("fields").get("status")!= null && issue.getJSONObject("fields").get("status") instanceof String) {
-        		issueBuilder.setStatus(issue.getJSONObject("fields").getString("status"));
+        		newIssue.setStatus(issue.getJSONObject("fields").getString("status"));
             } 
         	if (issue.getJSONObject("fields").has("project") && issue.getJSONObject("fields").get("project")!= null && issue.getJSONObject("fields").get("project") instanceof String) {
-        		issueBuilder.setProjectId(issue.getJSONObject("fields").getString("project"));
+        		newIssue.setProjectId(issue.getJSONObject("fields").getString("project"));
             } 
         	if (issue.getJSONObject("fields").has("priority") && issue.getJSONObject("fields").get("priority")!= null && issue.getJSONObject("fields").get("priority") instanceof String) {
-        		issueBuilder.setPriority(issue.getJSONObject("fields").getString("priority") );
+        		newIssue.setPriority(issue.getJSONObject("fields").getString("priority") );
             }
-            Issue currentIssue =issueBuilder.buildIssue();
+            
 
            
         	
@@ -154,13 +151,13 @@ public class JiraAPI {
 
             //Issue currentIssue = new Issue();
             
-            issueList.add(currentIssue);
+            issueList.add(newIssue);
 
             
             DatabaseInsertion databaseInsertion = new DatabaseInsertion();
 			// On utilise DatabaseInsertion pour insérer l'issue dans la base de données
-            databaseInsertion.insertIssueIntoDatabase(currentIssue);
-            System.out.println("Issue inserted into databases, details : " + currentIssue);
+            databaseInsertion.insertIssueIntoDatabase(newIssue);
+            System.out.println("Issue inserted into databases, details : " + newIssue);
             
 
         }
