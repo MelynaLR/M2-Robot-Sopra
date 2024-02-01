@@ -61,22 +61,6 @@ function App() {
   fetchData();
 }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = 'http://localhost:8080/score/userPoints';
-        const response = await axios.get(apiUrl);
-        console.log('Data from API (Complexity Score):', response.data);
-        setScoreComplexity(response.data);
-      } catch (error) {
-        console.error('Error fetching complexity score:', error);
-        setError('Error fetching data. Please try again later.');
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const handleRefresh = () => {
     
     axios.get('http://localhost:8080')

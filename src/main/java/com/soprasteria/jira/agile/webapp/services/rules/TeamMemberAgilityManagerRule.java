@@ -17,7 +17,7 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
 
     @Override
     public void calculateScore(List<Issue> issues) {
-        for (Issue issue : issues) {
+    	for (Issue issue : issues) {
             int assignedTasks = countAssignedTasks(issue.getUser(), issues);
             evaluateAgilityScore(issue.getUser(), assignedTasks);
         }

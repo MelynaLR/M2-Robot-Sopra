@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import com.soprasteria.jira.agile.webapp.models.Rule;
 
 @Component
+@Scope("prototype")
 public class UnresolvedTicketRule implements DataAnalysisRule{
 
 	@Autowired
@@ -23,6 +25,7 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
 	@Override
 	public void calculateScore(List<Issue> issues) {
 		this.rule = new Rule();
+		rule.setScore(0);
 		LocalDate today = LocalDate.now();
 		
 		for (int i = 0; i < issues.size(); i++) {

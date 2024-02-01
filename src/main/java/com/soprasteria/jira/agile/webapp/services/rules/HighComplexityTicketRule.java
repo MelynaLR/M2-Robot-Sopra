@@ -6,20 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import com.soprasteria.jira.agile.webapp.models.Rule;
 
 @Component
+@Scope("prototype")
 public class HighComplexityTicketRule implements DataAnalysisRule{
 	
 	@Autowired
 	private Rule rule;
 
 	@Override
-	public void calculateScore(List<Issue> issues) {
+	public void calculateScore(List<Issue> issues) {	
 		this.rule = new Rule();
+		rule.setScore(0);
 		for (Issue issue : issues) {
 			if (issue.getUserPoints() >= 21) {
 				rule.addIssue(issue);
@@ -31,7 +34,7 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 
 	@Override
 	public void initializeRuleValues() {
-		rule.setWeight(2);
+		rule.setWeight(7);
 		rule.setDescription("ceci est une description");
 		rule.setManualAdvice("attention voici conseil");
 	}

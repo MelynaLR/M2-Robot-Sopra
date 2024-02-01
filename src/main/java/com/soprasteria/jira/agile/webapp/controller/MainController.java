@@ -130,6 +130,8 @@ public class MainController{
 	
 	@GetMapping(value="/retrieveRules")
 	public List<Rule> getAllRules(){
+		//scoreCalculation = new ScoreCalculation();
+		scoreCalculation.refreshListRules();
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		return scoreCalculation.getListRules();
 	}
