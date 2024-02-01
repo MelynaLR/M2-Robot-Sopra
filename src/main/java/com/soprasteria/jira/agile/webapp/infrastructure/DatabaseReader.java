@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.soprasteria.jira.agile.webapp.builders.IssueBuilder;
+
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 @Component
@@ -22,7 +22,7 @@ public class DatabaseReader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseReader.class);
 	
 	@Autowired
-	private IssueBuilder issueBuilder;
+	private Issue issueBuilder;
 	
 	
     public List<Issue> readIssuesFromDatabase() {

@@ -24,23 +24,28 @@ public class DatabaseInsertion {
             
             //Cette query insère la ligne mais si un issue du même nom existe déjà, elle met à jour ses points de complexité
             //String sql = "INSERT INTO issues (issueName, issueComplexity) VALUES (?, ?) ON DUPLICATE KEY UPDATE issueComplexity = ?";
-            String sql = "INSERT INTO issue (userName, description, creationDate, sprintEndDate, sprintId, sprintStartDate, Status, project_id, priority, userPoints) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE userPoints = ?";
-            //String sql = "INSERT INTO issues SET issueName=?, issueComplexity=?";
-            //String sql = "INSERT INTO issues (issueName, issueComplexity) VALUES (?, ?)";
+            String sql = "INSERT INTO issue (userName, description, creationDate, sprintEndDate, SprintID, sprintStartDate, Status, project_id, priority, userPoints, jiraId) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+            "ON DUPLICATE KEY UPDATE userPoints = ?";
             preparedStatement = connection.prepareStatement(sql);
+
             preparedStatement.setString(1, issue.getUser());
             preparedStatement.setString(2, issue.getDescription());
             preparedStatement.setString(3, issue.getCreationDate());
             preparedStatement.setString(4, issue.getSprintEndDate());
             preparedStatement.setString(5, issue.getSprintId());
+            System.out.println("Issue inserted into databases, details : " + issue.getSprintId());
             preparedStatement.setString(6, issue.getSprintStartDate());
             preparedStatement.setString(7, issue.getStatus());
             preparedStatement.setString(8, issue.getProjectId());
             preparedStatement.setString(9, issue.getPriority());
             preparedStatement.setInt(10, issue.getUserPoints());
-            //preparedStatement.setInt(11, issue.getUserPoints());
-
+            preparedStatement.setInt(11, issue.getJiraId());
+            System.out.println("Issue inserted into databases, details : " + issue.getJiraId());
+            preparedStatement.setInt(12, issue.getUserPoints()); // This sets the same value for userPoints in the update part
+           // preparedStatement.setInt(13, issue.getUserPoints());
             preparedStatement.executeUpdate();
+
 
             LOGGER.info("Issues inserted in the database!");
         } catch (SQLException e) {

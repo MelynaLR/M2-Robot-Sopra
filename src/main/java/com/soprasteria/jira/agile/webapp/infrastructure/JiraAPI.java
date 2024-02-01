@@ -12,7 +12,8 @@ import java.util.Base64;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.soprasteria.jira.agile.webapp.builders.IssueBuilder;
+import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseController;
+import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseInsertion;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
 //added
@@ -27,7 +28,7 @@ import java.sql.SQLException;
 public class JiraAPI {
 	
 	@Autowired
-	private IssueBuilder issueBuilder;
+	private Issue issueBuilder;
 
 	@Value("${jira.user}")
     private String username;
@@ -79,8 +80,15 @@ public class JiraAPI {
         for (int i = 0; i < issuesArray.length(); i++) {
         	JSONObject issue = issuesArray.getJSONObject(i);
         	
-        	
-        	
+        	// if (issue.getJSONObject("fields").has("id")) {
+            //     issueBuilder.setId(issue.getJSONObject("fields").getInt("id"));
+            //     System.out.println("Issue id: "+issueBuilder.getId());
+            // }
+            if (issue.has("id")) {
+        		issueBuilder.setJiraId(issue.getInt("id"));
+        		System.out.println("Issue id: "+issueBuilder.getJiraId());
+        	}
+        	//issueBuilder.setJiraId(1);
         	if (issue.getJSONObject("fields").has("summary")) {
                 issueBuilder.setDescription(issue.getJSONObject("fields").getString("summary"));
                 System.out.println("Issue name: "+issueBuilder.getDescription());
