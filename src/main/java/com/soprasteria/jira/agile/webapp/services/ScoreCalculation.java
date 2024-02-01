@@ -34,6 +34,11 @@ public class ScoreCalculation {
 			listRules.add(rule.getRule());
 		}		
 	}
+	
+	public List<Rule> getListRules(){
+		return this.listRules;
+	}
+	
 
 	public int calculateGlobalScore() {
  		int totalWeight = 0;

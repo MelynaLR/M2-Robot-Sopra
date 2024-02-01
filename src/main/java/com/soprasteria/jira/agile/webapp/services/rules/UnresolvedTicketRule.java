@@ -30,7 +30,6 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
 
             // Check if the date string is not empty or null before parsing
             if (sprintEndDateStr != null && !sprintEndDateStr.isEmpty()) {
-            
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 				LocalDateTime sprintEndDateTime = LocalDateTime.parse(sprintEndDateStr, dateFormatter);
 
