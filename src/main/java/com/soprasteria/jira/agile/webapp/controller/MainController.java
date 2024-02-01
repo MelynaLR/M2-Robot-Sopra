@@ -11,10 +11,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soprasteria.jira.agile.webapp.infrastructure.*;
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Rule;
 
 import java.sql.SQLException;
 import java.security.PublicKey;
@@ -125,6 +127,13 @@ public class MainController{
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		return scoreCalculation.calculateGlobalScore();
 	}
+	
+	@GetMapping(value="/retrieveRules")
+	public List<Rule> getAllRules(){
+		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+		return scoreCalculation.getListRules();
+	}
+	
 	/*
 	@GetMapping(value="/score/userPoints")
     public int scorePointResult() {
