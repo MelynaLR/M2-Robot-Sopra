@@ -11,7 +11,7 @@ public class Issue {
     private String projectId;
     private String priority;
     private String user;
-    private Integer userPoints;
+    private Integer userPoints = 0;
     // Getters
     public int getId() {
         return id;

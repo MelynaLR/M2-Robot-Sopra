@@ -8,11 +8,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Project;
 
 //added
 import java.sql.Connection;
@@ -47,7 +49,7 @@ public class JiraAPI {
         this.headerValue = "Basic " + Base64.getEncoder().encodeToString(value.getBytes());
     }
 
-    public void sendRequestAPI(String urlAPI) {
+    public String sendRequestAPI(String urlAPI) {
         Client client = Client.create();
 
         WebResource webResource = client.resource(urlAPI);
@@ -61,13 +63,15 @@ public class JiraAPI {
         if (response.getStatus() == 200) {
             String responseBody = response.getEntity(String.class);
             System.out.println("Issues and their complexity points incoming : ");
-            parseJsonResponse(responseBody);
+            //parseJsonResponseIssue(responseBody);
+            return responseBody;
         } else {
             System.err.println("Erreur lors de la requête : " + response.getStatus());
+            return "error";
         }
     }
 
-    private void parseJsonResponse(String responseBody) {
+    public void parseJsonResponseIssue(String responseBody) {
     	issueList = new ArrayList<>();
     	JSONObject json = new JSONObject(responseBody);
 
@@ -158,6 +162,41 @@ public class JiraAPI {
             
 
         }
+    }
+    
+    public List<Project> parseJsonResponseProjects(String responseBody) {
+    	ArrayList<Project> projectList = new ArrayList<>();
+    	JSONObject json = new JSONObject(responseBody);
+
+        
+        JSONArray projectArray = json.getJSONArray("project");
+
+        for (int i = 0; i < projectArray.length(); i++) {
+        	Project newProject = new Project();
+        	JSONObject project = projectArray.getJSONObject(i);
+        	
+        	if (project.has("id")) {
+        		newProject.setIdProject(project.getInt("id"));
+        		System.out.println("Issue id: "+newProject.getIdProject());
+        	}
+        	
+        	if (project.has("name")) {
+                newProject.setNameProject(project.getString("name"));
+               
+            }
+            
+            projectList.add(newProject);
+
+            System.out.println("Project retrieved, details : " + newProject);
+            /*DatabaseInsertion databaseInsertion = new DatabaseInsertion();
+			// On utilise DatabaseInsertion pour insérer l'issue dans la base de données
+            databaseInsertion.insertIssueIntoDatabase(newIssue);
+            System.out.println("Issue inserted into databases, details : " + newIssue);
+            */
+            
+
+        }
+        return projectList;
     }
     
     
