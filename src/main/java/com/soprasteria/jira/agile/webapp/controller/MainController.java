@@ -54,7 +54,7 @@ public class MainController{
 	private ScoreCalculation scoreCalculation;
 
 	@Autowired
-	private  DataAnalysisExcel dataAnalysisExcel;
+	//private  DataAnalysisExcel dataAnalysisExcel;
 	 
 	@GetMapping(value = "/chatgpt")
 public String generateRecommendation() {
@@ -121,23 +121,23 @@ public String generateRecommendation() {
 		return scoreCalculation.getListRules();
 	}
 
-	@GetMapping(value = "/static/api/data")
-    public ResponseEntity<Object[]> getData() {
-        try {
+	// @GetMapping(value = "/static/api/data")
+    // public ResponseEntity<Object[]> getData() {
+    //     try {
           
-            List<Issue> issuesList = dbExcel.selectQueryData();
-            Integer score = dataAnalysisExcel.getOneLineFromQuery(issuesList);
-            String user = dataAnalysisExcel.getUserNameFromQuery(issuesList);
+    //         List<Issue> issuesList = dbExcel.selectQueryData();
+    //         Integer score = dataAnalysisExcel.getOneLineFromQuery(issuesList);
+    //         //String user = dataAnalysisExcel.getUserNameFromQuery(issuesList);
           
-           // int globalScore = scoreCalculation.calculateGlobalScore();
+    //        // int globalScore = scoreCalculation.calculateGlobalScore();
 
-            Object[] result = {score, user};
-            return ResponseEntity.ok(result);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(new Object[0]); 
-        }
-    }
+    //         Object[] result = {score, user};
+    //         return ResponseEntity.ok(result);
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.status(500).body(new Object[0]); 
+    //     }
+    // }
 	/*
 	@GetMapping(value="/score/userPoints")
     public int scorePointResult() {

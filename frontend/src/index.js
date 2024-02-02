@@ -12,23 +12,6 @@ function App() {
   const project_id = 13;
   const [rules, setRules] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = 'http://localhost:8080/static/api/data';
-        const response = await axios.get(apiUrl);
-        console.log('Data from API (Agility Score):', response.data);
-        const [agilityScore, user] = response.data;
-        setAgilityScore(agilityScore);
-        setUser(user);
-      } catch (error) {
-        console.error('Error fetching agility score:', error);
-        setError('Error fetching data. Please try again later.');
-      }
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -119,11 +102,11 @@ const DropdownIssues = ({ rule }) => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {globalScore !== null && (
         <>
-          <h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
+          <h1 style={styles.heading}>User, voici votre profil d'agilité sur Jira</h1>
           <select name="thelist" onChange={(e) => console.log(e.target.value)}>
             <option>Projet {project_id}</option>
           </select>
-          <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
+          <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(globalScore) }}>
             <p style={styles.agilityScore}>Global Score: {globalScore}</p>
           </div>
           <h2 style={styles.sprintProgress}>Règle 1: Cas des tickets non résoluts à la fin d'un Sprint  </h2>
