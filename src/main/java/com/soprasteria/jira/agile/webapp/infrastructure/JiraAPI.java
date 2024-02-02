@@ -109,11 +109,7 @@ public class JiraAPI {
             
             if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
                 newIssue.setSprintId(Integer.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
-<<<<<<< HEAD
-                System.out.println("SprintID: " + newIssue.getSprintId());  
-=======
-                System.out.println("SprintID: " + issueBuilder.getSprintId());  
->>>>>>> 4a4c31d134b430adf50ac54b24930cc727aa5f9d
+
             } else {
                 newIssue.setSprintId(-1); // Set Sprint ID to 0 if not present or invalid
             }
