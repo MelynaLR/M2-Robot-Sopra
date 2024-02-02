@@ -11,3 +11,54 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.issues{
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	margin: 10px;
+	padding: 10px;	
+	box-shadow: 0 2px 4px rgb(212, 17, 27, 1);
+}
+
+.issues-button{
+	background-color: rgb(238, 116, 6);
+	border-radius: 4px;
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+	padding: 5px;
+	border: 0px;
+}
+
+.progress-bar {
+    width: 300px; /* Définir la largeur totale de la barre de progression */
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: var(--progress, 0%);
+    background-color: #ee7406;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out; /* Ajouter une transition pour une animation fluide */
+}
