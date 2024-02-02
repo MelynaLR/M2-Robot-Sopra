@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Project;
 
 @Component
 public class DatabaseReader {
@@ -83,6 +84,51 @@ public class DatabaseReader {
         }
 
         return issues;
+    }
+    
+    public List<Project> readProjectsFromDatabase() {
+    	LOGGER.info("Beginning to retrieve projects from the database..");
+    	List<Project> projects = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseController.getConnection();
+            String sql = "SELECT * FROM project";
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            LOGGER.info("Going through results of the query ...");
+            while (resultSet.next()) {
+                Project project = new Project();
+                
+                
+            	if (resultSet.getString("nameProject") != null) {
+            		project.setNameProject(resultSet.getString("nameProject"));
+            	}
+                project.setIdProject(resultSet.getInt("idProject"));            
+                projects.add(project);
+            }
+            LOGGER.info("End of the results");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return projects;
     }
     
     public void printTables() throws SQLException {
