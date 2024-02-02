@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import './index.css'
 
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
@@ -86,6 +87,32 @@ function App() {
       return '#FF5733'; // Red
     }
   };
+  
+
+const DropdownIssues = ({ rule }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="dropdown">
+      <button onClick={toggleDropdown} className="issues-button">See related issues</button>
+      {isOpen && (
+        <div>
+		  {rule.issues.map(issue => (
+		    <div key={issue.id} className="issues">
+		      {issue.description}
+		    </div>
+		  ))}
+		</div>
+      )}
+    </div>
+  );
+};
+
+
 
   return (
     <div style={styles.container}>
@@ -111,12 +138,29 @@ function App() {
           
           <h1 style={styles.heading}> TEST LISTE AVEC RULES </h1>
           {rules && rules.map((rule, index) => (
-      		<div key={index}>
+      		<div key={index} className="card">
         	<p>Weight: {rule.weight}</p>
         	<p>Score: {rule.score}</p>
-        	<p>Description: {rule.description}</p>       
-      </div>
-    ))}
+        	<p>Description: {rule.description}</p> 
+        	<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
+        	<DropdownIssues rule={rule} />
+        	
+        	
+        	
+        	
+
+   
+		      </div>
+		    ))}
+		    
+
+
+
+		
+		
+		
+		
+		
         </>
       )}
     </div>
