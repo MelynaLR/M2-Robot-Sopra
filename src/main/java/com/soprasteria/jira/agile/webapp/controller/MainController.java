@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soprasteria.jira.agile.webapp.infrastructure.*;
 import com.soprasteria.jira.agile.webapp.models.Issue;
+import com.soprasteria.jira.agile.webapp.models.Project;
 import com.soprasteria.jira.agile.webapp.models.Rule;
 
 import java.sql.SQLException;
@@ -52,36 +53,14 @@ public class MainController{
 	@Autowired 
 	private ScoreCalculation scoreCalculation;
 	
-	
-	public static void main(String[] args) {
-        MainController mainController = new MainController();
-
-        mainController.retrieveDataSB();
-
-		try {
-            
-			String url = "https://m2-projet-annuel-robot.atlassian.net/jira/software/projects/KAN/boards/1?isInsightsOpen=true";
-            Document document = Jsoup.connect(url).get();
-
-            // Extract data based on HTML structure
-            Elements dataElements = document.select(".your-data-class");
-            for (Element element : dataElements) {
-                System.out.println(element.text());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-	
-	
 	@GetMapping()
 	public void retrieveDataSB() {
 		jiraAPI.createAuthorizationHeader();
 		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-		jiraAPI.sendRequestAPI(urlTest);
-		System.out.println("Issues inserted into database");
+		String reponseBody = jiraAPI.sendRequestAPI(urlTest);
+		jiraAPI.parseJsonResponseIssue(reponseBody);
+		//List<Project> projectList = jiraAPI.parseJsonResponseProjects(reponseBody);
+		
 		
 		
 		// Call DatabaseReader to retrieve issues from the database
