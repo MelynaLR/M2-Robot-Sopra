@@ -1,11 +1,9 @@
 package com.soprasteria.jira.agile.webapp.models;
 
 
-import org.springframework.stereotype.Component;
-
 import com.soprasteria.jira.agile.webapp.models.*;
 
-@Component
+
 public class Issue{
 	private int id;
     private String description;
@@ -16,11 +14,10 @@ public class Issue{
     private String status;
     private String projectId;
     private String priority;
-    private String user;
-    private int userPoints;
-	
-   
+    private String user;  
     private String taux;
+    private Integer userPoints = 0;
+
     // Getters
     public int getId() {
         return id;
