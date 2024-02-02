@@ -109,7 +109,11 @@ public class JiraAPI {
             
             if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
                 newIssue.setSprintId(Integer.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
+<<<<<<< HEAD
                 System.out.println("SprintID: " + newIssue.getSprintId());  
+=======
+                System.out.println("SprintID: " + issueBuilder.getSprintId());  
+>>>>>>> 4a4c31d134b430adf50ac54b24930cc727aa5f9d
             } else {
                 newIssue.setSprintId(-1); // Set Sprint ID to 0 if not present or invalid
             }
@@ -133,10 +137,16 @@ public class JiraAPI {
                 }		
             }
             
-
-        	if (issue.getJSONObject("fields").has("status") && issue.getJSONObject("fields").get("status")!= null && issue.getJSONObject("fields").get("status") instanceof String) {
-        		newIssue.setStatus(issue.getJSONObject("fields").getString("status"));
-            } 
+            if (issue.getJSONObject("fields").has("status")) {
+                JSONObject statusObject = issue.getJSONObject("fields").getJSONObject("status");
+                if (statusObject.has("statusCategory")) {
+                    JSONObject statusCategoryObject = statusObject.getJSONObject("statusCategory");
+                    if (statusCategoryObject.has("name")) {
+                        String statusCategoryName = statusCategoryObject.getString("name");
+                        newIssue.setStatus(statusCategoryName);
+                    }
+                }
+            }
         	if (issue.getJSONObject("fields").has("project") && issue.getJSONObject("fields").get("project")!= null && issue.getJSONObject("fields").get("project") instanceof String) {
         		newIssue.setProjectId(issue.getJSONObject("fields").getString("project"));
             } 
