@@ -79,6 +79,32 @@ public class MainController{
         System.out.println("Recommendation from ChatGPT: " + recommendation);        
 	}
 	
+	/**
+	 * Endpoint to update the projects in the database
+	 */
+	@GetMapping(value="/updateProjects")
+	public void retrieveProjectsFromJira(){
+		jiraAPI.createAuthorizationHeader();
+		String urlGetProjects = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/project";
+		String responseBody = jiraAPI.sendRequestAPI(urlGetProjects);
+		jiraAPI.parseJsonResponseProjects(responseBody);	
+	}
+	/**
+	 * Endpoint to update the issues in the database
+	 */
+	@GetMapping(value="/updateIssues")
+	public void retrieveIssuesFromJira(){
+		jiraAPI.createAuthorizationHeader();
+		String urlGetIssues = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+		String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
+		jiraAPI.parseJsonResponseProjects(responseBody);	
+	}
+	
+	
+
+	
+	
+	
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
 		LOGGER.info("starting endpoint gpt recommandations");
