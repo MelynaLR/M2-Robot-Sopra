@@ -20,7 +20,7 @@ public class ChatGPTClient {
 	private String API_KEY;
 	
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String MODEL_IDENTIFIER = "gpt-4"; // OR gpt-3.5-turbo
+    private static final String MODEL_IDENTIFIER = "gpt-3.5-turbo"; // OR gpt-4
     
     public String generateRecommendation(List<Issue> issues, List<String> additionalInstructions) {
     	System.out.println("token: "+API_KEY);

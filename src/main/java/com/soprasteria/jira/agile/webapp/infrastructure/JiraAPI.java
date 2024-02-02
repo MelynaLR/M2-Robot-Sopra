@@ -62,7 +62,6 @@ public class JiraAPI {
         if (response.getStatus() == 200) {
             String responseBody = response.getEntity(String.class);
             System.out.println("Issues and their complexity points incoming : ");
-            //parseJsonResponseIssue(responseBody);
             return responseBody;
         } else {
             System.err.println("Erreur lors de la requête : " + response.getStatus());
@@ -150,62 +149,34 @@ public class JiraAPI {
         		newIssue.setPriority(issue.getJSONObject("fields").getString("priority") );
             }
             
-
-           
-        	
-            //String issueName = issue.getJSONObject("fields").getString("summary");
-
-            //int userPoints = issue.getJSONObject("fields").optInt("customfield_10032", -1);
-
-            //Issue currentIssue = new Issue();
-            
             issueList.add(newIssue);
-
-            
-            // DatabaseInsertion databaseInsertion = new DatabaseInsertion();
-			// // On utilise DatabaseInsertion pour insérer l'issue dans la base de données
-            // databaseInsertion.insertIssueIntoDatabase(currentIssue);
-            // System.out.println("Issue inserted into databases, details : " + currentIssue);
             
             try {
                 DatabaseInsertion.insertIssueIntoDatabase(newIssue);
                 System.out.println("Issue inserted into databases, details : " + newIssue);
             } catch (Exception e) {
-                //System.out.println("Error inserting issue into database: {}");
-                e.printStackTrace(); // Print stack trace for detailed error analysis
+                e.printStackTrace(); 
             }
         }
     }
     
     public List<Project> parseJsonResponseProjects(String responseBody) {
-    	ArrayList<Project> projectList = new ArrayList<>();
-    	JSONObject json = new JSONObject(responseBody);
+    	ArrayList<Project> projectList = new ArrayList<>(); 
+    	JSONArray projectArray = new JSONArray(responseBody);
+         for (int i = 0; i < projectArray.length(); i++) {
+        	 Project newProject = new Project();
+             JSONObject project = projectArray.getJSONObject(i);
 
-        
-        JSONArray projectArray = json.getJSONArray("project");
-
-        for (int i = 0; i < projectArray.length(); i++) {
-        	Project newProject = new Project();
-        	JSONObject project = projectArray.getJSONObject(i);
-        	
-        	if (project.has("id")) {
-        		newProject.setIdProject(project.getInt("id"));
-        		System.out.println("Issue id: "+newProject.getIdProject());
-        	}
-        	
-        	if (project.has("name")) {
-                newProject.setNameProject(project.getString("name"));
-               
-            }
-            
+             if (project.has("id")) {
+         		newProject.setIdProject(project.getInt("id"));
+         		System.out.println("Issue id: "+newProject.getIdProject());
+         	}         	
+         	if (project.has("name")) {
+                 newProject.setNameProject(project.getString("name"));
+                
+             }
             projectList.add(newProject);
-
             System.out.println("Project retrieved, details : " + newProject);
-            /*DatabaseInsertion databaseInsertion = new DatabaseInsertion();
-			// On utilise DatabaseInsertion pour insérer l'issue dans la base de données
-            databaseInsertion.insertIssueIntoDatabase(newIssue);
-            System.out.println("Issue inserted into databases, details : " + newIssue);
-            */
             
 
         }
