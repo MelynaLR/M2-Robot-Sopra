@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import './index.css'
+import './index.css';
+
 
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
@@ -78,15 +79,23 @@ function App() {
         setError('Error refreshing data. Please try again later.');
       });
   };
-  const getGaugeColor = (score) => {
-    if (score >= 75) {
-      return '#4CAF50'; // Green
-    } else if (score >= 50) {
-      return '#FFC107'; // Yellow
-    } else {
-      return '#FF5733'; // Red
-    }
+
+const getGaugeColor = (score) => {
+  const minScore = 0;
+  const maxScore = 100;
+
+  // Interpolation linéaire pour obtenir une couleur entre rouge et vert
+  const interpolateColor = (value, min, max) => {
+    const normalizedValue = (value - min) / (max - min);
+    const red = Math.round(255 * (1 - normalizedValue));
+    const green = Math.round(255 * normalizedValue);
+    const blue = 0;
+    return `rgb(${red}, ${green}, ${blue})`;
   };
+
+  // Appliquer l'interpolation pour obtenir la couleur en fonction du score
+  return interpolateColor(score, minScore, maxScore);
+};
   
 
 const DropdownIssues = ({ rule }) => {
@@ -115,62 +124,47 @@ const DropdownIssues = ({ rule }) => {
 
 
   return (
-    <div style={styles.container}>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {globalScore !== null && (
-        <>
-          <h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
-          <select name="thelist" onChange={(e) => console.log(e.target.value)}>
-            <option>Projet {project_id}</option>
-          </select>
-          <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
-            <p style={styles.agilityScore}>Global Score: {globalScore}</p>
-          </div>
-          <h2 style={styles.sprintProgress}>Règle 1: Cas des tickets non résoluts à la fin d'un Sprint  </h2>
-          <p style={styles.sprintProgress}>Score de la règle 1 : {agilityScore}</p>
-          <p>Conseil : </p>
-          <p>Tickets concernés : </p>
-          <h2 style={styles.sprintProgress}>Règle 2: Cas des tickets avec des story points trop élevés</h2>
-          <p style={styles.sprintProgress}>Score de la règle 2 : {scoreComplexity}</p>
-          <p>Conseil : </p>
-          <p>Tickets concernés : </p>
-          <button type="button" onClick={handleRefresh}>Rafraichir</button>
-          
-          <h1 style={styles.heading}> TEST LISTE AVEC RULES </h1>
-          {rules && rules.map((rule, index) => (
-      		<div key={index} className="card">
-        	<p>Weight: {rule.weight}</p>
-        	<p>Score: {rule.score}</p>
-        	<p>Description: {rule.description}</p> 
-        	<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
-        	<DropdownIssues rule={rule} />
-        	
-        	
-        	
-        	
-
-   
-		      </div>
-		    ))}
-		    
-
-
-
-		
-		
-		
-		
-		
-        </>
-      )}
-    </div>
+	<body>
+	    <div style={styles.container}>
+	   		{error && <p style={{ color: 'darkorange' }}>{error}</p>}
+	    	{globalScore !== null && (
+	    	<>
+	        	<h1 style={styles.heading}>{user}, voici votre profil d'agilité sur Jira</h1>
+	          	<select name="thelist" onChange={(e) => console.log(e.target.value)}>
+	            	<option>Projet {project_id}</option>
+	        	</select>
+	        	<div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(agilityScore) }}>
+	          		<p style={styles.agilityScore}>Global Score: {globalScore}</p>
+	        	</div>
+	
+	          	<button type="button" onClick={handleRefresh}>Rafraichir</button>
+	          
+	
+	          	{rules && rules.map((rule, index) => (
+				  	<div className='card-container'>
+					  	<div key={index} className="card">
+					  		<div className='description-container'>
+					  			<div className='description'> {rule.description} </div>
+					  			<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
+					  		</div>
+			        		<p>Weight: {rule.weight}</p>
+			        		<p>Score: {rule.score}</p>
+			        		<p>Description: {rule.description}</p> 
+			        		
+			        		<DropdownIssues rule={rule} />
+						</div>
+					</div>
+			    ))}
+	        </>
+	      )}
+	    </div>
+    </body>
     
   );
 }
 
 const styles = {
   container: {
-    fontFamily: 'Arial, sans-serif',
     maxWidth: '800px',
     margin: '20px auto',
     padding: '20px',

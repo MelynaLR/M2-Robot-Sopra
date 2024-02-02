@@ -1,16 +1,16 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'HurmeGeometric';
+  src: url('./HurmeGeometricSans1.otf') format('opentype');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+  font-family: HurmeGeometric, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(249, 198, 200);
 }
+
 
 
 .card-container {
@@ -25,6 +25,7 @@ code {
   margin: 10px;
   overflow: hidden;
   width: 100%;
+  font-family: 'HurmeGeometric';
 }
 
 .issues{
@@ -39,6 +40,7 @@ code {
 	background-color: rgb(238, 116, 6);
 	border-radius: 4px;
 	color: white;
+	font-family: 'HurmeGeometric';
 	font-weight: bold;
 	font-size: 15px;
 	padding: 5px;
@@ -46,8 +48,8 @@ code {
 }
 
 .progress-bar {
-    width: 300px; /* Définir la largeur totale de la barre de progression */
-    height: 20px;
+    width: 90%; /* Définir la largeur totale de la barre de progression */
+    height: 25px;
     background-color: #ddd;
     border-radius: 4px;
     overflow: hidden;
@@ -61,4 +63,18 @@ code {
     background-color: #ee7406;
     border-radius: 4px;
     transition: width 0.3s ease-in-out; /* Ajouter une transition pour une animation fluide */
+}
+
+.description-container {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.description {
+	width: 50%;
+	font-weight: bold;
+	font-size: 20px;
 }
