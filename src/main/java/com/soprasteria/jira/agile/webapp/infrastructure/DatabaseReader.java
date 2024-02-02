@@ -21,8 +21,6 @@ public class DatabaseReader {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseReader.class);
 	
-	@Autowired
-	private Issue issueBuilder;
 	
 	
     public List<Issue> readIssuesFromDatabase() {

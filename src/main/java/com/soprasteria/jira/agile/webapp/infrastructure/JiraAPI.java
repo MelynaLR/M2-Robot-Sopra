@@ -27,9 +27,6 @@ import java.sql.SQLException;
 
 @Component
 public class JiraAPI {
-	
-	@Autowired
-	private Issue issueBuilder;
 
 	@Value("${jira.user}")
     private String username;
@@ -95,7 +92,7 @@ public class JiraAPI {
             }
         	if (issue.getJSONObject("fields").has("customfield_10032")) {
         		
-        		issueBuilder.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032",0));
+        		newIssue.setUserPoints(issue.getJSONObject("fields").optInt("customfield_10032",0));
             } 
         	if (issue.getJSONObject("fields").has("assignee")&& issue.getJSONObject("fields").get("assignee") instanceof JSONObject) {
         		
@@ -111,10 +108,10 @@ public class JiraAPI {
             JSONArray customfield_10020Array = issue.getJSONObject("fields").getJSONArray("customfield_10020");
             
             if (customfield_10020Array.length() > 0 && customfield_10020Array.getJSONObject(0).has("id")) {
-                issueBuilder.setSprintId(Integer.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
-                System.out.println("SprintID: " + issueBuilder.getSprintId());  
+                newIssue.setSprintId(Integer.valueOf(customfield_10020Array.getJSONObject(0).getInt("id")));
+                System.out.println("SprintID: " + newIssue.getSprintId());  
             } else {
-                issueBuilder.setSprintId(-1); // Set Sprint ID to 0 if not present or invalid
+                newIssue.setSprintId(-1); // Set Sprint ID to 0 if not present or invalid
             }
             }
         	
