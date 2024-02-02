@@ -9,6 +9,7 @@ function App() {
   const [scoreComplexity, setScoreComplexity] = useState(null);
   const [error, setError] = useState(null);
   const project_id = 13;
+  const [rules, setRules] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,22 +44,22 @@ function App() {
 
     fetchData();
   }, []);
-
+  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = 'http://localhost:8080/score/userPoints';
-        const response = await axios.get(apiUrl);
-        console.log('Data from API (Complexity Score):', response.data);
-        setScoreComplexity(response.data);
-      } catch (error) {
-        console.error('Error fetching complexity score:', error);
-        setError('Error fetching data. Please try again later.');
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const apiUrl = 'http://localhost:8080/retrieveRules';
+      const response = await axios.get(apiUrl);
+      console.log('Calculation Rules from API (Rules):', response.data);
+      setRules(response.data);
+    } catch (error) {
+      console.error('Error fetching rules:', error);
+      setError('Error fetching data. Please try again later.');
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
 
   const handleRefresh = () => {
     
@@ -107,9 +108,19 @@ function App() {
           <p>Conseil : </p>
           <p>Tickets concernés : </p>
           <button type="button" onClick={handleRefresh}>Rafraichir</button>
+          
+          <h1 style={styles.heading}> TEST LISTE AVEC RULES </h1>
+          {rules && rules.map((rule, index) => (
+      		<div key={index}>
+        	<p>Weight: {rule.weight}</p>
+        	<p>Score: {rule.score}</p>
+        	<p>Description: {rule.description}</p>       
+      </div>
+    ))}
         </>
       )}
     </div>
+    
   );
 }
 

@@ -41,12 +41,16 @@ public class DatabaseReader {
             while (resultSet.next()) {
                 Issue issue = new Issue();
                 
-            	
+                
+            	if (resultSet.getString("userName") != null) {
+            		issue.setUser(resultSet.getString("userName"));
+            	}
                 issue.setUserPoints(resultSet.getInt("userPoints"));
+                
                 issue.setId(resultSet.getInt("idIssue"));
                 
                 // A MODIFIER POUR AVOIR LES UTILISATEURS
-                issue.setUser(resultSet.getString("userName"));
+                
 
                 issue.setDescription(resultSet.getString("description"));
                 issue.setCreationDate(resultSet.getString("creationDate"));

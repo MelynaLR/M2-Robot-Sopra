@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.soprasteria.jira.agile.webapp.models.Issue;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Component
+@Scope("prototype")
 @ComponentScan(basePackages = "com.soprasteria.jira.agile.webapp.services.rules") 
 public class ScoreCalculation {
     
@@ -26,6 +28,9 @@ public class ScoreCalculation {
 	
 	private List<Rule> listRules;
 	
+	public void refreshListRules() {
+		this.listRules = new ArrayList<>();
+	}
 	public void getRules(List<Issue> issues) {
 		this.listRules = new ArrayList<>();
 		for (DataAnalysisRule rule : rules) {
@@ -34,6 +39,11 @@ public class ScoreCalculation {
 			listRules.add(rule.getRule());
 		}		
 	}
+	
+	public List<Rule> getListRules(){
+		return this.listRules;
+	}
+	
 
 	public int calculateGlobalScore() {
  		int totalWeight = 0;

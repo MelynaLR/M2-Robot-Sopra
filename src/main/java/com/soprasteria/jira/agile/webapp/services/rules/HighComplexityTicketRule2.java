@@ -1,3 +1,4 @@
+/*
 package com.soprasteria.jira.agile.webapp.services.rules;
 
 import java.util.HashMap;
@@ -43,3 +44,4 @@ public class HighComplexityTicketRule2 implements DataAnalysisRule{
 		return rule;
 	}
 }
+*/
