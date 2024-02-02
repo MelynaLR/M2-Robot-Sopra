@@ -21,12 +21,8 @@ public class DatabaseReader {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseReader.class);
 	
-<<<<<<< HEAD
 	@Autowired
 	private Issue issueBuilder;
-=======
-
->>>>>>> b4b3d578ae7c6f91ca42b8a2bec0d3c1038f5f2a
 	
 	
     public List<Issue> readIssuesFromDatabase() {
@@ -52,25 +48,14 @@ public class DatabaseReader {
                 // A MODIFIER POUR AVOIR LES UTILISATEURS
                 issue.setUser(resultSet.getString("userName"));
 
-<<<<<<< HEAD
                 issue.setDescription(resultSet.getString("description"));
                 issue.setCreationDate(resultSet.getString("creationDate"));
                 issue.setSprintEndDate(resultSet.getString("sprintEndDate"));
-                issue.setSprintId(resultSet.getString("sprintId"));
+                issue.setSprintId(resultSet.getInt("sprintId"));
                 issue.setSprintStartDate(resultSet.getString("sprintStartDate"));
                 issue.setStatus(resultSet.getString("Status"));
                 issue.setProjectId(resultSet.getString("project_id"));
                 issue.setPriority(resultSet.getString("priority"));
-=======
-                issueBuilder.setDescription(resultSet.getString("description"));
-                issueBuilder.setCreationDate(resultSet.getString("creationDate"));
-                issueBuilder.setSprintEndDate(resultSet.getString("sprintEndDate"));
-                issueBuilder.setSprintId(resultSet.getInt("sprintId"));
-                issueBuilder.setSprintStartDate(resultSet.getString("sprintStartDate"));
-                issueBuilder.setStatus(resultSet.getString("Status"));
-                issueBuilder.setProjectId(resultSet.getString("project_id"));
-                issueBuilder.setPriority(resultSet.getString("priority"));
->>>>>>> dbfixing
                 
 
                 

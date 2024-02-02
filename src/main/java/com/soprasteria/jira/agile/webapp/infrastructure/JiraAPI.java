@@ -16,7 +16,6 @@ import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseController;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseInsertion;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 
-//added
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
