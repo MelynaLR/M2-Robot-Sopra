@@ -2,7 +2,6 @@ package com.soprasteria.jira.agile.webapp.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soprasteria.jira.agile.webapp.services.ScoreCalculation;
 import com.soprasteria.jira.agile.webapp.services.rules.HighComplexityTicketRule;
 import com.soprasteria.jira.agile.webapp.services.rules.DataAnalysisRule;
 
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +18,7 @@ import com.soprasteria.jira.agile.webapp.infrastructure.*;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import com.soprasteria.jira.agile.webapp.models.Project;
 import com.soprasteria.jira.agile.webapp.models.Rule;
-
+import com.soprasteria.jira.agile.webapp.services.*;
 import java.sql.SQLException;
 import java.security.PublicKey;
 
@@ -52,33 +52,39 @@ public class MainController{
 
 	@Autowired 
 	private ScoreCalculation scoreCalculation;
+
+	@Autowired
+	private  DataAnalysisExcel dataAnalysisExcel;
+	 
+	@GetMapping(value = "/chatgpt")
+public String generateRecommendation() {
+    jiraAPI.createAuthorizationHeader();
+    String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+    String responseBody = jiraAPI.sendRequestAPI(urlTest);
+    jiraAPI.parseJsonResponseIssue(responseBody);
+    // List<Project> projectList = jiraAPI.parseJsonResponseProjects(responseBody);
+    
+    // Call DatabaseReader to retrieve issues from the database
+    List<Issue> issues = databaseReader.readIssuesFromDatabase();
+    List<String> additionalInstructions = new ArrayList<>();
+    additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
+
+    // Call ChatGPTClient to generate recommendations based on the retrieved issues
+    String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+    System.out.println("Recommendation from ChatGPT: " + recommendation);
+
+    return recommendation;
+}
+
 	
-	@GetMapping()
-	public void retrieveDataSB() {
-		jiraAPI.createAuthorizationHeader();
-		String urlTest="https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-		String reponseBody = jiraAPI.sendRequestAPI(urlTest);
-		jiraAPI.parseJsonResponseIssue(reponseBody);
-		//List<Project> projectList = jiraAPI.parseJsonResponseProjects(reponseBody);
-		
-		
-		
-		// Call DatabaseReader to retrieve issues from the database
+	@GetMapping(value = "/")
+    public void retrieveData() {
+        jiraAPI.createAuthorizationHeader();
+        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+        jiraAPI.sendRequestAPI(urlTest);
+		System.out.println("Data from API updated");
+    }
 
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
-
-        //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
-        List<String> additionalInstructions = new ArrayList<>();
-		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
-
-
-        // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
-
-        // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);        
-	}
-	
 	@GetMapping(value="/gpt/recommandations")
 	public void gptRecommandations() {
 		LOGGER.info("starting endpoint gpt recommandations");
@@ -114,7 +120,24 @@ public class MainController{
 		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
 		return scoreCalculation.getListRules();
 	}
-	
+
+	@GetMapping(value = "/static/api/data")
+    public ResponseEntity<Object[]> getData() {
+        try {
+          
+            List<Issue> issuesList = dbExcel.selectQueryData();
+            Integer score = dataAnalysisExcel.getOneLineFromQuery(issuesList);
+            String user = dataAnalysisExcel.getUserNameFromQuery(issuesList);
+          
+           // int globalScore = scoreCalculation.calculateGlobalScore();
+
+            Object[] result = {score, user};
+            return ResponseEntity.ok(result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new Object[0]); 
+        }
+    }
 	/*
 	@GetMapping(value="/score/userPoints")
     public int scorePointResult() {
@@ -140,14 +163,7 @@ public class MainController{
 // }
 
 	
-	// @GetMapping(value = "/")
-    // public void retrieveData() {
-    //     //System.out.println("coucou yannis");
-    //     jiraAPI.createAuthorizationHeader();
-    //     String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        
-    //     jiraAPI.sendRequestAPI(urlTest);
-    // }
+	
 
 */
 	/*
