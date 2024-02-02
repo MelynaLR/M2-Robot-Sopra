@@ -35,91 +35,104 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-
 @RestController
-public class MainController{
-	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
-	
-	@Autowired
-	private JiraAPI jiraAPI;
-	
-	@Autowired
-	private ChatGPTClient chatGPTClient;
-	
-
-	@Autowired
-	private DatabaseReader databaseReader;
-
-	@Autowired 
-	private ScoreCalculation scoreCalculation;
-
-	@Autowired
-	//private  DataAnalysisExcel dataAnalysisExcel;
-	 
-	@GetMapping(value = "/chatgpt")
-public String generateRecommendation() {
-    jiraAPI.createAuthorizationHeader();
-    String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-    String responseBody = jiraAPI.sendRequestAPI(urlTest);
-    jiraAPI.parseJsonResponseIssue(responseBody);
-    // List<Project> projectList = jiraAPI.parseJsonResponseProjects(responseBody);
+public class MainController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
     
-    // Call DatabaseReader to retrieve issues from the database
-    List<Issue> issues = databaseReader.readIssuesFromDatabase();
-    List<String> additionalInstructions = new ArrayList<>();
-    additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
-
-    // Call ChatGPTClient to generate recommendations based on the retrieved issues
-    String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
-    System.out.println("Recommendation from ChatGPT: " + recommendation);
-
-    return recommendation;
-}
-
-	
-	@GetMapping(value = "/")
+    @Autowired
+    private JiraAPI jiraAPI;
+    
+    @Autowired
+    private ChatGPTClient chatGPTClient;
+    
+    @Autowired
+    private DatabaseReader databaseReader;
+    
+    @Autowired 
+    private ScoreCalculation scoreCalculation;
+    
+    @GetMapping(value = "/chatgpt")
+    public String generateRecommendation() {
+        jiraAPI.createAuthorizationHeader();
+        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+        String responseBody = jiraAPI.sendRequestAPI(urlTest);
+        jiraAPI.parseJsonResponseIssue(responseBody);
+        
+        // Call DatabaseReader to retrieve issues from the database
+        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<String> additionalInstructions = new ArrayList<>();
+        additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
+    
+        // Call ChatGPTClient to generate recommendations based on the retrieved issues
+        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+        System.out.println("Recommendation from ChatGPT: " + recommendation);
+    
+        return recommendation;
+    }
+    
+    @GetMapping(value = "/")
     public void retrieveData() {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         jiraAPI.sendRequestAPI(urlTest);
-		System.out.println("Data from API updated");
+        System.out.println("Data from API updated");
+        
+        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<String> additionalInstructions = new ArrayList<>();
+        additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
+    
+        // Call ChatGPTClient to generate recommendations based on the retrieved issues
+        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+    
+        // Print or use the recommendation as needed
+        System.out.println("Recommendation from ChatGPT: " + recommendation);
+    }
+    
+    @GetMapping(value="/updateProjects")
+    public void retrieveProjectsFromJira(){
+        jiraAPI.createAuthorizationHeader();
+        String urlGetProjects = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/project";
+        String responseBody = jiraAPI.sendRequestAPI(urlGetProjects);
+        jiraAPI.parseJsonResponseProjects(responseBody);  
+    }
+    
+    @GetMapping(value="/updateIssues")
+    public void retrieveIssuesFromJira(){
+        jiraAPI.createAuthorizationHeader();
+        String urlGetIssues = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
+        String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
+        jiraAPI.parseJsonResponseProjects(responseBody);  
     }
 
-	@GetMapping(value="/gpt/recommandations")
-	public void gptRecommandations() {
-		LOGGER.info("starting endpoint gpt recommandations");
-		
-		//jiraAPI.createAuthorizationHeader();
-
-		List<Issue> issues = databaseReader.readIssuesFromDatabase();
-		 //List<Issue> issues = DatabaseReader.readIssuesFromDatabase();
-		 List<String> additionalInstructions = new ArrayList<>();
-		additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
-
+    @GetMapping(value="/gpt/recommandations")
+    public void gptRecommandations() {
+        LOGGER.info("starting endpoint gpt recommandations");
         
-		 // Call ChatGPTClient to generate recommendations based on the retrieved issues	       
-		 String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
-	        
-		 // Print or use the recommendation as needed	        
-		LOGGER.info("Recommendation from ChatGPT: " + recommendation);
-		LOGGER.info("end of the GPT recommandation");
-	}
-	
-				
-	@GetMapping(value="/globalScore")
-	public int scoreResult() {
-
-		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-		return scoreCalculation.calculateGlobalScore();
-	}
-	
-	@GetMapping(value="/retrieveRules")
-	public List<Rule> getAllRules(){
-		//scoreCalculation = new ScoreCalculation();
-		scoreCalculation.refreshListRules();
-		scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
-		return scoreCalculation.getListRules();
-	}
+        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<String> additionalInstructions = new ArrayList<>();
+        additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
+    
+        // Call ChatGPTClient to generate recommendations based on the retrieved issues       
+        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
+            
+        // Print or use the recommendation as needed          
+        LOGGER.info("Recommendation from ChatGPT: " + recommendation);
+        LOGGER.info("end of the GPT recommandation");
+    }
+                
+    @GetMapping(value="/globalScore")
+    public int scoreResult() {
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+        return scoreCalculation.calculateGlobalScore();
+    }
+    
+    @GetMapping(value="/retrieveRules")
+    public List<Rule> getAllRules(){
+        scoreCalculation.refreshListRules();
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+        return scoreCalculation.getListRules();
+    }
+}
 
 	// @GetMapping(value = "/static/api/data")
     // public ResponseEntity<Object[]> getData() {
@@ -183,4 +196,4 @@ public String generateRecommendation() {
 	 * // Print or use the recommendation as needed
 	 * System.out.println("Recommendation from ChatGPT: " + recommendation); }
 	 */
-	 }
+	 

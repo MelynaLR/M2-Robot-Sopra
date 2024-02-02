@@ -177,6 +177,7 @@ public class JiraAPI {
              }
             projectList.add(newProject);
             System.out.println("Project retrieved, details : " + newProject);
+            DatabaseInsertion.insertProjectIntoDatabase(newProject);
             
 
         }
