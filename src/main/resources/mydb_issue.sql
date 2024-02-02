@@ -70,10 +70,12 @@ CREATE TABLE `issue` (
   `SprintID` int DEFAULT NULL,
   `SprintStartDate` varchar(45) DEFAULT NULL,
   `Status` varchar(45) DEFAULT NULL,
-  `project_id` varchar(45) DEFAULT NULL,
+  `project_id` int DEFAULT NULL,
   `priority` varchar(45) DEFAULT NULL,
   `userPoints` int DEFAULT NULL,
   `resolutionDate` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idIssue`),
-  UNIQUE KEY `idIssue_UNIQUE` (`idIssue`)
+  UNIQUE KEY `idIssue_UNIQUE` (`idIssue`),
+  KEY `project_id_idx` (`project_id`),
+  CONSTRAINT `project_id` FOREIGN KEY (`project_id`) REFERENCES `project` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10025 DEFAULT CHARSET=utf8mb3;
