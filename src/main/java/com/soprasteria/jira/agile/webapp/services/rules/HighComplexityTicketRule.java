@@ -37,8 +37,8 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 	@Override
 	public void initializeRuleValues() {
 		rule.setWeight(7);
-		rule.setDescription("ceci est une description");
-		rule.setManualAdvice("attention voici conseil");
+		rule.setDescription("Tickets avec un nombre de story points trop élevés");
+		rule.setManualAdvice("Il est préférable de répartir la charge de travail en plusieurs tickets différents avec un nombre de story points moins élevés.");
 	}
 	
 	@Override

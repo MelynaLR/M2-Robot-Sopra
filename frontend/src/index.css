@@ -37,18 +37,49 @@ body {
 }
 
 .issues-button{
-	background-color: rgb(238, 116, 6);
+	background-color: white;
 	border-radius: 4px;
-	color: white;
-	font-family: 'HurmeGeometric';
+	color: rgb(128, 128, 255);
 	font-weight: bold;
 	font-size: 15px;
 	padding: 5px;
 	border: 0px;
+	font-size: 20px;
+	margin-right: 20px;
+	box-shadow: 0 2px 4px rgb(192, 192, 192);
+}
+
+.issues-button:hover{
+	background-color: rgb(230, 230, 255);
+	border-radius: 4px;
+	color: rgb(128, 128, 255);
+	font-weight: bold;
+	font-size: 15px;
+	padding: 5px;
+	border: 0px;
+	font-size: 20px;
+	margin-right: 20px;
+	box-shadow: 0 2px 4px rgb(192, 192, 192);
+}
+
+
+
+.description-container {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	margin-right: 10px;
+}
+
+.description {
+	width: 60%;
+	font-weight: bold;
+	font-size: 20px;
+	padding-right: 10px;
 }
 
 .progress-bar {
-    width: 90%; /* Définir la largeur totale de la barre de progression */
+    width: 40%;
     height: 25px;
     background-color: #ddd;
     border-radius: 4px;
@@ -60,21 +91,7 @@ body {
     display: block;
     height: 100%;
     width: var(--progress, 0%);
-    background-color: #ee7406;
+    background-color: rgb(128, 128, 255);
     border-radius: 4px;
-    transition: width 0.3s ease-in-out; /* Ajouter une transition pour une animation fluide */
-}
-
-.description-container {
-	display: flex;
-	align-items: center;
-	padding: 20px;
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-.description {
-	width: 50%;
-	font-weight: bold;
-	font-size: 20px;
+    transition: width 0.3s ease-in-out;
 }

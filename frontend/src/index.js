@@ -12,6 +12,9 @@ function App() {
   const [error, setError] = useState(null);
   const project_id = 13;
   const [rules, setRules] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState({});
+
 
 
   useEffect(() => {
@@ -81,24 +84,24 @@ const getGaugeColor = (score) => {
 };
   
 
-const DropdownIssues = ({ rule }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
+const toggleDropdown = (ruleIndex) => {
+  setDropdownStates((prevState) => ({
+    ...prevState,
+    [ruleIndex]: !prevState[ruleIndex],
+  }));
+};
+  
+const DropdownIssues = ({ rule, isOpen }) => {
   return (
     <div className="dropdown">
-      <button onClick={toggleDropdown} className="issues-button">See related issues</button>
       {isOpen && (
         <div>
-		  {rule.issues.map(issue => (
-		    <div key={issue.id} className="issues">
-		      {issue.description}
-		    </div>
-		  ))}
-		</div>
+          {rule.issues.map(issue => (
+            <div key={issue.id} className="issues">
+              {issue.description}
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -127,6 +130,9 @@ const DropdownIssues = ({ rule }) => {
 				  	<div className='card-container'>
 					  	<div key={index} className="card">
 					  		<div className='description-container'>
+						  		<button onClick={() => toggleDropdown(index)} className="issues-button">
+						          	{dropdownStates[index] ? (<span>&#9660;</span>) : (<span>&#9654;</span>)}
+						        </button>
 					  			<div className='description'> {rule.description} </div>
 					  			<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
 					  		</div>
@@ -134,7 +140,7 @@ const DropdownIssues = ({ rule }) => {
 			        		<p>Score: {rule.score}</p>
 			        		<p>Description: {rule.description}</p> 
 			        		
-			        		<DropdownIssues rule={rule} />
+			        		 <DropdownIssues rule={rule} isOpen={dropdownStates[index]} />
 						</div>
 					</div>
 			    ))}
