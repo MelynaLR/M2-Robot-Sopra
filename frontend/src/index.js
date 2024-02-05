@@ -108,6 +108,50 @@ const DropdownIssues = ({ rule, isOpen }) => {
 };
 
 
+const NumberSelector = ({ ruleWeight, onChange }) => {
+  const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
+
+  const handleNumberClick = (number) => {
+    setSelectedNumber(number);
+    onChange(number);
+  };
+
+  useEffect(() => {
+    // Mettre à jour selectedNumber lorsque ruleWeight change
+    setSelectedNumber(ruleWeight);
+  }, [ruleWeight]);
+
+  return (
+    <div>
+      <p>Importance de la règle :</p>
+      <div className="number-container">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
+          <button
+            key={number}
+            className={`number-button ${selectedNumber === number ? 'selected' : ''}`}
+            style={{ backgroundColor: selectedNumber === number ? 'blue' : 'white' }}
+            onClick={() => handleNumberClick(number)}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
+      {selectedNumber && <p>Vous avez choisi le nombre {selectedNumber}.</p>}
+    </div>
+  );
+};
+
+const handleWeightChange = (newWeight, ruleIndex) => {
+  // Mettez à jour l'état, le contexte ou l'endroit approprié avec la nouvelle valeur de poids
+  // Par exemple, si vous stockez les règles dans l'état, vous pouvez faire quelque chose comme :
+  setRules((prevRules) => {
+    // Mettez à jour la règle spécifique avec la nouvelle valeur de poids
+    const updatedRules = [...prevRules];
+    updatedRules[ruleIndex] = { ...updatedRules[ruleIndex], weight: newWeight };
+    return updatedRules;
+  });
+};
+
 
   return (
 	<body>
@@ -138,7 +182,10 @@ const DropdownIssues = ({ rule, isOpen }) => {
 					  		</div>
 			        		<p>Weight: {rule.weight}</p>
 			        		<p>Score: {rule.score}</p>
-			        		<p>Description: {rule.description}</p> 
+			        		
+			        		 
+			        		<NumberSelector ruleWeight={rule.weight} onChange={(newWeight) => handleWeightChange(newWeight)} />
+			        		
 			        		
 			        		 <DropdownIssues rule={rule} isOpen={dropdownStates[index]} />
 						</div>
