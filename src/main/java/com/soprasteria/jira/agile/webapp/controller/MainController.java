@@ -77,7 +77,7 @@ public class MainController {
         return recommendation;
     }
     
-    @GetMapping(value = "/")
+    @GetMapping()
     public void retrieveData() {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
