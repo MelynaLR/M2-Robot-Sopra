@@ -52,12 +52,7 @@ public class MainController {
     private ScoreCalculation scoreCalculation;
     
     @GetMapping(value = "/chatgpt")
-    public String generateRecommendation() {
-        jiraAPI.createAuthorizationHeader();
-        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        String responseBody = jiraAPI.sendRequestAPI(urlTest);
-        jiraAPI.parseJsonResponseIssue(responseBody);
-        
+    public String generateRecommendation() {     
         // Call DatabaseReader to retrieve issues from the database
         List<Issue> issues = databaseReader.readIssuesFromDatabase();
         List<String> additionalInstructions = new ArrayList<>();
@@ -75,7 +70,8 @@ public class MainController {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         jiraAPI.sendRequestAPI(urlTest);
-        System.out.println("Data from API updated");
+        jiraAPI.parseJsonResponseIssue(urlTest);
+        LOGGER.info("Data from API updated");
         
         List<Issue> issues = databaseReader.readIssuesFromDatabase();
         List<String> additionalInstructions = new ArrayList<>();
@@ -101,7 +97,7 @@ public class MainController {
         jiraAPI.createAuthorizationHeader();
         String urlGetIssues = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
-        jiraAPI.parseJsonResponseProjects(responseBody);  
+        jiraAPI.parseJsonResponseIssue(responseBody);  
     }
 
     @GetMapping(value="/gpt/recommandations")

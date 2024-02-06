@@ -61,7 +61,7 @@ public class JiraAPI {
 
         if (response.getStatus() == 200) {
             String responseBody = response.getEntity(String.class);
-            System.out.println("Issues and their complexity points incoming : ");
+            System.out.println(responseBody);
             return responseBody;
         } else {
             System.err.println("Erreur lors de la requête : " + response.getStatus());

@@ -20,8 +20,7 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 	private Rule rule;
 
 	@Override
-	public void calculateScore(List<Issue> issues) {	
-		this.rule = new Rule();
+	public void calculateScore(List<Issue> issues) {
 		rule.setScore(0);
 		for (Issue issue : issues) {
 			if (issue.getUserPoints() >= 21) {

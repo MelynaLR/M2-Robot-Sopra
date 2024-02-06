@@ -87,9 +87,9 @@ public class DatabaseInsertion {
 	    PreparedStatement preparedStatement = null;
 	    try {
 	    	connection = DatabaseController.getConnection();
-	        boolean isProjectExist = checkIssueExists(connection, project.getIdProject());
+	        boolean isProjectExist = checkProjectExist(connection, project.getIdProject());
 	    	if (isProjectExist) {
-	    		String updateSql = "UPDATE project SET nameProject = ? WHERE idIssue = ?";
+	    		String updateSql = "UPDATE project SET nameProject = ? WHERE idProject = ?";
 	            preparedStatement = connection.prepareStatement(updateSql);
 	            preparedStatement.setString(1, project.getNameProject());
 	            preparedStatement.setInt(2,project.getIdProject());       
@@ -102,7 +102,7 @@ public class DatabaseInsertion {
 	    		
 	    	}
 	    	preparedStatement.executeUpdate();	    	
-	        LOGGER.info("Issue inserted/updated into the database successfully!");
+	        LOGGER.info("project inserted/updated into the database successfully!");
 	    }
 	    catch (SQLException e) {
             LOGGER.error("Error closing resources: {}", e.getMessage());
