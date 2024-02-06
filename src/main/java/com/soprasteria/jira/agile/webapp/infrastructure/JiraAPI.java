@@ -142,8 +142,9 @@ public class JiraAPI {
                     }
                 }
             }
-        	if (issue.getJSONObject("fields").has("project") && issue.getJSONObject("fields").get("project")!= null && issue.getJSONObject("fields").get("project") instanceof String) {
-        		newIssue.setProjectId(issue.getJSONObject("fields").getString("project"));
+        	if (issue.getJSONObject("fields").has("project") && issue.getJSONObject("fields").get("project") instanceof JSONObject) {
+        		newIssue.setProjectId(Integer.valueOf(issue.getJSONObject("fields").getJSONObject("project").getInt("id")));
+        		System.out.println("id project: "+issue.getJSONObject("fields").getJSONObject("project").getInt("id"));
             } 
         	if (issue.getJSONObject("fields").has("priority") && issue.getJSONObject("fields").get("priority")!= null && issue.getJSONObject("fields").get("priority") instanceof String) {
         		newIssue.setPriority(issue.getJSONObject("fields").getString("priority") );

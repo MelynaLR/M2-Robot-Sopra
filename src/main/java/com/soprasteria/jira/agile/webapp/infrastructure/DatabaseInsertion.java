@@ -38,7 +38,7 @@ public class DatabaseInsertion {
 	            preparedStatement.setInt(5, issue.getSprintId());
 	            preparedStatement.setString(6, issue.getSprintStartDate());
 	            preparedStatement.setString(7, issue.getStatus());
-	            preparedStatement.setString(8, issue.getProjectId());
+	            preparedStatement.setInt(8, issue.getProjectId());
 	            preparedStatement.setString(9, issue.getPriority());
 	            preparedStatement.setInt(10, issue.getUserPoints());
 	            preparedStatement.setInt(11, issue.getId());
@@ -55,7 +55,7 @@ public class DatabaseInsertion {
 	            preparedStatement.setInt(6, issue.getSprintId());
 	            preparedStatement.setString(7, issue.getSprintStartDate());
 	            preparedStatement.setString(8, issue.getStatus());
-	            preparedStatement.setString(9, issue.getProjectId());
+	            preparedStatement.setInt(9, issue.getProjectId());
 	            preparedStatement.setString(10, issue.getPriority());
 	            preparedStatement.setInt(11, issue.getUserPoints());
 	        }
@@ -92,7 +92,7 @@ public class DatabaseInsertion {
 	    		String updateSql = "UPDATE project SET nameProject = ? WHERE idProject = ?";
 	            preparedStatement = connection.prepareStatement(updateSql);
 	            preparedStatement.setString(1, project.getNameProject());
-	            preparedStatement.setInt(2,project.getIdProject());       
+	            preparedStatement.setInt(2,project.getIdProject());     
 	    	}
 	    	else {
 	    		String insertSQL = "INSERT INTO project (idProject, nameProject) VALUES (?,?)";
