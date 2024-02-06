@@ -29,7 +29,7 @@ public class ReactDataController {
             List<Issue> issuesList = dbExcel.selectQueryData();
             Integer score = dataAnalysisExcel.getOneLineFromQuery(issuesList);
             String user = dataAnalysisExcel.getUserNameFromQuery(issuesList);
-          
+            
            // int globalScore = scoreCalculation.calculateGlobalScore();
 
             Object[] result = {score, user};

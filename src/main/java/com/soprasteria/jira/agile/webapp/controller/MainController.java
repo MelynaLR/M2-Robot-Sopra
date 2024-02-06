@@ -17,7 +17,6 @@ import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
 import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
 
 import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
-import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManager;
 
 import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManagerRule;
 
