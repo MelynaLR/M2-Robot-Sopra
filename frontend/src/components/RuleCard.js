@@ -11,18 +11,18 @@ function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpe
           			</button>
           		<div className='description'> {rule.description} </div>
           		<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
+          		<div className='percentage'> {rule.score} % </div>
         	</div>
 	        <div>
 		      	{isOpen && (
 				  	<div>
-				  		<p>Score: {rule.score}</p>
 			        	<NumberSelector
 			          		ruleWeight={rule.weight}
 			          		onChange={(newWeight) => handleWeightChange(newWeight, index)}
 			          		ruleIndex={index}
 			        	/>
 			        	<div className='issues-container'>
-			        		<div className='tickets-concernes'> Tickets concernés </div>
+			        		<div className='tickets-concernes'> {rule.issues.length} tickets concernés </div>
 			          		{rule.issues.map(issue => (
 			            		<div key={issue.id} className="issues">
 			              			{issue.description}
