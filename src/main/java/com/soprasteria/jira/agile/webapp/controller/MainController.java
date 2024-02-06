@@ -77,15 +77,15 @@ public class MainController {
         jiraAPI.sendRequestAPI(urlTest);
         System.out.println("Data from API updated");
         
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
-        List<String> additionalInstructions = new ArrayList<>();
-        additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
+        // List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        // List<String> additionalInstructions = new ArrayList<>();
+        // additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
-        // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+        // // Call ChatGPTClient to generate recommendations based on the retrieved issues
+        // String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
     
-        // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);
+        // // Print or use the recommendation as needed
+        // System.out.println("Recommendation from ChatGPT: " + recommendation);
     }
     
     @GetMapping(value="/updateProjects")

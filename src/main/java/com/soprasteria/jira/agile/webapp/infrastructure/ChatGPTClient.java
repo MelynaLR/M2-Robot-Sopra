@@ -31,9 +31,9 @@ public class ChatGPTClient {
                 .build();
         */
     	OkHttpClient client = new OkHttpClient.Builder()
-    	        .connectTimeout(60, TimeUnit.SECONDS)
-    	        .writeTimeout(120, TimeUnit.SECONDS)
-    	        .readTimeout(60, TimeUnit.SECONDS)
+    	        .connectTimeout(300, TimeUnit.SECONDS)
+    	        .writeTimeout(300, TimeUnit.SECONDS)
+    	        .readTimeout(150, TimeUnit.SECONDS)
     	        .build();
         
         // Prepare the input prompt
