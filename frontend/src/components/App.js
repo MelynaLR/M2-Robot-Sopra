@@ -50,6 +50,19 @@ function App() {
   	};
  		fetchData();
 	}, []);
+	
+	const sendWeightToBackend = async (newWeight) => {
+    try {
+      const apiUrl = 'http://localhost:8080/updateWeight'; 
+      const response = await axios.post(apiUrl, { weight: newWeight });
+
+      	console.log('Weight update successful:', response.data);
+      	// Ajoutez d'autres logiques de gestion de la réponse si nécessaire.
+    	} catch (error) {
+      	console.error('Error updating weight:', error);
+      // Gérez les erreurs ici, par exemple, en mettant à jour l'état d'une variable d'erreur.
+    	}
+  	};
 
 
   	const handleRefresh = () => {
