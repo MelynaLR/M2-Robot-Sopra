@@ -84,6 +84,7 @@ public class DatabaseInsertion {
     public static void insertProjectIntoDatabase(Project project) {
     	LOGGER.info("Beginning insertion to the database for project elements ...");
     	Connection connection = null;
+
 	    PreparedStatement preparedStatement = null;
 	    try {
 	    	connection = DatabaseController.getConnection();
@@ -106,6 +107,7 @@ public class DatabaseInsertion {
 	    }
 	    catch (SQLException e) {
             LOGGER.error("Error closing resources: {}", e.getMessage());
+
             e.printStackTrace();
         }
 	    finally {
