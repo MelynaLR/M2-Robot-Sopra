@@ -14,8 +14,8 @@ const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
   }, [ruleWeight]);
 
   return (
-    <div>
-      <p>Importance de la règle :</p>
+    <div className='weight-container'>
+      <div className='normal-text'> Priorité de la règle : </div>
       <div className="number-container">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
           <button
@@ -27,7 +27,6 @@ const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
 		  </button>
         ))}
       </div>
-      {selectedNumber && <p>Vous avez choisi le nombre {selectedNumber}.</p>}
     </div>
   );
 }
