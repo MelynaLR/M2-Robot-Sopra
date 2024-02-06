@@ -38,7 +38,7 @@ public class DatabaseInsertion {
 	            preparedStatement.setInt(5, issue.getSprintId());
 	            preparedStatement.setString(6, issue.getSprintStartDate());
 	            preparedStatement.setString(7, issue.getStatus());
-	            preparedStatement.setString(8, issue.getProjectId());
+	            preparedStatement.setInt(8, issue.getProjectId());
 	            preparedStatement.setString(9, issue.getPriority());
 	            preparedStatement.setInt(10, issue.getUserPoints());
 	            preparedStatement.setInt(11, issue.getId());
@@ -55,7 +55,7 @@ public class DatabaseInsertion {
 	            preparedStatement.setInt(6, issue.getSprintId());
 	            preparedStatement.setString(7, issue.getSprintStartDate());
 	            preparedStatement.setString(8, issue.getStatus());
-	            preparedStatement.setString(9, issue.getProjectId());
+	            preparedStatement.setInt(9, issue.getProjectId());
 	            preparedStatement.setString(10, issue.getPriority());
 	            preparedStatement.setInt(11, issue.getUserPoints());
 	        }
@@ -88,12 +88,12 @@ public class DatabaseInsertion {
 	    PreparedStatement preparedStatement = null;
 	    try {
 	    	connection = DatabaseController.getConnection();
-	        boolean isProjectExist = checkIssueExists(connection, project.getIdProject());
+	        boolean isProjectExist = checkProjectExist(connection, project.getIdProject());
 	    	if (isProjectExist) {
-	    		String updateSql = "UPDATE project SET nameProject = ? WHERE idIssue = ?";
+	    		String updateSql = "UPDATE project SET nameProject = ? WHERE idProject = ?";
 	            preparedStatement = connection.prepareStatement(updateSql);
 	            preparedStatement.setString(1, project.getNameProject());
-	            preparedStatement.setInt(2,project.getIdProject());       
+	            preparedStatement.setInt(2,project.getIdProject());     
 	    	}
 	    	else {
 	    		String insertSQL = "INSERT INTO project (idProject, nameProject) VALUES (?,?)";
@@ -103,7 +103,7 @@ public class DatabaseInsertion {
 	    		
 	    	}
 	    	preparedStatement.executeUpdate();	    	
-	        LOGGER.info("Issue inserted/updated into the database successfully!");
+	        LOGGER.info("project inserted/updated into the database successfully!");
 	    }
 	    catch (SQLException e) {
             LOGGER.error("Error closing resources: {}", e.getMessage());

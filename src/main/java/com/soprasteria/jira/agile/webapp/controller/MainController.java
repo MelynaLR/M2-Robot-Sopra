@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -63,14 +64,9 @@ public class MainController {
     private ScoreCalculation scoreCalculation;
     
     @GetMapping(value = "/chatgpt")
-    public String generateRecommendation() {
-        jiraAPI.createAuthorizationHeader();
-        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        String responseBody = jiraAPI.sendRequestAPI(urlTest);
-        jiraAPI.parseJsonResponseIssue(responseBody);
-        
+    public String generateRecommendation() {     
         // Call DatabaseReader to retrieve issues from the database
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(10002);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
     
@@ -86,9 +82,10 @@ public class MainController {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         jiraAPI.sendRequestAPI(urlTest);
-        System.out.println("Data from API updated");
+        jiraAPI.parseJsonResponseIssue(urlTest);
+        LOGGER.info("Data from API updated");
         
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
@@ -112,14 +109,14 @@ public class MainController {
         jiraAPI.createAuthorizationHeader();
         String urlGetIssues = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
-        jiraAPI.parseJsonResponseProjects(responseBody);  
+        jiraAPI.parseJsonResponseIssue(responseBody);  
     }
 
     @GetMapping(value="/gpt/recommandations")
     public void gptRecommandations() {
         LOGGER.info("starting endpoint gpt recommandations");
         
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
@@ -133,17 +130,25 @@ public class MainController {
                 
     @GetMapping(value="/globalScore")
     public int scoreResult() {
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
         return scoreCalculation.calculateGlobalScore();
     }
     
     @GetMapping(value="/retrieveRules")
     public List<Rule> getAllRules(){
         scoreCalculation.refreshListRules();
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
         return scoreCalculation.getListRules();
     }
+    
+    
+    @GetMapping(value = "/changeWeight/{description}/newWeight/{newWeight}/idProject/{idProject}")
+    public void getDocuments(@PathVariable("description") String description, @PathVariable("newWeight") int newWeight, @PathVariable("idProject") int idProject ){
+    	
+    }
+    	
 }
+
 
 	// @GetMapping(value = "/static/api/data")
     // public ResponseEntity<Object[]> getData() {
