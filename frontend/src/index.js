@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import './index.css'
+import './index.css';
 
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
@@ -12,55 +12,37 @@ function App() {
   const project_id = 13;
   const [rules, setRules] = useState(null);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = 'http://localhost:8080/globalScore';
-        const response = await axios.get(apiUrl);
-        console.log('Data from API (Global Score):', response.data);
-        setGlobalScore(response.data);
+        const apiUrlGlobalScore = 'http://localhost:8080/globalScore';
+        const responseGlobalScore = await axios.get(apiUrlGlobalScore);
+        setGlobalScore(responseGlobalScore.data);
+
+        const apiUrlRules = 'http://localhost:8080/retrieveRules';
+        const responseRules = await axios.get(apiUrlRules);
+        setRules(responseRules.data);
       } catch (error) {
-        console.error('Error fetching global score:', error);
+        console.error('Error fetching data:', error);
         setError('Error fetching data. Please try again later.');
       }
     };
 
     fetchData();
   }, []);
-  
-  useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const apiUrl = 'http://localhost:8080/retrieveRules';
-      const response = await axios.get(apiUrl);
-      console.log('Calculation Rules from API (Rules):', response.data);
-      setRules(response.data);
-    } catch (error) {
-      console.error('Error fetching rules:', error);
-      setError('Error fetching data. Please try again later.');
-    }
-  };
-
-  fetchData();
-}, []);
 
   const handleRefresh = () => {
-    
     axios.get('http://localhost:8080')
       .then(response => {
         console.log('Refreshed data:', response.data);
         window.location.reload(); // Refresh the page
-        window.location.reload();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 100);
       })
       .catch(error => {
         console.error('Error refreshing data:', error);
         setError('Error refreshing data. Please try again later.');
       });
   };
+
   const getGaugeColor = (score) => {
     if (score >= 75) {
       return '#4CAF50'; // Green
@@ -70,32 +52,29 @@ function App() {
       return '#FF5733'; // Red
     }
   };
-  
 
-const DropdownIssues = ({ rule }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const DropdownIssues = ({ rule }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen);
+    };
+
+    return (
+      <div className="dropdown">
+        <button onClick={toggleDropdown} className="issues-button">See related issues</button>
+        {isOpen && (
+          <div>
+            {rule.issues.map(issue => (
+              <div key={issue.id} className="issues">
+                {issue.description}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
-
-  return (
-    <div className="dropdown">
-      <button onClick={toggleDropdown} className="issues-button">See related issues</button>
-      {isOpen && (
-        <div>
-		  {rule.issues.map(issue => (
-		    <div key={issue.id} className="issues">
-		      {issue.description}
-		    </div>
-		  ))}
-		</div>
-      )}
-    </div>
-  );
-};
-
-
 
   return (
     <div style={styles.container}>
@@ -118,36 +97,20 @@ const DropdownIssues = ({ rule }) => {
           <p>Conseil : </p>
           <p>Tickets concernés : </p>
           <button type="button" onClick={handleRefresh}>Rafraichir</button>
-          
+
           <h1 style={styles.heading}> TEST LISTE AVEC RULES </h1>
           {rules && rules.map((rule, index) => (
-      		<div key={index} className="card">
-        	<p>Weight: {rule.weight}</p>
-        	<p>Score: {rule.score}</p>
-        	<p>Description: {rule.description}</p> 
-        	<div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
-        	<DropdownIssues rule={rule} />
-        	
-        	
-        	
-        	
-
-   
-		      </div>
-		    ))}
-		    
-
-
-
-		
-		
-		
-		
-		
+            <div key={index} className="card">
+              <p>Weight: {rule.weight}</p>
+              <p>Score: {rule.score}</p>
+              <p>Description: {rule.description}</p>
+              <div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
+              <DropdownIssues rule={rule} />
+            </div>
+          ))}
         </>
       )}
     </div>
-    
   );
 }
 
