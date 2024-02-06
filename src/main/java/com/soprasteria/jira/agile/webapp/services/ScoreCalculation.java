@@ -35,6 +35,7 @@ public class ScoreCalculation {
 	public void getRules(List<Issue> issues) {
 		this.listRules = new ArrayList<>();
 		for (DataAnalysisRule rule : rules) {
+			rule.getRule().refreshIssueList();
 			rule.calculateScore(issues);
 			rule.initializeRuleValues();
 			listRules.add(rule.getRule());

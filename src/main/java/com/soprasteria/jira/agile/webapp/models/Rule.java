@@ -3,6 +3,7 @@ package com.soprasteria.jira.agile.webapp.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,9 @@ public class Rule {
 		issues = new ArrayList<Issue>();
 	}
 	
+	public void refreshIssueList() {
+		issues = new ArrayList<Issue>();
+	}
 	
 	public int getWeight() {
 		return weight;

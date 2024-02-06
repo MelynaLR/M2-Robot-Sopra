@@ -21,6 +21,7 @@ function App() {
   	useEffect(() => {
     	const fetchData = async () => {
       		try {
+				 setGlobalScore(null);
         		const apiUrl = 'http://localhost:8080/globalScore';
         		const response = await axios.get(apiUrl);
         		console.log('Data from API (Global Score):', response.data);
@@ -37,6 +38,7 @@ function App() {
   	useEffect(() => {
   		const fetchData = async () => {
     		try {
+				setRules(null);
       			const apiUrl = 'http://localhost:8080/retrieveRules';
       			const response = await axios.get(apiUrl);
       			console.log('Calculation Rules from API (Rules):', response.data);
@@ -56,9 +58,9 @@ function App() {
         	console.log('Refreshed data:', response.data);
         	window.location.reload(); // Refresh the page
         	window.location.reload();
-        	// setTimeout(() => {
-       	 	//   window.location.reload();
-        	// }, 100);
+        	setTimeout(() => {
+       	 	 window.location.reload();
+        	 }, 100);
       	})
       	.catch(error => {
         	console.error('Error refreshing data:', error);

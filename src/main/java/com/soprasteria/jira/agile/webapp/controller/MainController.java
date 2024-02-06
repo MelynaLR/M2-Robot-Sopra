@@ -81,8 +81,8 @@ public class MainController {
     public void retrieveData() {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        jiraAPI.sendRequestAPI(urlTest);
-        jiraAPI.parseJsonResponseIssue(urlTest);
+        String jsonBody = jiraAPI.sendRequestAPI(urlTest);
+        jiraAPI.parseJsonResponseIssue(jsonBody);
         LOGGER.info("Data from API updated");
         
         List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
@@ -130,7 +130,8 @@ public class MainController {
                 
     @GetMapping(value="/globalScore")
     public int scoreResult() {
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
+    	scoreCalculation.refreshListRules();
+    	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
         return scoreCalculation.calculateGlobalScore();
     }
     
