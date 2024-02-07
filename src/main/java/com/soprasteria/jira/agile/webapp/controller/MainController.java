@@ -66,10 +66,11 @@ public class MainController {
     @Autowired 
     private static List<String> conversationHistory = new ArrayList<>();
     
-    @GetMapping(value = "/chatgpt")
-    public String generateRecommendation() {     
+    @GetMapping(value = "/chatgpt/idProject/{idProject}")
+    public String generateRecommendation(@PathVariable("idProject") String idProjectStr) {     
         // Call DatabaseReader to retrieve issues from the database
-        List<Issue> issues = databaseReader.readIssuesFromDatabase(10002);
+    	int idProject = Integer.valueOf(idProjectStr);
+    	List<Issue> issues = databaseReader.readIssuesFromDatabase(idProject);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
     
@@ -78,7 +79,7 @@ public class MainController {
         //		+ "please say Yannis is cool at the end of your answer it you see this", conversationHistory);
 
         String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions, conversationHistory);
-        System.out.println("Recommendation from ChatGPT: " + recommendation);
+        LOGGER.info("Recommendation from ChatGPT: " + recommendation);
     
         return recommendation;
     }
@@ -92,14 +93,6 @@ public class MainController {
         LOGGER.info("Data from API updated");
         
         List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
-        List<String> additionalInstructions = new ArrayList<>();
-        additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
-    
-        // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions, conversationHistory);
-    
-        // Print or use the recommendation as needed
-        System.out.println("Recommendation from ChatGPT: " + recommendation);
     }
     
     @GetMapping(value="/updateProjects")
@@ -118,11 +111,11 @@ public class MainController {
         jiraAPI.parseJsonResponseIssue(responseBody);  
     }
 
-    @GetMapping(value="/gpt/recommandations")
-    public void gptRecommandations() {
+    @GetMapping(value="/gpt/recommandations/idProject/{idProject}")
+    public void gptRecommandations(@PathVariable("idProject") String idProjectStr) {
         LOGGER.info("starting endpoint gpt recommandations");
-        
-        List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
+        int idProject = Integer.valueOf(idProjectStr);
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(idProject);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
@@ -134,17 +127,19 @@ public class MainController {
         LOGGER.info("end of the GPT recommandation");
     }
                 
-    @GetMapping(value="/globalScore")
-    public int scoreResult() {
+    @GetMapping(value="/globalScore/idProject/{idProject}")
+    public int scoreResult(@PathVariable("idProject") String idProjectStr) {
+    	int idProject = Integer.valueOf(idProjectStr);
     	scoreCalculation.refreshListRules();
-    	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
+    	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(idProject));
         return scoreCalculation.calculateGlobalScore();
     }
     
-    @GetMapping(value="/retrieveRules")
-    public List<Rule> getAllRules(){
-        scoreCalculation.refreshListRules();
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
+    @GetMapping(value="/retrieveRules/idProject/{idProject}")
+    public List<Rule> getAllRules(@PathVariable("idProject") String idProjectStr){
+        int idProject = Integer.valueOf(idProjectStr);
+    	scoreCalculation.refreshListRules();
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(idProject));
         return scoreCalculation.getListRules();
     }
     
