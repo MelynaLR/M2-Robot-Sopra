@@ -76,6 +76,5 @@ CREATE TABLE `issue` (
   `resolutionDate` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idIssue`),
   UNIQUE KEY `idIssue_UNIQUE` (`idIssue`),
-  KEY `project_id_idx` (`project_id`),
-  CONSTRAINT `project_id` FOREIGN KEY (`project_id`) REFERENCES `project` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10025 DEFAULT CHARSET=utf8mb3;
+  KEY `project_id_idx` (`project_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10026 DEFAULT CHARSET=utf8mb3;

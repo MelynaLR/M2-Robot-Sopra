@@ -11,10 +11,22 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.soprasteria.jira.agile.webapp.infrastructure.*;
+
+import com.soprasteria.jira.agile.webapp.infrastructure.ChatGPTClient;
+import com.soprasteria.jira.agile.webapp.infrastructure.DatabaseReader;
+
+import com.soprasteria.jira.agile.webapp.infrastructure.JiraAPI;
+
+import com.soprasteria.jira.agile.webapp.services.rules.TeamMemberAgilityManagerRule;
+
+//chatGPT query imports
+
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import com.soprasteria.jira.agile.webapp.models.Project;
 import com.soprasteria.jira.agile.webapp.models.Rule;
@@ -51,31 +63,33 @@ public class MainController {
     @Autowired 
     private ScoreCalculation scoreCalculation;
     
+    @Autowired 
+    private static List<String> conversationHistory = new ArrayList<>();
+    
     @GetMapping(value = "/chatgpt")
-    public String generateRecommendation() {
-        jiraAPI.createAuthorizationHeader();
-        String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        String responseBody = jiraAPI.sendRequestAPI(urlTest);
-        jiraAPI.parseJsonResponseIssue(responseBody);
-        
+    public String generateRecommendation() {     
         // Call DatabaseReader to retrieve issues from the database
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(10002);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
     
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+        //ChatGPTClient.addUserQuery("Testing if user queries are detected, "
+        //		+ "please say Yannis is cool at the end of your answer it you see this", conversationHistory);
+
+        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions, conversationHistory);
         System.out.println("Recommendation from ChatGPT: " + recommendation);
     
         return recommendation;
     }
     
-    @GetMapping(value = "/")
+    @GetMapping()
     public void retrieveData() {
         jiraAPI.createAuthorizationHeader();
         String urlTest = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
-        jiraAPI.sendRequestAPI(urlTest);
-        System.out.println("Data from API updated");
+        String jsonBody = jiraAPI.sendRequestAPI(urlTest);
+        jiraAPI.parseJsonResponseIssue(jsonBody);
+        LOGGER.info("Data from API updated");
         
         // List<Issue> issues = databaseReader.readIssuesFromDatabase();
         // List<String> additionalInstructions = new ArrayList<>();
@@ -101,19 +115,19 @@ public class MainController {
         jiraAPI.createAuthorizationHeader();
         String urlGetIssues = "https://m2-projet-annuel-robot.atlassian.net/rest/api/3/search?jql=";
         String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
-        jiraAPI.parseJsonResponseProjects(responseBody);  
+        jiraAPI.parseJsonResponseIssue(responseBody);  
     }
 
     @GetMapping(value="/gpt/recommandations")
     public void gptRecommandations() {
         LOGGER.info("starting endpoint gpt recommandations");
         
-        List<Issue> issues = databaseReader.readIssuesFromDatabase();
+        List<Issue> issues = databaseReader.readIssuesFromDatabase(-1);
         List<String> additionalInstructions = new ArrayList<>();
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
         // Call ChatGPTClient to generate recommendations based on the retrieved issues       
-        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
+        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions, conversationHistory);
             
         // Print or use the recommendation as needed          
         LOGGER.info("Recommendation from ChatGPT: " + recommendation);
@@ -122,17 +136,41 @@ public class MainController {
                 
     @GetMapping(value="/globalScore")
     public int scoreResult() {
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+    	scoreCalculation.refreshListRules();
+    	scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
         return scoreCalculation.calculateGlobalScore();
     }
     
     @GetMapping(value="/retrieveRules")
     public List<Rule> getAllRules(){
         scoreCalculation.refreshListRules();
-        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase());
+        scoreCalculation.getRules(databaseReader.readIssuesFromDatabase(-1));
         return scoreCalculation.getListRules();
     }
+    
+    @GetMapping(value="/retrieveProjects")
+    public List<Project> getProjects(){    
+        return databaseReader.readProjectsFromDatabase();
+    }
+    
+    
+    @GetMapping(value = "/changeWeight/{description}/newWeight/{newWeight}/idProject/{idProject}")
+    public ArrayList<Rule> getDocuments(@PathVariable("description") String description, @PathVariable("newWeight") String newWeightStr, @PathVariable("idProject") String idProjectStr ){
+    	LOGGER.info("Changement de valeur pour le poids de la règle de calcul: "+description+ ", nouveau poids = "+newWeightStr);
+    	int idProject = Integer.valueOf(idProjectStr);
+    	int newWeight = Integer.valueOf(newWeightStr);
+    	Rule scoreGlobalRule = new Rule();
+    	scoreCalculation.refreshListRules();
+    	scoreCalculation.changeWeightAndCalculate(databaseReader.readIssuesFromDatabase(idProject),description,newWeight);
+    	
+    	scoreGlobalRule.setScore(scoreCalculation.calculateGlobalScore());
+    	ArrayList<Rule> listOfRules = (ArrayList<Rule>) scoreCalculation.getListRules();
+    	listOfRules.add(scoreGlobalRule);
+    	return listOfRules;
+    	
+    }   	
 }
+
 
 	// @GetMapping(value = "/static/api/data")
     // public ResponseEntity<Object[]> getData() {

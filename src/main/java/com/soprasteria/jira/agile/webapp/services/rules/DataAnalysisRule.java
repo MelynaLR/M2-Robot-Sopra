@@ -6,6 +6,7 @@ import java.util.Map;
 import com.soprasteria.jira.agile.webapp.models.Issue;
 import com.soprasteria.jira.agile.webapp.models.Rule;
 
+
 public interface DataAnalysisRule {
 	
 	void calculateScore(List<Issue> issues);	

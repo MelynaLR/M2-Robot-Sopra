@@ -3,6 +3,7 @@ package com.soprasteria.jira.agile.webapp.infrastructure;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,11 +19,12 @@ public class ChatGPTClient {
 	
 	@Value("${chatgpt.token}")
 	private String API_KEY;
+	//private static List<String> conversationHistory = new ArrayList<>();
 	
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String MODEL_IDENTIFIER = "gpt-3.5-turbo"; // OR gpt-4
+    private static final String MODEL_IDENTIFIER = "gpt-3.5-turbo"; // OR "gpt-4"
     
-    public String generateRecommendation(List<Issue> issues, List<String> additionalInstructions) {
+    public String generateRecommendation(List<Issue> issues, List<String> additionalInstructions, List<String> conversationHistory) {
     	System.out.println("token: "+API_KEY);
         //OkHttpClient client = new OkHttpClient();
     	/*
@@ -44,11 +46,19 @@ public class ChatGPTClient {
             promptBuilder.append("- ").append(issue.getDescription()).append(" with ").append(issue.getUserPoints()).append(" user points\n");
         }
         
+        // Append conversation history
+        promptBuilder.append("Answer as a continuation to this conversation, so don't give the advice again if the user is just asking about something else "
+        		+ "(if there's nothing, then ignore this sentence) : ").append("\n");
+        for (String message : conversationHistory) {
+            promptBuilder.append("- ").append(message).append("\n");
+        }
+        
         // Append additional instructions
+        promptBuilder.append("Take into account the following instructions : ").append("\n");
+
         for (String instruction : additionalInstructions) {
             promptBuilder.append(instruction).append("\n");
         }
-        
         
         String prompt = promptBuilder.toString();
 
@@ -77,7 +87,7 @@ public class ChatGPTClient {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 System.out.println("Response from ChatGPT API: " + responseBody);
-                return extractRecommendation(responseBody);
+                return extractRecommendation(responseBody, conversationHistory);
             } else {
                 System.err.println("Error from ChatGPT API: " + response.code() + " " + response.body().string());
             }
@@ -87,8 +97,12 @@ public class ChatGPTClient {
 
         return "Error generating recommendation";
     }
+    
+    public static void addUserQuery(String query, List<String> conversationHistory) {
+        conversationHistory.add("User: " + query);
+    }
 
-    private static String extractRecommendation(String responseBody) {
+    private static String extractRecommendation(String responseBody, List<String> conversationHistory) {
         try {
             // Parse the JSON response
             JSONObject jsonResponse = new JSONObject(responseBody);
@@ -98,6 +112,8 @@ public class ChatGPTClient {
             JSONObject firstChoice = choices.getJSONObject(0);
             JSONObject message = firstChoice.getJSONObject("message");
             String recommendation = message.getString("content");
+            
+            conversationHistory.add("ChatGPT: " + recommendation);
 
             // Return the extracted recommendation
             return recommendation;

@@ -14,7 +14,7 @@ public class Issue{
     private int sprintId;
     private String sprintStartDate;
     private String status;
-    private String projectId;
+    private int projectId;
     private String priority;
     private String user;  
     private String taux;
@@ -58,7 +58,7 @@ public class Issue{
     public String getUser() {
     	return user;
     }
-    public String getProjectId() {
+    public int getProjectId() {
         return projectId;
     }
 
@@ -108,7 +108,7 @@ public class Issue{
     }
     
 
-    public void setProjectId(String projectId) {
+    public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
     
@@ -128,19 +128,6 @@ public class Issue{
 
     
     
-	public Issue buildIssue() {
-		Issue builtIssue = new Issue();
-		builtIssue.setId(this.id);
-		builtIssue.setDescription(this.description);
-		builtIssue.setCreationDate(this.creationDate);
-		builtIssue.setSprintEndDate(this.sprintEndDate);
-		builtIssue.setSprintStartDate(this.sprintStartDate);
-		builtIssue.setStatus(this.status);
-		builtIssue.setProjectId(this.projectId);
-		builtIssue.setPriority(this.priority);
-		builtIssue.setUser(this.user);
-		builtIssue.setUserPoints(this.userPoints);
-		return builtIssue;	
-	}
+
 	
 }

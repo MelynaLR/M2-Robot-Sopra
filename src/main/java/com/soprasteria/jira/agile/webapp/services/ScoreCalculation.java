@@ -31,9 +31,11 @@ public class ScoreCalculation {
 	public void refreshListRules() {
 		this.listRules = new ArrayList<>();
 	}
+	
 	public void getRules(List<Issue> issues) {
 		this.listRules = new ArrayList<>();
 		for (DataAnalysisRule rule : rules) {
+			rule.getRule().refreshIssueList();
 			rule.calculateScore(issues);
 			rule.initializeRuleValues();
 			listRules.add(rule.getRule());
@@ -42,6 +44,32 @@ public class ScoreCalculation {
 	
 	public List<Rule> getListRules(){
 		return this.listRules;
+	}
+	
+	/**
+	 * Refresh the list, change the weight of a rule and calculate the new scores
+	 * @param the list of issues from the project or the Jira space
+	 * @param description The description of the rule which the weight will be changed
+	 * @param newWeight the new weight of the rule
+	 */
+	public void changeWeightAndCalculate (List<Issue> issues, String description, int newWeight) {
+		this.listRules = new ArrayList<>();
+		for (DataAnalysisRule rule : rules) {
+			rule.initializeRuleValues();
+			
+			if (rule.getRule().getDescription().equals(description)){
+				rule.getRule().setWeight(newWeight);
+				LOGGER.info("new weight set for the rule "+rule.getRule().getDescription());
+				
+			}
+			rule.getRule().refreshIssueList();
+			rule.calculateScore(issues);
+			LOGGER.info("Modification / Current rule description = "+rule.getRule().getDescription());
+			LOGGER.info("Modification / Current rule weight = "+rule.getRule().getWeight());
+			LOGGER.info("Modification / Current rule score = "+rule.getRule().getScore());
+			
+			this.listRules.add(rule.getRule());
+		}
 	}
 	
 

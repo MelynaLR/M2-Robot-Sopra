@@ -1,0 +1,173 @@
+@font-face {
+  font-family: 'HurmeGeometric';
+  src: url('./HurmeGeometricSans1.otf') format('opentype');
+}
+
+body {
+  font-family: HurmeGeometric, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(238, 238, 255);
+}
+
+.main-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: '0 2px 4px rgba(0, 0, 0, 0.1)';
+  border: 1px solid #dfe1e6;
+  background-color: white;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  overflow: hidden;
+  width: 100%;
+  font-family: 'HurmeGeometric';
+  background-color: white;
+}
+
+.issues {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0 1px 4px rgba(128, 128, 255, 0.4);
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.issues .description {
+	font-weight: normal;
+	font-size: 16px;
+	font-weight: bold;
+	margin-left: 20px;
+}
+
+.issues-container {
+  background-color: rgb(238, 238, 255);
+  border-radius: 8px;
+  box-shadow: '0 2px 4px rgba(0, 0, 0, 0.1)';
+  border: 1px solid #dfe1e6;
+  margin: 20px;
+  padding: 10px;
+}
+
+.tickets-concernes {
+	font-weight: bold;
+	font-size: 18px;
+	padding: 15px;
+}
+
+.issues-button{
+	background-color: white;
+	border-radius: 4px;
+	color: rgb(128, 128, 255);
+	font-weight: bold;
+	font-size: 15px;
+	padding: 5px;
+	border: 0px;
+	font-size: 20px;
+	margin-right: 20px;
+	box-shadow: 0 2px 4px rgb(192, 192, 192);
+	width: 40px;
+}
+
+.issues-button:hover{
+	background-color: rgb(230, 230, 255);
+}
+
+
+
+.description-container {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	margin-right: 10px;
+}
+
+.description {
+	width: 60%;
+	font-weight: bold;
+	font-size: 20px;
+	padding-right: 20px;
+}
+
+.progress-bar {
+    width: 40%;
+    height: 25px;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: var(--progress, 0%);
+    background-color: rgb(128, 128, 255);
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+}
+
+.percentage {
+	padding-left: 20px;
+	white-space: nowrap;
+	font-size: 18px;
+}
+
+.number-button {
+  background-color: white;
+  border-radius: 4px;
+  color: rgb(128, 128, 255);
+  border: 0px;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgb(192, 192, 192);
+  width: 40px;
+  margin: 2px;
+  justify-content: center;
+  
+}
+
+.number-button:hover {
+  background-color: rgb(230, 230, 255);
+}
+
+.number-button.selected {
+  background-color: rgb(128, 128, 255);
+  color: white;
+  font-weight: bold;
+}
+
+.number-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 60%;
+	margin-left: 20px;
+}
+
+.weight-container {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	margin-right: 10px;
+	justify-content: center;
+}
+
+.normal-text {
+	white-space: nowrap;
+	font-size: 18px;
+}
