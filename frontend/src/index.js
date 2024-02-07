@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './index.css';
+import loadingGif from './Spinner-2.gif';
 
 function App() {
   const [agilityScore, setAgilityScore] = useState(null);
@@ -11,6 +12,11 @@ function App() {
   const [error, setError] = useState(null);
   const project_id = 13;
   const [rules, setRules] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState({});
+  const [chatGPTData, setChatGPTData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showData, setShowData] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +28,10 @@ function App() {
         const apiUrlRules = 'http://localhost:8080/retrieveRules';
         const responseRules = await axios.get(apiUrlRules);
         setRules(responseRules.data);
+
+        const chatGPTResponse = await axios.get('http://localhost:8080/chatgpt');
+        setChatGPTData(chatGPTResponse.data);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Error fetching data. Please try again later.');
@@ -30,41 +40,61 @@ function App() {
 
     fetchData();
   }, []);
+  function formatChatGPTData(data) {
+    if (!data) return null;
 
-  const handleRefresh = () => {
-    axios.get('http://localhost:8080')
-      .then(response => {
-        console.log('Refreshed data:', response.data);
-        window.location.reload(); // Refresh the page
-      })
-      .catch(error => {
-        console.error('Error refreshing data:', error);
-        setError('Error refreshing data. Please try again later.');
-      });
-  };
+    return data.split(/\d+\./).filter(item => item.trim().length > 0).map((item, index) => (
+      <p key={index}>{item.trim()}</p>
+    ));
+  }
 
-  const getGaugeColor = (score) => {
-    if (score >= 75) {
-      return '#4CAF50'; // Green
-    } else if (score >= 50) {
-      return '#FFC107'; // Yellow
-    } else {
-      return '#FF5733'; // Red
-    }
-  };
 
-  const DropdownIssues = ({ rule }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
+  function RenderChatGPTData() {
+    const [showData, setShowData] = useState(false);
+  
+    const toggleDataVisibility = () => {
+      setShowData(!showData);
     };
+  
+    return (
+      <div className="chatGPT-container">
+        {!isLoading && (
+          <h2>
+            ChatGPT Data{' '}
+            <button className="show-data-button" onClick={toggleDataVisibility}>
+              {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
+            </button>
+          </h2>
+        )}
+        {isLoading ? (
+          <div className="loading-container">
+            <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
+          </div>
+        ) : (
+          <div>
+            <p>{chatGPTData}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+  
 
+  const LoadingLogo = () => {
+    return (
+      <div className="loading-container">
+        <div className="loading-logo">
+          <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
+        </div>
+      </div>
+    );
+  };
+
+  const DropdownIssues = ({ rule, isOpen }) => {
     return (
       <div className="dropdown">
-        <button onClick={toggleDropdown} className="issues-button">See related issues</button>
         {isOpen && (
-          <div>
+          <div className="dropdown-content">
             {rule.issues.map(issue => (
               <div key={issue.id} className="issues">
                 {issue.description}
@@ -76,47 +106,128 @@ function App() {
     );
   };
 
-  return (
-    <div style={styles.container}>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {globalScore !== null && (
-        <>
+  const handleRefresh = () => {
+    axios.get('http://localhost:8080')
+      .then(response => {
+        console.log('Refreshed data:', response.data);
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error refreshing data:', error);
+        setError('Error refreshing data. Please try again later.');
+      });
+  };
+
+  const getGaugeColor = (score) => {
+    const minScore = 0;
+    const maxScore = 100;
+
+    const interpolateColor = (value, min, max) => {
+      const normalizedValue = (value - min) / (max - min);
+      const red = Math.round(255 * (1 - normalizedValue));
+      const green = Math.round(255 * normalizedValue);
+      const blue = 0;
+      return `rgb(${red}, ${green}, ${blue})`;
+    };
+
+    return interpolateColor(score, minScore, maxScore);
+  };
+
+  const toggleDropdown = (ruleIndex) => {
+    setDropdownStates((prevState) => ({
+      ...prevState,
+      [ruleIndex]: !prevState[ruleIndex],
+    }));
+  };
+
+  const handleWeightChange = (newWeight, ruleIndex) => {
+    setRules((prevRules) => {
+      const updatedRules = [...prevRules];
+      updatedRules[ruleIndex] = { ...updatedRules[ruleIndex], weight: newWeight };
+      return updatedRules;
+    });
+  };
+
+  const NumberSelector = ({ ruleWeight, onChange }) => {
+    const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
+
+    const handleNumberClick = (number) => {
+      setSelectedNumber(number);
+      onChange(number);
+    };
+
+    useEffect(() => {
+      setSelectedNumber(ruleWeight);
+    }, [ruleWeight]);
+  };
+
+  const toggleDataVisibility = () => {
+    setShowData(!showData);
+  };
+
+    return (
+      <body>
+        <div style={styles.container}>
+          {error && <p style={{ color: 'darkorange' }}>{error}</p>}
           <h1 style={styles.heading}>User, voici votre profil d'agilité sur Jira</h1>
           <select name="thelist" onChange={(e) => console.log(e.target.value)}>
             <option>Projet {project_id}</option>
           </select>
-          <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(globalScore) }}>
-            <p style={styles.agilityScore}>Global Score: {globalScore}</p>
+  
+          <div className="app-container">
+            <h2>Votre conseil personnalisé réalisé par ChatGPT</h2>
+            <div className="chatGPT-container">
+              {isLoading ? (
+                <div className="loading-container">
+                  <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
+                </div>
+              ) : (
+                <div>
+                  <button className="show-data-button" onClick={toggleDataVisibility}>
+                    {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
+                  </button>
+                  {showData && formatChatGPTData(chatGPTData)}
+                </div>
+              )}
+            </div>
           </div>
-          <h2 style={styles.sprintProgress}>Règle 1: Cas des tickets non résoluts à la fin d'un Sprint  </h2>
-          <p style={styles.sprintProgress}>Score de la règle 1 : {agilityScore}</p>
-          <p>Conseil : </p>
-          <p>Tickets concernés : </p>
-          <h2 style={styles.sprintProgress}>Règle 2: Cas des tickets avec des story points trop élevés</h2>
-          <p style={styles.sprintProgress}>Score de la règle 2 : {scoreComplexity}</p>
-          <p>Conseil : </p>
-          <p>Tickets concernés : </p>
+  
+          {globalScore !== null && (
+            <div style={{ ...styles.gaugeContainer, backgroundColor: getGaugeColor(globalScore) }}>
+              <p style={styles.agilityScore}>Global Score: {globalScore}</p>
+            </div>
+          )}
+  
           <button type="button" onClick={handleRefresh}>Rafraichir</button>
-
-          <h1 style={styles.heading}> TEST LISTE AVEC RULES </h1>
+  
           {rules && rules.map((rule, index) => (
-            <div key={index} className="card">
-              <p>Weight: {rule.weight}</p>
-              <p>Score: {rule.score}</p>
-              <p>Description: {rule.description}</p>
-              <div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
-              <DropdownIssues rule={rule} />
+            <div className='card-container' key={index}>
+              <div className="card">
+                <div className='description-container'>
+                  <button onClick={() => toggleDropdown(index)} className="issues-button">
+                    {dropdownStates[index] ? (<span>&#9660;</span>) : (<span>&#9654;</span>)}
+                  </button>
+                  <div className='description'> {rule.description} </div>
+                  <div className="progress-bar" style={{'--progress': `${rule.score}%`}}></div>
+                </div>
+                <p>Weight: {rule.weight}</p>
+                <p>Score: {rule.score}</p>
+  
+                <NumberSelector ruleWeight={rule.weight} onChange={(newWeight) => handleWeightChange(newWeight)} />
+  
+                <DropdownIssues rule={rule} isOpen={dropdownStates[index]} />
+              </div>
             </div>
           ))}
-        </>
-      )}
-    </div>
+        </div>
+      </body>
+
+
   );
 }
 
 const styles = {
   container: {
-    fontFamily: 'Arial, sans-serif',
     maxWidth: '800px',
     margin: '20px auto',
     padding: '20px',

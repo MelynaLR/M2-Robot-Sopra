@@ -28,15 +28,17 @@ public class HighComplexityTicketRule implements DataAnalysisRule{
 				rule.addIssue(issue);
 			}					
 		}
-		// returns the percentage of ok issues
-		rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
+		if (issues.size() != 0){
+			// returns the percentage of ok issues
+			rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
+		}		
 	}
 
 	@Override
 	public void initializeRuleValues() {
 		rule.setWeight(7);
-		rule.setDescription("ceci est une description");
-		rule.setManualAdvice("attention voici conseil");
+		rule.setDescription("Tickets avec un nombre de story points trop élevés");
+		rule.setManualAdvice("Il est préférable de répartir la charge de travail en plusieurs tickets différents avec un nombre de story points moins élevés.");
 	}
 	
 	@Override

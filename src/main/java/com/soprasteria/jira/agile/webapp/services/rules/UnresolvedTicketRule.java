@@ -51,8 +51,10 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
                 }
             }
 		}
-		// returns the percentage of ok issues
-		rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
+		if (issues.size() != 0){
+			// returns the percentage of ok issues
+			rule.setScore((issues.size() - rule.getIssues().size()) * 100 / issues.size());
+		}
 	}
 
 	@Override
