@@ -25,8 +25,9 @@ function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpe
 			        		<div className='tickets-concernes'> {rule.issues.length} tickets concernés </div>
 			          		{rule.issues.map(issue => (
 			            		<div key={issue.id} className="issues">
-			              			{issue.description}
-			            		</div>
+									<div className='id'>ID {issue.id}</div>
+									<div className='description'>{issue.description}</div>
+								</div>
 			          		))}
 			        	</div>
 			      	</div>
