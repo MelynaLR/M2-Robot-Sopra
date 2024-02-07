@@ -13,14 +13,35 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
     private static final int MAX_TASKS_THRESHOLD = 5;
     private static final int MIN_TASKS_THRESHOLD = 2;
 
-    private int score;
+    private Rule rule;
 
     @Override
     public void calculateScore(List<Issue> issues) {
-    	for (Issue issue : issues) {
+        initializeRuleValues(); // Initialize rule values before calculation
+        int balancedUsers = 0;
+        for (Issue issue : issues) {
             int assignedTasks = countAssignedTasks(issue.getUser(), issues);
-            evaluateAgilityScore(issue.getUser(), assignedTasks);
+            if (assignedTasks >= MIN_TASKS_THRESHOLD && assignedTasks <= MAX_TASKS_THRESHOLD) {
+                balancedUsers++;
+            }
         }
+        int totalUsers = issues.size();
+        double balancedPercentage = (double) balancedUsers / totalUsers;
+        int score = (int) (balancedPercentage * 100);
+        rule.setScore(score);
+    }
+
+    @Override
+    public void initializeRuleValues() {
+        rule = new Rule();
+        rule.setWeight(5); // Définir le poids pour cette règle
+        rule.setDescription("Évaluation de l'agilité des membres de l'équipe basée sur l'attribution des tâches");
+        rule.setManualAdvice("Considérez une répartition équilibrée de la charge de travail pour les membres de l'équipe ayant trop ou trop peu de tâches assignées.");
+    }
+
+    @Override
+    public Rule getRule() {
+        return rule;
     }
 
     private int countAssignedTasks(String assignee, List<Issue> issues) {
@@ -32,30 +53,4 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
         }
         return count;
     }
-
-    private void evaluateAgilityScore(String assignee, int assignedTasks) {
-        if (assignedTasks > MAX_TASKS_THRESHOLD) {
-            System.out.println("Warning: " + assignee + " has too many assigned tasks. Consider redistributing workload.");
-            score -= 2; // Decrease score for too many tasks
-        } else if (assignedTasks < MIN_TASKS_THRESHOLD) {
-            System.out.println("Warning: " + assignee + " has too few assigned tasks. Consider assigning more tasks for balance.");
-            score -= 1; // Decrease score for too few tasks
-        } else {
-            System.out.println(assignee + "'s task assignment is balanced.");
-            score += 1; // Increase score for balanced tasks
-        }
-    }
-
-
-	@Override
-	public void initializeRuleValues() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Rule getRule() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
