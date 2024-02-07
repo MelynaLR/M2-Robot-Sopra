@@ -12,6 +12,7 @@ function App() {
 	const [globalScore, setGlobalScore] = useState(null);
 	const [scoreComplexity, setScoreComplexity] = useState(null);
 	const [error, setError] = useState(null);
+	const [projects, setProjects] = useState(null);
 	var project_id= 13;
 	const [rules, setRules] = useState(null);
 	const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +51,25 @@ function App() {
   	};
  		fetchData();
 	}, []);
+	
+	
+	useEffect(() => {
+  		const fetchData = async () => {
+    		try {
+				setProjects(null);
+      			const apiUrl = 'http://localhost:8080/retrieveProjects';
+      			const response = await axios.get(apiUrl);
+      			console.log('Projects from API:', response.data);
+      			setProjects(response.data);
+      			console.log(projects);
+    		} catch (error) {
+      		console.error('Error fetching projects:', error);
+      		setError('Error fetching data. Please try again later.');
+  		}
+  	};
+ 		fetchData();
+	}, []);
+	
 	
 	const sendWeightToBackend = async (newWeight) => {
     try {
@@ -99,8 +119,9 @@ function App() {
 
   	return (
    		<body>
-   		<div className='main-container'> 
-      	<Header project_id={project_id} handleRefresh={handleRefresh} />
+   		<div className='main-container'>
+      	coucou {projects?.[0]?.idProject}
+      	<Header project={projects} handleRefresh={handleRefresh} />
       	{globalScore !== null && (
         	<>
           	<Gauge globalScore={globalScore} />
