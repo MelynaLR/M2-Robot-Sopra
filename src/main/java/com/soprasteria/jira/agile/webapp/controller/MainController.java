@@ -148,6 +148,11 @@ public class MainController {
         return scoreCalculation.getListRules();
     }
     
+    @GetMapping(value="/retrieveProjects")
+    public List<Project> getProjects(){    
+        return databaseReader.readProjectsFromDatabase();
+    }
+    
     
     @GetMapping(value = "/changeWeight/{description}/newWeight/{newWeight}/idProject/{idProject}")
     public ArrayList<Rule> getDocuments(@PathVariable("description") String description, @PathVariable("newWeight") String newWeightStr, @PathVariable("idProject") String idProjectStr ){
