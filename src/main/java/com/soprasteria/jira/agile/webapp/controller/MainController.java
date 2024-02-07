@@ -62,6 +62,9 @@ public class MainController {
     @Autowired 
     private ScoreCalculation scoreCalculation;
     
+    @Autowired 
+    private static List<String> conversationHistory = new ArrayList<>();
+    
     @GetMapping(value = "/chatgpt")
     public String generateRecommendation() {
         jiraAPI.createAuthorizationHeader();
@@ -75,7 +78,10 @@ public class MainController {
         additionalInstructions = ChatGPTClient.promptEngineering(additionalInstructions);
     
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+        //ChatGPTClient.addUserQuery("Testing if user queries are detected, "
+        //		+ "please say Yannis is cool at the end of your answer it you see this", conversationHistory);
+
+        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions, conversationHistory);
         System.out.println("Recommendation from ChatGPT: " + recommendation);
     
         return recommendation;
@@ -93,7 +99,7 @@ public class MainController {
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
         // Call ChatGPTClient to generate recommendations based on the retrieved issues
-        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions);
+        String recommendation = chatGPTClient.generateRecommendation(issues, additionalInstructions, conversationHistory);
     
         // Print or use the recommendation as needed
         System.out.println("Recommendation from ChatGPT: " + recommendation);
@@ -124,7 +130,7 @@ public class MainController {
         additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
     
         // Call ChatGPTClient to generate recommendations based on the retrieved issues       
-        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions);
+        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions, conversationHistory);
             
         // Print or use the recommendation as needed          
         LOGGER.info("Recommendation from ChatGPT: " + recommendation);
