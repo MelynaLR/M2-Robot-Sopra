@@ -150,10 +150,20 @@ public class MainController {
     
     
     @GetMapping(value = "/changeWeight/{description}/newWeight/{newWeight}/idProject/{idProject}")
-    public void getDocuments(@PathVariable("description") String description, @PathVariable("newWeight") int newWeight, @PathVariable("idProject") int idProject ){
+    public ArrayList<Rule> getDocuments(@PathVariable("description") String description, @PathVariable("newWeight") String newWeightStr, @PathVariable("idProject") String idProjectStr ){
+    	LOGGER.info("Changement de valeur pour le poids de la règle de calcul: "+description+ ", nouveau poids = "+newWeightStr);
+    	int idProject = Integer.valueOf(idProjectStr);
+    	int newWeight = Integer.valueOf(newWeightStr);
+    	Rule scoreGlobalRule = new Rule();
+    	scoreCalculation.refreshListRules();
+    	scoreCalculation.changeWeightAndCalculate(databaseReader.readIssuesFromDatabase(idProject),description,newWeight);
     	
-    }
+    	scoreGlobalRule.setScore(scoreCalculation.calculateGlobalScore());
+    	ArrayList<Rule> listOfRules = (ArrayList<Rule>) scoreCalculation.getListRules();
+    	listOfRules.add(scoreGlobalRule);
+    	return listOfRules;
     	
+    }   	
 }
 
 
