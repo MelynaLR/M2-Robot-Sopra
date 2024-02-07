@@ -12,7 +12,7 @@ function App() {
 	const [globalScore, setGlobalScore] = useState(null);
 	const [scoreComplexity, setScoreComplexity] = useState(null);
 	const [error, setError] = useState(null);
-	const project_id = 13;
+	var project_id= 13;
 	const [rules, setRules] = useState(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownStates, setDropdownStates] = useState({});
@@ -81,7 +81,7 @@ function App() {
       	});
   	};
 
-  	const handleWeightChange = (newWeight, ruleIndex) => {
+  	const handleWeightChange = (newWeight, ruleIndex, description) => {
   		setRules((prevRules) => {
     		const updatedRules = [...prevRules];
     		updatedRules[ruleIndex] = { ...updatedRules[ruleIndex], weight: newWeight };

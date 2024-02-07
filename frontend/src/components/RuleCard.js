@@ -18,7 +18,7 @@ function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpe
 				  	<div>
 			        	<NumberSelector
 			          		ruleWeight={rule.weight}
-			          		onChange={(newWeight) => handleWeightChange(newWeight, index)}
+			          		onChange={(newWeight) => handleWeightChange(newWeight, index, rule.description)}
 			          		ruleIndex={index}
 			        	/>
 			        	<div className='issues-container'>
