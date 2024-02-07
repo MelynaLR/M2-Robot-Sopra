@@ -15,8 +15,8 @@ const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
 
   return (
     <div className='weight-container'>
-      <div className='normal-text'> Priorité de la règle : </div>
-      <div className="number-container">
+      <div className='text'> Priorité de la règle : </div>
+      <div className="numbers">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
           <button
 			  key={number}

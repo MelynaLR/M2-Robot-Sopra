@@ -1,15 +1,35 @@
 import React from 'react';
 
-function Header({ project_id, handleRefresh }) {
+function Header({ project, handleRefresh, onProjectChange }) {
+  const handleProjectChange = (e) => {
+    const projectId = parseInt(e.target.value, 10);
+    onProjectChange(projectId);
+  };
+
   return (
     <div style={styles.header}>
       <h1 style={styles.heading}>User, voici votre profil d'agilité sur Jira</h1>
-      <select name="thelist" onChange={(e) => console.log(e.target.value)}>
-        <option>Projet {project_id}</option>
-      </select>
+      
+
+        <div>
+        <label htmlFor="projectDropdown">Sélectionner le projet : </label>
+        <select
+          id="projectDropdown"
+          onChange={handleProjectChange}
+        >
+          {project.map((project) => (
+            <option key={project.nameProject} value={project.nameProject}>
+              {`Project ${project.nameProject}`}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+      
       <button type="button" onClick={handleRefresh} style={styles.refreshButton}>
         Rafraîchir
       </button>
+      
     </div>
   );
 }
