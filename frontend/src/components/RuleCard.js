@@ -21,6 +21,14 @@ function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpe
 			          		onChange={(newWeight) => handleWeightChange(newWeight, index, rule.description)}
 			          		ruleIndex={index}
 			        	/>
+			        	<div className='advice-container'>
+			        		<div className='text'>
+			        			Conseil :
+			        		</div>
+			        		<div className='advice'>
+			        			{rule.manualAdvice}
+			        		</div>
+			        	</div>
 			        	<div className='issues-container'>
 			        		<div className='tickets-concernes'> {rule.issues.length} tickets concernés </div>
 			          		{rule.issues.map(issue => (
