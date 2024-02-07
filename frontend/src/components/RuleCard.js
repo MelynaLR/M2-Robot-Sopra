@@ -1,7 +1,7 @@
 import React from 'react';
 import NumberSelector from './NumberSelector.js';
 
-function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpen }) {
+function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOpen }) {
   	return (
     	<div className='card-container'>
       		<div className="card">
@@ -18,7 +18,7 @@ function RuleCard({ rule, index, handleDropdownToggle, handleWeightChange, isOpe
 				  	<div>
 			        	<NumberSelector
 			          		ruleWeight={rule.weight}
-			          		onChange={(newWeight) => handleWeightChange(newWeight, index, rule.description)}
+			          		onChange={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
 			          		ruleIndex={index}
 			        	/>
 			        	<div className='issues-container'>

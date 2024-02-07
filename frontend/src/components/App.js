@@ -51,18 +51,38 @@ function App() {
  		fetchData();
 	}, []);
 	
-	const sendWeightToBackend = async (newWeight) => {
+	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
     try {
-      const apiUrl = 'http://localhost:8080/updateWeight'; 
-      const response = await axios.post(apiUrl, { weight: newWeight });
-
-      	console.log('Weight update successful:', response.data);
-      	// Ajoutez d'autres logiques de gestion de la réponse si nécessaire.
-    	} catch (error) {
-      	console.error('Error updating weight:', error);
-      // Gérez les erreurs ici, par exemple, en mettant à jour l'état d'une variable d'erreur.
-    	}
+		setRules(null);
+		setGlobalScore(null);
+		const description = descriptionRule;
+		const idProject = project_id;
+      const apiUrl = `http://localhost:8080/changeWeight/${description}/newWeight/${newWeight}/idProject/${idProject}`; 
+      const response = await axios.get(apiUrl);
+      if (Array.isArray(response.data) && response.data.length > 0) {
+      resetRules();
+      setGlobalScore(response.data[response.data.length - 1].score);
+      
+      setRules(response.data.slice(0, -1));
+      console.log(response.data.slice(0,-1));
+    } else {
+      console.error('Invalid response data:', response.data);
+      
+    }
+	handleWeightChange(newWeight,ruleIndex);
+    console.log('Weight update successful:', response.data);
+    
+    // Add other logic to handle the response if necessary.
+  } catch (error) {
+    console.error('Error updating weight:', error);
+    // Handle errors here, for example, by updating an error variable state.
+  }
   	};
+  	
+  	const resetRules = () => {
+ 		 setRules(null);
+ 		 setGlobalScore(null);
+	};
 
 
   	const handleRefresh = () => {
@@ -81,12 +101,13 @@ function App() {
       	});
   	};
 
-  	const handleWeightChange = (newWeight, ruleIndex, description) => {
+  	const handleWeightChange = (newWeight, ruleIndex) => {
   		setRules((prevRules) => {
     		const updatedRules = [...prevRules];
     		updatedRules[ruleIndex] = { ...updatedRules[ruleIndex], weight: newWeight };
     		return updatedRules;
-  		});
+  		});	
+  		//sendWeightToBackend(newWeight,ruleIndex);	
 	};
 	
 	const toggleDropdown = (ruleIndex) => {
@@ -110,7 +131,7 @@ function App() {
               		rule={rule}
 	              	index={index}
 	              	handleDropdownToggle={() => toggleDropdown(index)}
-	              	handleWeightChange={(newWeight) => handleWeightChange(newWeight, index)}
+	              	sendWeightToBackend={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
 	              	isOpen={dropdownStates[index]}
             	/>
           	))}

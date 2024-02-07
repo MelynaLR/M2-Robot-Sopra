@@ -55,12 +55,20 @@ public class ScoreCalculation {
 	public void changeWeightAndCalculate (List<Issue> issues, String description, int newWeight) {
 		this.listRules = new ArrayList<>();
 		for (DataAnalysisRule rule : rules) {
+			rule.initializeRuleValues();
+			
 			if (rule.getRule().getDescription().equals(description)){
 				rule.getRule().setWeight(newWeight);
+				LOGGER.info("new weight set for the rule "+rule.getRule().getDescription());
+				
 			}
+			rule.getRule().refreshIssueList();
 			rule.calculateScore(issues);
-			rule.initializeRuleValues();
-			listRules.add(rule.getRule());
+			LOGGER.info("Modification / Current rule description = "+rule.getRule().getDescription());
+			LOGGER.info("Modification / Current rule weight = "+rule.getRule().getWeight());
+			LOGGER.info("Modification / Current rule score = "+rule.getRule().getScore());
+			
+			this.listRules.add(rule.getRule());
 		}
 	}
 	

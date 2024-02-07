@@ -24,7 +24,7 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
 
 	@Override
 	public void calculateScore(List<Issue> issues) {
-		this.rule = new Rule();
+		//this.rule = new Rule();
 		rule.setScore(0);
 		LocalDate today = LocalDate.now();
 		
