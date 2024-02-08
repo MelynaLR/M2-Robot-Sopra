@@ -55,9 +55,10 @@ function App() {
 	    
 	    const fetchChatGPTData = async () => {
 	      		try {
-					 
+					setIsLoading(true);
 	        		const chatGPTResponse = await axios.get(`http://localhost:8080/chatgpt/idProject/${project_id}`);
                 	setChatGPTData(chatGPTResponse.data);
+                	setIsLoading(false);
 	        		console.log('Data from ChatGPT:', chatGPTResponse.data);
 	        		
 	      		} catch (error) {
@@ -87,18 +88,10 @@ function App() {
 			setRules(null);
 	    	fetchRules();
 	    	fetchGlobalScore();
+	    	fetchChatGPTData();
 	    	
 	  	},[]);
-	  	
-	  	useEffect(() => {
-			setIsLoading(true);		  
-			fetchChatGPTData();
-	    	setIsLoading(false);
-	    	},[]);
 			  
-	  	
-  	
-	
 	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
     try {
 		
