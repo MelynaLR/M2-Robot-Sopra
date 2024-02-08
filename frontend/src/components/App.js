@@ -7,13 +7,19 @@ import RuleCard from './RuleCard.js';
 import loadingGif from './Spinner-2.gif';
 
 function App() {
+	const [agilityScore, setAgilityScore] = useState(null);
+    const [user, setUser] = useState(null);
     const [globalScore, setGlobalScore] = useState(null);
+    const [scoreComplexity, setScoreComplexity] = useState(null);
+    const [error, setError] = useState(null);
+    const [project_id, setProjectId] = useState(13);
     const [rules, setRules] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
     const [dropdownStates, setDropdownStates] = useState({});
     const [chatGPTData, setChatGPTData] = useState(null);
+    const [isLoadingChatGPT, setIsLoadingChatGPT] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [showData, setShowData] = useState(false);
-    const project_id = 13;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +45,19 @@ function App() {
 
     const toggleDataVisibility = () => {
         setShowData(!showData);
+    };
+	const fetchChatGPTData = async () => {
+        try {
+            setIsLoadingChatGPT(true);
+            const chatGPTResponse = await axios.get('http://localhost:8080/chatgpt');
+            setChatGPTData(chatGPTResponse.data);
+            setIsLoadingChatGPT(false);
+            setShowData(true);
+        } catch (error) {
+            console.error('Error fetching ChatGPT data:', error);
+            setError('Error fetching ChatGPT data. Please try again later.');
+            setIsLoadingChatGPT(false);
+        }
     };
 
     const handleRefresh = () => {
@@ -76,25 +95,32 @@ function App() {
                     ))}
                 </>
             )}
-      <div className="chatGPT-container">
-    <h2>ChatGPT Data{' '}
-        {isLoading ? (
-            <span>
-                <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
-                <span>Loading...</span>
-            </span>
-        ) : (
-            <button className="show-data-button" onClick={toggleDataVisibility}>
-                {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
-            </button>
-        )}
-    </h2>
-    {!isLoading && showData && chatGPTData && chatGPTData.split(/\d+\./).filter(item => item.trim().length > 0).map((item, index) => (
-        <p key={index}>{item.trim()}</p>
-    ))}
-</div>
-
-        </div>
+    
+           
+            <div className="app-container">
+                <h2>Votre conseil personnalisé réalisé par ChatGPT</h2>
+                <button onClick={fetchChatGPTData}>
+                    Lancer ChatGPT
+                </button>
+                <div className="chatGPT-container">
+                    {isLoadingChatGPT && (
+                        <div className="loading-container">
+                            <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
+                        </div>
+                    )}
+                    {!isLoadingChatGPT && showData && chatGPTData && (
+                        <button className="show-data-button" onClick={toggleDataVisibility}>
+                            {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
+                        </button>
+                    )}
+                    {!isLoadingChatGPT && showData && chatGPTData && chatGPTData.split(/\d+\./).filter(item => item.trim().length > 0).map((item, index) => (
+                        <p key={index}>{item.trim()}</p>
+                    ))}
+                    {/* <TextField id="standard-basic" label="Standard" variant="standard" /> */}
+                </div>
+            </div>
+			</div>
+       
     );
 }
 
