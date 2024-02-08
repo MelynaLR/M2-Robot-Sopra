@@ -17,47 +17,12 @@ function App() {
 	const [rules, setRules] = useState(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownStates, setDropdownStates] = useState({});
-
-
-  	useEffect(() => {
-    	const fetchData = async () => {
-      		try {
-				 setGlobalScore(null);
-        		const apiUrl = 'http://localhost:8080/globalScore';
-        		const response = await axios.get(apiUrl);
-        		console.log('Data from API (Global Score):', response.data);
-        		setGlobalScore(response.data);
-      		} catch (error) {
-        	console.error('Error fetching global score:', error);
-        	setError('Error fetching data. Please try again later.');
-    	}
-    };
-    	fetchData();
-  	}, []);
-
-
-  	useEffect(() => {
-  		const fetchData = async () => {
-    		try {
-				setRules(null);
-      			const apiUrl = 'http://localhost:8080/retrieveRules';
-      			const response = await axios.get(apiUrl);
-      			console.log('Calculation Rules from API (Rules):', response.data);
-      			setRules(response.data);
-    		} catch (error) {
-      		console.error('Error fetching rules:', error);
-      		setError('Error fetching data. Please try again later.');
-  		}
-  	};
- 		fetchData();
-	}, []);
 	
-	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
-	useEffect(() => {
-  		const fetchData = async () => {
+	
+	const fetchProjects = async () => {
     		try {
 				setProjects(null);
-      			const apiUrl = 'http://localhost:8080/retrieveProjects';
+      			const apiUrl = `http://localhost:8080/retrieveProjects`;
       			const response = await axios.get(apiUrl);
       			console.log('Projects from API:', response.data);
       			setProjects(response.data);
@@ -67,9 +32,44 @@ function App() {
       		setError('Error fetching data. Please try again later.');
   		}
   	};
- 		fetchData();
-	}, []);
+ 
+
+	const fetchGlobalScore = async () => {
+	      		try {
+					 setGlobalScore(null);
+	        		const apiUrl = `http://localhost:8080/globalScore/idProject/${project_id}`;
+	        		const response = await axios.get(apiUrl);
+	        		console.log('Data from API (Global Score):', response.data);
+	        		setGlobalScore(response.data);
+	      		} catch (error) {
+	        	console.error('Error fetching global score:', error);
+	        	setError('Error fetching data. Please try again later.');
+	    	}
+	    };
 	
+	
+	
+	const fetchRules = async () => {
+	    		try {
+					setRules(null);
+	      			const apiUrl = `http://localhost:8080/retrieveRules/idProject/${project_id}`;
+	      			const response = await axios.get(apiUrl);
+	      			console.log('Calculation Rules from API (Rules):', response.data);
+	      			setRules(response.data);
+	    		} catch (error) {
+	      		console.error('Error fetching rules:', error);
+	      		setError('Error fetching data. Please try again later.');
+	  		}
+	  	};
+	  	
+	   	useEffect(() => {
+			fetchProjects();
+			setRules(null);
+	    	fetchRules();
+	    	fetchGlobalScore();
+	  	},[]);
+	  	
+  	
 	
 	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
     try {
@@ -127,7 +127,13 @@ function App() {
     		updatedRules[ruleIndex] = { ...updatedRules[ruleIndex], weight: newWeight };
     		return updatedRules;
   		});	
-  		//sendWeightToBackend(newWeight,ruleIndex);	
+	};
+	
+	
+	const onProjectChange = (idProject) => {
+  		project_id = idProject;
+  		fetchGlobalScore();
+  		fetchRules();
 	};
 	
 	const toggleDropdown = (ruleIndex) => {
@@ -141,8 +147,8 @@ function App() {
   	return (
    		<body>
    		<div className='main-container'>
-      	coucou {projects?.[0]?.idProject}
-      	<Header project={projects} handleRefresh={handleRefresh} />
+   		
+      	<Header project={projects} handleRefresh={handleRefresh} onProjectChange={onProjectChange}/>
       	{globalScore !== null && (
         	<>
           	<Gauge globalScore={globalScore} />
@@ -162,5 +168,5 @@ function App() {
     	</body>
   	);
 }
-}
+
 export default App;

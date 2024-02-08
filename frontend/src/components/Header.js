@@ -3,6 +3,7 @@ import React from 'react';
 function Header({ project, handleRefresh, onProjectChange }) {
   const handleProjectChange = (e) => {
     const projectId = parseInt(e.target.value, 10);
+    console.log(projectId);
     onProjectChange(projectId);
   };
 
@@ -11,18 +12,21 @@ function Header({ project, handleRefresh, onProjectChange }) {
       <h1 style={styles.heading}>User, voici votre profil d'agilité sur Jira</h1>
       
 
-        <div>
+       	<div>
         <label htmlFor="projectDropdown">Sélectionner le projet : </label>
         <select
-          id="projectDropdown"
-          onChange={handleProjectChange}
-        >
-          {project.map((project) => (
-            <option key={project.nameProject} value={project.nameProject}>
-              {`Project ${project.nameProject}`}
-            </option>
-          ))}
-        </select>
+			  id="projectDropdown"
+			  onChange={handleProjectChange}
+			>
+			<option key="-1" value="-1|Global">
+    		Global
+ 			</option>
+			  {project?.map((project) => (
+			    <option key={project?.idProject} value={`${project?.idProject}|${project?.nameProject}`}>
+			      {`Project ${project?.nameProject}`}
+			    </option>
+			  ))}
+			</select>
       </div>
       
       
