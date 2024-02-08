@@ -199,3 +199,9 @@ body {
 	white-space: nowrap;
 	font-size: 18px;
 }
+
+.show-data-button {
+  position: relative;
+  z-index: 1; /* Ensure the button appears above the text */
+  /* Additional styling as needed */
+}

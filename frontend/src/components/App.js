@@ -168,27 +168,39 @@ function App() {
                 </>
             )}
 
-            <div className="app-container">
-                <h2>Votre conseil personnalisé réalisé par ChatGPT</h2>
-                <button onClick={fetchChatGPTData}>
-                    Lancer ChatGPT
-                </button>
-                <div className="chatGPT-container">
-                    {isLoadingChatGPT && (
-                        <div className="loading-container">
-                            <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
-                        </div>
-                    )}
-                    {!isLoadingChatGPT && showData && chatGPTData && (
-                        <button className="show-data-button" onClick={toggleDataVisibility}>
-                            {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
-                        </button>
-                    )}
-                    {!isLoadingChatGPT && showData && chatGPTData && chatGPTData.split(/\d+\./).filter(item => item.trim().length > 0).map((item, index) => (
-                        <p key={index}>{item.trim()}</p>
-                    ))}
-                </div>
-            </div>
+<div className="app-container">
+    <h2>Votre conseil personnalisé réalisé par ChatGPT</h2>
+    {/* Show loading logo if data is being fetched */}
+    {isLoadingChatGPT && (
+        <div className="loading-container">
+            <img src={loadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
+        </div>
+    )}
+
+    {/* Show fetched data */}
+    {!isLoadingChatGPT && chatGPTData && (
+        <div className="chatGPT-container">
+            {/* Show arrow button to toggle data visibility */}
+            <button className="show-data-button" onClick={toggleDataVisibility}>
+                {showData ? <span>&#9660;</span> : <span>&#9654;</span>}
+            </button>
+
+            {/* Display fetched data */}
+            {showData && chatGPTData.split(/\d+\./).filter(item => item.trim().length > 0).map((item, index) => (
+                <p key={index}>{item.trim()}</p>
+            ))}
+        </div>
+    )}
+
+    {/* Show "Lancer ChatGPT" button before data is fetched */}
+    {!isLoadingChatGPT && !chatGPTData && (
+        <button onClick={fetchChatGPTData}>
+            Lancer ChatGPT
+        </button>
+    )}
+</div>
+
+
         </div>
     );
 }
