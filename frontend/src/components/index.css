@@ -151,7 +151,18 @@ body {
   font-weight: bold;
 }
 
-.number-container {
+.weight-container {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	margin-right: 10px;
+	/*justify-content: space-evenly;*/
+	justify-content: space-between;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.weight-container .numbers {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -159,15 +170,32 @@ body {
 	margin-left: 20px;
 }
 
-.weight-container {
-	display: flex;
-	align-items: center;
-	padding: 20px;
-	margin-right: 10px;
-	justify-content: center;
+.weight-container .text {
+	white-space: nowrap;
+	font-size: 18px;
 }
 
-.normal-text {
+.advice-container {
+	display: flex;
+	padding: 20px;
+	margin-right: 10px;
+	/*justify-content: space-evenly;*/
+	justify-content: space-between;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.advice-container .advice {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	margin-left: 30px;
+	text-align: justify;
+	font-size: 18px;
+	
+}
+
+.advice-container .text {
 	white-space: nowrap;
 	font-size: 18px;
 }
