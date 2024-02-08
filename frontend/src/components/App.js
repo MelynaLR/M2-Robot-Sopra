@@ -82,13 +82,20 @@ function App() {
 	  	};
 	  	
 	   	useEffect(() => {
+			setIsLoading(true);	
 			fetchProjects();
 			setRules(null);
 	    	fetchRules();
 	    	fetchGlobalScore();
-	    	fetchChatGPTData();
-	    	setIsLoading(false);
+	    	
 	  	},[]);
+	  	
+	  	useEffect(() => {
+			setIsLoading(true);		  
+			fetchChatGPTData();
+	    	setIsLoading(false);
+	    	},[]);
+			  
 	  	
   	
 	
