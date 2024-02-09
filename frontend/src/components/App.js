@@ -20,6 +20,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingChatGPT, setIsLoadingChatGPT] = useState(false);
     const [showData, setShowData] = useState(false);
+    var intLimitTicketsTooHeavy = 21;
 
     const toggleDataVisibility = () => {
         setShowData(!showData);
@@ -175,6 +176,7 @@ function App() {
                             handleDropdownToggle={() => toggleDropdown(index)}
                             sendWeightToBackend={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
                             isOpen={dropdownStates[index]}
+                            intLimitTicketsTooHeavy = {intLimitTicketsTooHeavy}
                             
                         />
                     ))}

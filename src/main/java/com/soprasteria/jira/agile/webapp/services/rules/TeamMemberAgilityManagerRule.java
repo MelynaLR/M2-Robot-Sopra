@@ -7,12 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
 
     // Thresholds for task assignment
     private static final int MAX_TASKS_THRESHOLD = 5;
     private static final int MIN_TASKS_THRESHOLD = 2;
 
+    @Autowired
     private Rule rule;
 
     @Override
@@ -27,7 +34,7 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
         }
         int totalUsers = issues.size();
         double balancedPercentage = (double) balancedUsers / totalUsers;
-        int score = (int) (balancedPercentage * 100);
+        int score = (int) (100 - balancedPercentage * 100);
         rule.setScore(score);
     }
 

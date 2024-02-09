@@ -1,7 +1,7 @@
 import React from 'react';
 import NumberSelector from './NumberSelector.js';
-
-function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOpen }) {
+var newIntLimitTicketsTooHeavy = 0;
+function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOpen, intLimitTicketsTooHeavy }) {
   	return (
     	<div className='card-container'>
       		<div className="card">
@@ -21,6 +21,14 @@ function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOp
 			          		onChange={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
 			          		ruleIndex={index}
 			        	/>
+			        	{rule.description === 'Tickets avec un nombre de story points trop élevés' && (
+							 <div className = 'saisieInt'>
+					        <label>Saisir un entier :</label>
+					        <input
+					          type="number"				          
+					          onChange={(e) => intLimitTicketsTooHeavy =parseInt(e.target.value)}
+					        />
+					      </div>)}
 			        	<div className='advice-container'>
 			        		<div className='text'>
 			        			Conseil :
@@ -28,7 +36,7 @@ function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOp
 			        		<div className='advice'>
 			        			{rule.manualAdvice}
 			        		</div>
-			        	</div>
+			        	</div>				     
 			        	<div className='issues-container'>
 			        		<div className='tickets-concernes'> {rule.issues.length} tickets concernés </div>
 			          		{rule.issues.map(issue => (

@@ -7,8 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class DuplicateIssueNameRule implements DataAnalysisRule {
 
+	@Autowired
     private Rule rule;
 
     @Override
@@ -33,7 +40,7 @@ public class DuplicateIssueNameRule implements DataAnalysisRule {
 
         // Calculate the score based on the proportion of duplicate names
         double duplicateProportion = (double) duplicateCount / totalIssues;
-        int score = (int) ((1 - duplicateProportion) * 100); // Inverse proportion for the score
+        int score = (int) ((100 - duplicateProportion) * 100); // Inverse proportion for the score
 
         rule.setScore(score);
     }
