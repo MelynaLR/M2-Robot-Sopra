@@ -40,7 +40,6 @@ public class TeamMemberAgilityManagerRule implements DataAnalysisRule {
 
     @Override
     public void initializeRuleValues() {
-        rule = new Rule();
         rule.setWeight(5); // Définir le poids pour cette règle
         rule.setDescription("Évaluation de l'agilité des membres de l'équipe basée sur l'attribution des tâches");
         rule.setManualAdvice("Considérez une répartition équilibrée de la charge de travail pour les membres de l'équipe ayant trop ou trop peu de tâches assignées.");
