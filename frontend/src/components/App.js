@@ -26,6 +26,7 @@ function App() {
         setShowData(!showData);
     };
 
+
     const fetchProjects = async () => {
         try {
             setProjects(null);
@@ -108,16 +109,28 @@ function App() {
         setRules(null);
         setGlobalScore(null);
     };
-
-    const handleRefresh = () => {
+	  	
+   	useEffect(() => {
+		setIsLoading(true);	
+		fetchProjects();
+		setRules(null);
+    	fetchRules();
+    	fetchGlobalScore();
+    	fetchChatGPTData();
+    	
+  	},[]);
+			  
+	
+	
+	const handleRefresh = () => {
         axios.get('http://localhost:8080')
-            .then(response => {
-                console.log('Refreshed data:', response.data);
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Error refreshing data:', error);
-            });
+        .then(response => {
+            console.log('Refreshed data:', response.data);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error refreshing data:', error);
+        });
     };
 
     const handleWeightChange = (newWeight, ruleIndex) => {
@@ -162,7 +175,9 @@ function App() {
                             rule={rule}
                             index={index}
                             handleDropdownToggle={() => toggleDropdown(index)}
+                            sendWeightToBackend={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
                             isOpen={dropdownStates[index]}
+                            
                         />
                     ))}
                 </>
