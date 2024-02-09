@@ -13,17 +13,28 @@ function Gauge({ globalScore }) {
 }
 
 const getGaugeColor = (score) => {
-  const minScore = 0;
-  const maxScore = 100;
+  	const minScore = 0;
+  	const maxScore = 100;
 
-  // Interpolation linéaire pour obtenir une couleur entre rouge et vert
-  const interpolateColor = (value, min, max) => {
-    const normalizedValue = (value - min) / (max - min);
-    const red = Math.round(255 * (1 - normalizedValue));
-    const green = Math.round(255 * normalizedValue);
-    const blue = 0;
-    return `rgb(${red}, ${green}, ${blue})`;
-  };
+	const interpolateColor = (value, min, max) => {
+	  const normalizedValue = (value - min) / (max - min);
+	
+	  let red, green, blue;
+	
+	  if (normalizedValue < 0.5) {
+	    // Interpolation from red to yellow
+	    red = Math.round(255 * (1 - normalizedValue * 2));
+	    green = Math.round(255 * normalizedValue * 2);
+	    blue = 0;
+	  } else {
+	    // Interpolation from yellow to green
+	    red = Math.round(255 * (1 - (normalizedValue - 0.5) * 2));
+	    green = Math.round(255 * (1 - (normalizedValue - 0.5) * 2));
+	    blue = 0;
+	  }
+	
+	  return `rgb(${red}, ${green}, ${blue})`;
+	};
 
   return interpolateColor(score, minScore, maxScore);
 };
