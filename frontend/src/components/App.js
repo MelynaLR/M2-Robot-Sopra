@@ -41,56 +41,54 @@ function App() {
  
 
 	const fetchGlobalScore = async () => {
-	      		try {
-					 setGlobalScore(null);
-	        		const apiUrl = `http://localhost:8080/globalScore/idProject/${project_id}`;
-	        		const response = await axios.get(apiUrl);
-	        		console.log('Data from API (Global Score):', response.data);
-	        		setGlobalScore(response.data);
-	      		} catch (error) {
-	        	console.error('Error fetching global score:', error);
-	        	setError('Error fetching data. Please try again later.');
-	    	}
-	    };
+      		try {
+				 setGlobalScore(null);
+        		const apiUrl = `http://localhost:8080/globalScore/idProject/${project_id}`;
+        		const response = await axios.get(apiUrl);
+        		console.log('Data from API (Global Score):', response.data);
+        		setGlobalScore(response.data);
+      		} catch (error) {
+        	console.error('Error fetching global score:', error);
+        	setError('Error fetching data. Please try again later.');
+    	}
+    };
 	    
-	    const fetchChatGPTData = async () => {
-	      		try {
-					setIsLoading(true);
-	        		const chatGPTResponse = await axios.get(`http://localhost:8080/chatgpt/idProject/${project_id}`);
-                	setChatGPTData(chatGPTResponse.data);
-                	setIsLoading(false);
-	        		console.log('Data from ChatGPT:', chatGPTResponse.data);
-	        		
-	      		} catch (error) {
-	        	console.error('Error fetching chatGPT data:', error);
-	        	setError('Error fetching data. Please try again later.');
-	    	}
-	    };
-	
-	
+    const fetchChatGPTData = async () => {
+      		try {
+				setIsLoading(true);
+        		const chatGPTResponse = await axios.get(`http://localhost:8080/chatgpt/idProject/${project_id}`);
+            	setChatGPTData(chatGPTResponse.data);
+            	setIsLoading(false);
+        		console.log('Data from ChatGPT:', chatGPTResponse.data);
+        		
+      		} catch (error) {
+        	console.error('Error fetching chatGPT data:', error);
+        	setError('Error fetching data. Please try again later.');
+    	}
+    };
 	
 	const fetchRules = async () => {
-	    		try {
-					setRules(null);
-	      			const apiUrl = `http://localhost:8080/retrieveRules/idProject/${project_id}`;
-	      			const response = await axios.get(apiUrl);
-	      			console.log('Calculation Rules from API (Rules):', response.data);
-	      			setRules(response.data);
-	    		} catch (error) {
-	      		console.error('Error fetching rules:', error);
-	      		setError('Error fetching data. Please try again later.');
-	  		}
-	  	};
+    		try {
+				setRules(null);
+      			const apiUrl = `http://localhost:8080/retrieveRules/idProject/${project_id}`;
+      			const response = await axios.get(apiUrl);
+      			console.log('Calculation Rules from API (Rules):', response.data);
+      			setRules(response.data);
+    		} catch (error) {
+      		console.error('Error fetching rules:', error);
+      		setError('Error fetching data. Please try again later.');
+  		}
+  	};
 	  	
-	   	useEffect(() => {
-			setIsLoading(true);	
-			fetchProjects();
-			setRules(null);
-	    	fetchRules();
-	    	fetchGlobalScore();
-	    	fetchChatGPTData();
-	    	
-	  	},[]);
+   	useEffect(() => {
+		setIsLoading(true);	
+		fetchProjects();
+		setRules(null);
+    	fetchRules();
+    	fetchGlobalScore();
+    	fetchChatGPTData();
+    	
+  	},[]);
 			  
 	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
     try {
@@ -128,13 +126,13 @@ function App() {
 	
 	const handleRefresh = () => {
         axios.get('http://localhost:8080')
-            .then(response => {
-                console.log('Refreshed data:', response.data);
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Error refreshing data:', error);
-            });
+        .then(response => {
+            console.log('Refreshed data:', response.data);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error refreshing data:', error);
+        });
     };
 
 
