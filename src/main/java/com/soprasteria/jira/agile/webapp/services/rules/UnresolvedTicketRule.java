@@ -60,8 +60,8 @@ public class UnresolvedTicketRule implements DataAnalysisRule{
 	@Override
 	public void initializeRuleValues() {
 		rule.setWeight(2);
-		rule.setDescription("Unresolved ticket rule");
-		rule.setManualAdvice("conseil");
+		rule.setDescription("Ticket non résolu à la fin du sprint");
+		rule.setManualAdvice("Identifiez les raisons pour lesquelles le ticket n'a pas été complété. Cela pourrait être dû à des problèmes techniques, des lacunes dans la compréhension des exigences, des dépendances non résolues, ou d'autres facteurs.");
 	}
 
 	@Override
