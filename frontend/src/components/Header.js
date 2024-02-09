@@ -16,7 +16,7 @@ function Header({ project, handleRefresh, onProjectChange, globalScore }) {
 		    </div> 
 		
 	 		<div className='dropdown-container'>
-	        	<label htmlFor="projectDropdown">Sélectionner le projet : </label>
+	        	<label htmlFor="projectDropdown">Sélectionner un projet : </label>
 	        	<select id="projectDropdown" onChange={handleProjectChange}>
 					<option key="-1" value="-1|Global">
 		    			Global

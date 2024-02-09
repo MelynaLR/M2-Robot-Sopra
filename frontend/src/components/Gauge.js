@@ -3,12 +3,8 @@ import React from 'react';
 function Gauge({ globalScore }) {
   const gaugeColor = getGaugeColor(globalScore);
 
-  const gaugeStyle = {
-    backgroundColor: gaugeColor,
-  };
-
   return (
-    <div className="gauge-container" style={gaugeStyle}>
+    <div className="gauge-container" style={{backgroundColor: gaugeColor}}>
       <div className="gauge-white">
         <p className="gauge-percentage">{globalScore} %</p>
       </div>
