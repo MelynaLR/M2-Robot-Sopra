@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './index.css'; // Import CSS file
 import Header from './Header.js';
-import Gauge from './Gauge.js';
 import RuleCard from './RuleCard.js';
 import loadingGif from './Spinner-2.gif';
 
@@ -88,8 +87,7 @@ function App() {
 			setRules(null);
 	    	fetchRules();
 	    	fetchGlobalScore();
-	    	fetchChatGPTData();
-	    	
+	    	/*fetchChatGPTData();*/	    	
 	  	},[]);
 			  
 	const sendWeightToBackend = async (newWeight, ruleIndex,descriptionRule) => {
@@ -169,10 +167,9 @@ function App() {
    		<body>
    		<div className='main-container'>
    		
-      	<Header project={projects} handleRefresh={handleRefresh} onProjectChange={onProjectChange}/>
+      	<Header project={projects} handleRefresh={handleRefresh} onProjectChange={onProjectChange} globalScore={globalScore}/>
       	{globalScore !== null && (
         	<>
-          	<Gauge globalScore={globalScore} />
           	{rules && rules.map((rule, index) => (
             	<RuleCard
               		key={index}
