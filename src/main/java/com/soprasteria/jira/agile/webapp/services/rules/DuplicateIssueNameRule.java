@@ -40,14 +40,13 @@ public class DuplicateIssueNameRule implements DataAnalysisRule {
 
         // Calculate the score based on the proportion of duplicate names
         double duplicateProportion = (double) duplicateCount / totalIssues;
-        int score = (int) ((100 - duplicateProportion) * 100); // Inverse proportion for the score
+        int score = (int) (100 - duplicateProportion * 100); // Inverse proportion for the score
 
         rule.setScore(score);
     }
 
     @Override
     public void initializeRuleValues() {
-        rule = new Rule();
         rule.setWeight(3); // Set the weight for this rule
         rule.setDescription("Évaluation de la présence de noms d'issues en double");
         rule.setManualAdvice("Évitez d'avoir plusieurs issues avec le même nom, cela peut entraîner de la confusion dans le suivi des tâches.");
