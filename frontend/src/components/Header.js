@@ -1,6 +1,7 @@
 import React from 'react';
 import Gauge from './Gauge.js';
 
+//Function handling the Header interface 
 function Header({ project, handleRefresh, onProjectChange, globalScore }) {
   const handleProjectChange = (e) => {
     const projectId = parseInt(e.target.value, 10);

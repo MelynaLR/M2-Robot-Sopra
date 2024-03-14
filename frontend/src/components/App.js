@@ -22,11 +22,12 @@ function App() {
     const [showData, setShowData] = useState(false);
     var intLimitTicketsTooHeavy = 21;
 
+    //ChatGPT button
     const toggleDataVisibility = () => {
         setShowData(!showData);
     };
 
-
+    //Retrives the IDs of the Jira projects
     const fetchProjects = async () => {
         try {
             setProjects(null);
@@ -41,6 +42,7 @@ function App() {
         }
     };
 
+    //Retrieves the global Score for a specific ID project
     const fetchGlobalScore = async () => {
         try {
             setGlobalScore(null);
@@ -54,6 +56,7 @@ function App() {
         }
     };
 
+    //Retrives the ChatGPT advice for a specific project
     const fetchChatGPTData = async () => {
         try {
             setIsLoadingChatGPT(true);
@@ -69,6 +72,7 @@ function App() {
         }
     };
 
+    //Retrives the information for each rule for each project
     const fetchRules = async () => {
         try {
             setRules(null);
@@ -82,6 +86,7 @@ function App() {
         }
     };
 
+    //Allows the user to change the weight of each rule for the global score calculation
     const sendWeightToBackend = async (newWeight, ruleIndex, descriptionRule) => {
         try {
             setRules(null);
@@ -121,17 +126,19 @@ function App() {
   	},[]);
 			  
 	
-	
+	//Handles the refresh of the database from the Jira API
 	const handleRefresh = () => {
-        axios.get('http://localhost:8080')
+        //axios.get('http://localhost:8080')
+        axios.get('http://localhost:8080/updateIssues')
         .then(response => {
-            console.log('Refreshed data:', response.data);
+           // console.log('Refreshed data:', response.data);
             window.location.reload();
         })
         .catch(error => {
-            console.error('Error refreshing data:', error);
+           // console.error('Error refreshing data:', error);
         });
     };
+
 
     const handleWeightChange = (newWeight, ruleIndex) => {
         setRules((prevRules) => {
@@ -182,7 +189,6 @@ function App() {
                     ))}
                 </>
             )}
-
 		<div className="app-container">
 		    <h2>Votre conseil personnalisé réalisé par ChatGPT</h2>
 		    {isLoadingChatGPT && (
