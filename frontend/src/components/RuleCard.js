@@ -21,14 +21,17 @@ function RuleCard({ rule, index, handleDropdownToggle, sendWeightToBackend, isOp
 			          		onChange={(newWeight) => sendWeightToBackend(newWeight, index,rule.description)}
 			          		ruleIndex={index}
 			        	/>
-			        	{rule.description === 'Tickets avec un nombre de story points trop élevés' && (
-							 <div className = 'saisieInt'>
-					        <label>Saisir un entier :</label>
-					        <input
-					          type="number"				          
-					          onChange={(e) => intLimitTicketsTooHeavy =parseInt(e.target.value)}
-					        />
-					      </div>)}
+			        	{rule.description === 'Tickets avec un nombre de story points trop élevés'
+						// && (
+							//  <div className = 'saisieInt'>
+					        // <label>Saisir un entier :</label>
+					    //     <input
+					    //       type="number"				          
+					    //       onChange={(e) => intLimitTicketsTooHeavy =parseInt(e.target.value)}
+					    //     />
+					    //   </div>
+						//  )
+						  }
 			        	<div className='advice-container'>
 			        		<div className='text'>
 			        			Conseil :
