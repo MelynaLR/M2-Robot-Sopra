@@ -110,22 +110,6 @@ public class MainController {
         String responseBody = jiraAPI.sendRequestAPI(urlGetIssues);
         jiraAPI.parseJsonResponseIssue(responseBody);  
     }
-
-    @GetMapping(value="/gpt/recommandations/idProject/{idProject}")
-    public void gptRecommandations(@PathVariable("idProject") String idProjectStr) {
-        LOGGER.info("starting endpoint gpt recommandations");
-        int idProject = Integer.valueOf(idProjectStr);
-        List<Issue> issues = databaseReader.readIssuesFromDatabase(idProject);
-        List<String> additionalInstructions = new ArrayList<>();
-        additionalInstructions =  ChatGPTClient.promptEngineering(additionalInstructions);
-    
-        // Call ChatGPTClient to generate recommendations based on the retrieved issues       
-        String recommendation = chatGPTClient.generateRecommendation(issues,additionalInstructions, conversationHistory);
-            
-        // Print or use the recommendation as needed          
-        LOGGER.info("Recommendation from ChatGPT: " + recommendation);
-        LOGGER.info("end of the GPT recommandation");
-    }
                 
     @GetMapping(value="/globalScore/idProject/{idProject}")
     public int scoreResult(@PathVariable("idProject") String idProjectStr) {
