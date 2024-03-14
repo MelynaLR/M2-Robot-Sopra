@@ -5,11 +5,11 @@ const [selectedNumber, setSelectedNumber] = useState(ruleWeight);
 
   const handleNumberClick = (number) => {
     setSelectedNumber(number);
-    onChange(number, ruleIndex); // Pass both number and ruleIndex to onChange
+    onChange(number, ruleIndex); // Passes both numbers and ruleIndex to onChange
   };
 
   useEffect(() => {
-    // Mettre à jour selectedNumber lorsque ruleWeight change
+    // Updates selectedNumber when ruleWeight changes
     setSelectedNumber(ruleWeight);
   }, [ruleWeight]);
 

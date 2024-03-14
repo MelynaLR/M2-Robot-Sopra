@@ -1,5 +1,5 @@
 import React from 'react';
-
+//Gauge funtion for the globalScore
 function Gauge({ globalScore }) {
   const gaugeColor = getGaugeColor(globalScore);
 
